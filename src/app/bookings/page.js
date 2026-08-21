@@ -1,12 +1,34 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, Phone, MessageSquare, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Calendar, Clock, MapPin, Phone, MessageSquare, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2, User, Loader2 } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function BookingsPage() {
-  const { userBookings, openTrackingModal, openBookingModal, cancelBooking } = useBooking();
+  const router = useRouter();
+  const { userBookings, openTrackingModal, openBookingModal, cancelBooking, isAuthenticated, authLoading } = useBooking();
+
+  // Redirect to login if unauthenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/login?returnUrl=/bookings');
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+  if (authLoading) {
+    return (
+      <div className="py-24 text-center space-y-3 bg-slate-50 min-h-screen flex flex-col items-center justify-center">
+        <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
+        <p className="text-xs font-semibold text-slate-600">Verifying session...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
@@ -22,7 +44,7 @@ export default function BookingsPage() {
               My Bookings & Service History
             </h1>
             <p className="text-xs text-slate-500 mt-1">
-              Track live technician location, view invoices, and manage upcoming service visits.
+              Track live technician location, view invoices, and manage upcoming doorstep visits in Indore.
             </p>
           </div>
 
@@ -40,7 +62,7 @@ export default function BookingsPage() {
             <Calendar className="w-12 h-12 text-slate-300 mx-auto" />
             <h3 className="text-xl font-bold font-heading text-slate-900">No Bookings Found</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              You don't have any active or past service bookings yet. Book a technician today for doorstep repair!
+              You don't have any active or past service bookings yet. Book an Indore technician today for doorstep repair!
             </p>
             <button
               onClick={() => openBookingModal('ac-repair')}

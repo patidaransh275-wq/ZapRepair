@@ -17,7 +17,7 @@ const INITIAL_DEMO_BOOKINGS = [
     date: 'Today',
     timeSlot: '2:00 PM - 4:00 PM',
     status: 'Technician En Route',
-    statusStep: 3, // 1: Booked, 2: Tech Assigned, 3: En Route, 4: In Progress, 5: Completed
+    statusStep: 3,
     technician: {
       name: 'Ramesh Kumar (Indore Pro)',
       phone: '+91 98765 43210',
@@ -55,6 +55,7 @@ const INITIAL_DEMO_BOOKINGS = [
 ];
 
 export function BookingProvider({ children }) {
+  // Modal states
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [preselectedAppliance, setPreselectedAppliance] = useState('ac-repair');
   const [preselectedPackage, setPreselectedPackage] = useState(null);
@@ -64,6 +65,11 @@ export function BookingProvider({ children }) {
 
   const [userPincode, setUserPincodeState] = useState('452010');
   const [userBookings, setUserBookings] = useState([]);
+
+  // Auth State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   
   const [userProfile, setUserProfile] = useState({
     name: 'Ansh Patidar',
@@ -74,6 +80,36 @@ export function BookingProvider({ children }) {
       { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
     ]
   });
+
+  // Fetch session on load
+  const checkSession = async () => {
+    try {
+      setAuthLoading(true);
+      const res = await fetch('/api/auth/session');
+      const data = await res.json();
+      if (data.isAuthenticated && data.user) {
+        setIsAuthenticated(true);
+        setCurrentUser(data.user);
+        setUserProfile(prev => ({
+          ...prev,
+          name: data.user.name || prev.name,
+          phone: data.user.phone || prev.phone,
+          email: data.user.email || prev.email
+        }));
+      } else {
+        setIsAuthenticated(false);
+        setCurrentUser(null);
+      }
+    } catch (e) {
+      setIsAuthenticated(false);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+  }, []);
 
   // Load bookings from localStorage
   useEffect(() => {
@@ -92,6 +128,85 @@ export function BookingProvider({ children }) {
       setUserBookings(INITIAL_DEMO_BOOKINGS);
     }
   }, []);
+
+  // AUTH ACTIONS
+  const requestPhoneOtp = async (phone) => {
+    const res = await fetch('/api/auth/otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'request', phone })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to request OTP');
+    return data;
+  };
+
+  const verifyPhoneOtp = async (phone, otp, name) => {
+    const res = await fetch('/api/auth/otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify', phone, otp, name })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to verify OTP');
+
+    setIsAuthenticated(true);
+    setCurrentUser(data.user);
+    setUserProfile(prev => ({
+      ...prev,
+      name: data.user.name || prev.name,
+      phone: data.user.phone || prev.phone,
+      email: data.user.email || prev.email
+    }));
+    return data;
+  };
+
+  const loginWithEmail = async (email, password) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Invalid email or password');
+
+    setIsAuthenticated(true);
+    setCurrentUser(data.user);
+    setUserProfile(prev => ({
+      ...prev,
+      name: data.user.name || prev.name,
+      email: data.user.email || prev.email
+    }));
+    return data;
+  };
+
+  const signupUser = async ({ name, phone, email, password }) => {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to create account');
+
+    setIsAuthenticated(true);
+    setCurrentUser(data.user);
+    setUserProfile(prev => ({
+      ...prev,
+      name: data.user.name,
+      phone: data.user.phone,
+      email: data.user.email
+    }));
+    return data;
+  };
+
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {}
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
 
   const setUserPincode = (code) => {
     setUserPincodeState(code);
@@ -189,7 +304,16 @@ export function BookingProvider({ children }) {
         addBooking,
         cancelBooking,
         userProfile,
-        setUserProfile
+        setUserProfile,
+        // Auth Exports
+        isAuthenticated,
+        currentUser,
+        authLoading,
+        requestPhoneOtp,
+        verifyPhoneOtp,
+        loginWithEmail,
+        signupUser,
+        logout
       }}
     >
       {children}
