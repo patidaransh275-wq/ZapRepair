@@ -22,7 +22,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              ZapRepair is India’s premier doorstep appliance repair & home service platform. Verified technicians, transparent pricing, and fast 45-minute service at your home.
+              ZapRepair is Indore’s premier doorstep appliance repair & home service platform. Verified technicians, transparent pricing, and fast 45-minute service across Indore, Madhya Pradesh.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-3 py-1.5 rounded-lg">
@@ -30,7 +30,7 @@ export default function Footer() {
                 <span>Verified Technicians</span>
               </div>
               <div className="text-xs text-amber-400 bg-amber-950/50 border border-amber-800/40 px-3 py-1.5 rounded-lg">
-                ★ 4.9 Rating (10k+ Repairs)
+                ★ 4.9 Rating in Indore
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function Footer() {
           {/* Contact & Support */}
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider font-heading">
-              Customer Support
+              Indore Support Desk
             </h3>
             <ul className="space-y-3 text-xs">
               <li>
@@ -93,7 +93,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2 pt-1">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>Delhi NCR, Mumbai, Bangalore, Pune, Hyderabad, Jaipur</span>
+                <span>Vijay Nagar, Palasia, Bhanwarkuan, Rau & All Indore Sectors, MP</span>
               </li>
             </ul>
           </div>
@@ -102,7 +102,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {new Date().getFullYear()} ZapRepair Tech Services Pvt Ltd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} ZapRepair Tech Services Pvt Ltd (Indore, MP). All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">
               Privacy Policy

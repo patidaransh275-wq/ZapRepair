@@ -9,7 +9,7 @@ import { checkPincodeServiceability } from '../../data/pincodesData';
 export default function Hero() {
   const { openBookingModal, userPincode, setUserPincode } = useBooking();
   const [selectedApplianceId, setSelectedApplianceId] = useState('ac-repair');
-  const [pincodeInput, setPincodeInput] = useState(userPincode || '110001');
+  const [pincodeInput, setPincodeInput] = useState(userPincode || '452010');
   const [checkResult, setCheckResult] = useState(null);
 
   const handleCheckAvailability = (e) => {
@@ -41,7 +41,7 @@ export default function Hero() {
             {/* Top Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-amber-400 backdrop-blur-sm">
               <Zap className="w-4 h-4 fill-amber-400" />
-              <span>India’s Most Trusted Doorstep Service Platform</span>
+              <span>Indore’s #1 Doorstep Appliance Service Platform</span>
             </div>
 
             {/* Main H1 Headline */}
@@ -51,14 +51,14 @@ export default function Hero() {
 
             {/* Description */}
             <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
-              Expert technicians, transparent pricing, and fast service. We fix your appliances so you can get back to your life.
+              Expert technicians, transparent pricing, and fast service across Indore. We fix your appliances so you can get back to your life.
             </p>
 
             {/* Key Value Props Pills */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>45-Min Arrival</span>
+                <span>45-Min Arrival in Indore</span>
               </div>
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -78,7 +78,7 @@ export default function Hero() {
                 ))}
               </div>
               <div className="text-xs text-slate-300">
-                <span className="font-bold text-white text-sm">4.9/5</span> Rating from over <span className="font-bold text-white">10,000+ happy customers</span>
+                <span className="font-bold text-white text-sm">4.9/5</span> Rating from over <span className="font-bold text-white">10,000+ happy Indore homeowners</span>
               </div>
             </div>
 
@@ -91,7 +91,7 @@ export default function Hero() {
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
                 <div>
                   <h3 className="text-xl font-bold font-heading text-slate-900">Book Doorstep Service</h3>
-                  <p className="text-xs text-slate-500">Check technician availability in 10 seconds</p>
+                  <p className="text-xs text-slate-500">Check Indore technician availability in 10 seconds</p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
                   <Clock className="w-5 h-5" />
@@ -121,7 +121,7 @@ export default function Hero() {
                 {/* 2. Enter Pincode */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    2. Enter Pincode
+                    2. Enter Indore Pincode
                   </label>
                   <div className="relative">
                     <MapPin className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
@@ -131,7 +131,7 @@ export default function Hero() {
                       value={pincodeInput}
                       onChange={(e) => setPincodeInput(e.target.value)}
                       className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                      placeholder="e.g. 110001 or 400001"
+                      placeholder="e.g. 452010 or 452001"
                       required
                     />
                   </div>

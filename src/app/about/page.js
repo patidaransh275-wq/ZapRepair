@@ -15,13 +15,13 @@ export default function AboutPage() {
       <div className="bg-slate-900 text-white py-20 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 max-w-3xl">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3.5 py-1 rounded-full border border-slate-700">
-            About ZapRepair
+            About ZapRepair Indore
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold font-heading">
-            Redefining Home Services Across India
+            Redefining Home Services Across Indore
           </h1>
           <p className="text-sm text-slate-300 leading-relaxed">
-            ZapRepair was founded with a single mission: to bring speed, transparency, and top-tier technical excellence to doorstep home appliance repair.
+            ZapRepair was founded with a single mission: to bring speed, transparency, and top-tier technical excellence to doorstep home appliance repair across Indore, Madhya Pradesh.
           </p>
         </div>
       </div>
@@ -32,7 +32,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm">
             <div className="text-3xl sm:text-4xl font-extrabold text-amber-500 font-heading">10,000+</div>
-            <div className="text-xs text-slate-600 font-semibold mt-1">Repairs Completed</div>
+            <div className="text-xs text-slate-600 font-semibold mt-1">Indore Repairs Completed</div>
           </div>
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm">
             <div className="text-3xl sm:text-4xl font-extrabold text-amber-500 font-heading">500+</div>
@@ -52,10 +52,10 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="space-y-4">
             <h2 className="text-3xl font-extrabold text-slate-900 font-heading">
-              Our Core Promises
+              Our Core Promises to Indore Homeowners
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Before ZapRepair, homeowners faced endless delays, hidden charges, unverified mechanics, and non-genuine parts. We changed that by combining technology with rigorous technician training.
+              ZapRepair provides home appliance repair services across Indore, including AC repair, refrigerator repair, washing machine repair, RO repair, geyser repair and other doorstep appliance services.
             </p>
             <div className="space-y-3 pt-2">
               <div className="flex items-start gap-3">
@@ -85,7 +85,7 @@ export default function AboutPage() {
           <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-200">
             <img
               src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
-              alt="ZapRepair Team"
+              alt="ZapRepair Indore Team"
               className="w-full h-80 object-cover"
             />
           </div>
@@ -93,7 +93,7 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="bg-slate-900 text-white rounded-2xl p-10 text-center space-y-4">
-          <h2 className="text-2xl font-bold font-heading">Experience Premium Doorstep Service Today</h2>
+          <h2 className="text-2xl font-bold font-heading">Experience Premium Doorstep Service In Indore</h2>
           <button
             onClick={() => openBookingModal('ac-repair')}
             className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-md"

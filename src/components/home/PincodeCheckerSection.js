@@ -7,7 +7,7 @@ import { useBooking } from '../../context/BookingContext';
 
 export default function PincodeCheckerSection() {
   const { openBookingModal, setUserPincode } = useBooking();
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState('452010');
   const [result, setResult] = useState(null);
 
   const handleCheck = (e) => {
@@ -20,18 +20,18 @@ export default function PincodeCheckerSection() {
   };
 
   return (
-    <section className="py-16 bg-slate-900 text-white border-b border-slate-800">
+    <section id="pincode-section" className="py-16 bg-slate-900 text-white border-b border-slate-800">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
         <div className="max-w-2xl mx-auto space-y-4">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3.5 py-1 rounded-full border border-slate-700">
-            Instant Coverage Check
+            Instant Indore Coverage Check
           </span>
           <h2 className="text-3xl font-extrabold font-heading">
-            Is ZapRepair Active In Your Neighborhood?
+            Is ZapRepair Active In Your Indore Area?
           </h2>
           <p className="text-xs sm:text-sm text-slate-300">
-            Enter your 6-digit PIN code to check instant technician availability in your city.
+            Enter your 6-digit PIN code to check instant doorstep technician availability across Indore.
           </p>
 
           <form onSubmit={handleCheck} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-2">
@@ -42,7 +42,7 @@ export default function PincodeCheckerSection() {
                 maxLength={6}
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
-                placeholder="Enter Pincode (e.g. 110001)"
+                placeholder="Enter Indore Pincode (e.g. 452010)"
                 className="w-full pl-11 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                 required
               />

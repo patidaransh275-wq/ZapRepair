@@ -14,13 +14,13 @@ export default function FinalCTA() {
           
           <div className="space-y-2 max-w-2xl">
             <span className="text-xs font-extrabold uppercase tracking-wider text-slate-950 bg-slate-950/10 px-3 py-1 rounded-full border border-slate-950/20">
-              Need Instant Repair?
+              Need Instant Repair in Indore?
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-950">
-              Fix Your Appliance Today with ZapRepair
+              Fix Your Appliance Today with ZapRepair Indore
             </h2>
             <p className="text-sm font-medium text-slate-900">
-              Verified technicians available in 45 minutes across Delhi NCR, Mumbai, Bangalore, Pune & more.
+              Verified technicians available in 45 minutes across Vijay Nagar, Palasia, Bhanwarkuan, Rau & all Indore areas.
             </p>
           </div>
 

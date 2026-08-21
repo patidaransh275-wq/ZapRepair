@@ -11,6 +11,7 @@ import TechnicianTrust from '../components/home/TechnicianTrust';
 import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
 import ReviewsSection from '../components/home/ReviewsSection';
+import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
 import FinalCTA from '../components/home/FinalCTA';
 
@@ -38,19 +39,22 @@ export default function HomePage() {
       {/* 8. Technician Trust Section */}
       <TechnicianTrust />
 
-      {/* 9. Service Tracking UI */}
+      {/* 9. Service Areas in Indore */}
+      <IndoreServiceAreas />
+
+      {/* 10. Service Tracking UI */}
       <TrackingPreview />
 
-      {/* 10. Transparent Pricing */}
+      {/* 11. Transparent Pricing */}
       <PricingSection />
 
-      {/* 11. Customer Reviews */}
+      {/* 12. Customer Reviews */}
       <ReviewsSection />
 
-      {/* 12. Service Location / Pincode Checker */}
+      {/* 13. Service Location / Pincode Checker */}
       <PincodeCheckerSection />
 
-      {/* 13. Final CTA */}
+      {/* 14. Final CTA */}
       <FinalCTA />
     </div>
   );

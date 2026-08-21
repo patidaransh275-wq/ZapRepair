@@ -28,13 +28,13 @@ export default function ContactPage() {
       <div className="bg-slate-900 text-white py-16 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3.5 py-1 rounded-full border border-slate-700">
-            Support Center
+            Indore Support Center
           </span>
           <h1 className="text-4xl font-extrabold font-heading">
-            Contact ZapRepair Customer Care
+            Contact ZapRepair Indore
           </h1>
           <p className="text-xs sm:text-sm text-slate-300">
-            Have questions about an active booking, invoice, or partnership? We are here 24/7.
+            Have questions about doorstep service in Indore, active bookings, or invoices? We are here 24/7.
           </p>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-6">
             
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-4">
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Direct Helplines</h3>
+              <h3 className="text-lg font-bold text-slate-900 font-heading">Indore Helplines</h3>
               
               <a
                 href="tel:+919876543210"
@@ -57,7 +57,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-900">+91 98765 43210</div>
-                  <div className="text-[11px] text-slate-500">24/7 Customer Support Line</div>
+                  <div className="text-[11px] text-slate-500">24/7 Indore Customer Helpline</div>
                 </div>
               </a>
 
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <MessageSquare className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-emerald-900">WhatsApp Instant Support</div>
+                  <div className="text-xs font-bold text-emerald-900">WhatsApp Support</div>
                   <div className="text-[11px] text-emerald-700">Chat directly with support desk</div>
                 </div>
               </a>
@@ -93,10 +93,10 @@ export default function ContactPage() {
 
             {/* Office Address */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Corporate Office</h3>
+              <h3 className="text-lg font-bold text-slate-900 font-heading">Indore Operations Hub</h3>
               <div className="flex items-start gap-2 text-xs text-slate-600">
                 <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>ZapRepair Tech Services Pvt Ltd, Tower B, 7th Floor, DLF Cyber City, Gurugram, HR - 122001</span>
+                <span>ZapRepair Tech Services Pvt Ltd, 304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
               </div>
             </div>
 
@@ -110,7 +110,7 @@ export default function ContactPage() {
               {submitted ? (
                 <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-bold flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  <span>Thank you! Your message has been received. Our team will contact you shortly.</span>
+                  <span>Thank you! Your message has been received. Our Indore team will contact you shortly.</span>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -157,7 +157,7 @@ export default function ContactPage() {
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      placeholder="How can we help you?"
+                      placeholder="How can we help you in Indore?"
                       className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-amber-500"
                     />
                   </div>
