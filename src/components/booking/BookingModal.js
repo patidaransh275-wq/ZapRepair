@@ -12,13 +12,19 @@ export default function BookingModal() {
   const [step, setStep] = useState(1);
   const [selectedServiceId, setSelectedServiceId] = useState(preselectedAppliance || 'ac-repair');
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const [pincode, setPincode] = useState(userPincode || '110001');
-  const [address, setAddress] = useState('Flat 402, Green Park Apartments, Connaught Place, New Delhi');
+  const [pincode, setPincode] = useState(userPincode || '452010');
+  const [address, setAddress] = useState('Flat 402, Apollo Tower, Vijay Nagar, Indore, MP');
   const [dateOption, setDateOption] = useState('Today');
   const [timeSlot, setTimeSlot] = useState('2:00 PM - 4:00 PM');
   const [name, setName] = useState(userProfile.name);
   const [phone, setPhone] = useState(userProfile.phone);
   const [createdBooking, setCreatedBooking] = useState(null);
+
+  useEffect(() => {
+    if (isBookingModalOpen) {
+      setStep(1);
+    }
+  }, [isBookingModalOpen]);
 
   useEffect(() => {
     if (preselectedAppliance) {
@@ -125,6 +131,7 @@ export default function BookingModal() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {SERVICES_DATA.map((srv) => (
                   <button
+                    type="button"
                     key={srv.id}
                     onClick={() => setSelectedServiceId(srv.id)}
                     className={`p-3 rounded-xl border text-left flex flex-col gap-2 transition-all ${
@@ -181,7 +188,7 @@ export default function BookingModal() {
             <div className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900 font-heading">3. Doorstep Location</h4>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Pincode</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Indore Pincode</label>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -189,11 +196,11 @@ export default function BookingModal() {
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
                     className="w-32 px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                    placeholder="110001"
+                    placeholder="452010"
                   />
                   <div className="flex-1 px-3 py-2 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-1.5 border border-emerald-200">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Serviceable Area</span>
+                    <span>Indore Serviceable Area</span>
                   </div>
                 </div>
               </div>
@@ -217,6 +224,7 @@ export default function BookingModal() {
               <div className="grid grid-cols-3 gap-3">
                 {['Today', 'Tomorrow', 'Day After'].map((opt) => (
                   <button
+                    type="button"
                     key={opt}
                     onClick={() => setDateOption(opt)}
                     className={`py-3 px-4 rounded-xl border text-center font-bold text-sm transition-all ${
@@ -239,6 +247,7 @@ export default function BookingModal() {
               <div className="space-y-2">
                 {timeSlots.map((slot) => (
                   <button
+                    type="button"
                     key={slot}
                     onClick={() => setTimeSlot(slot)}
                     className={`w-full py-3 px-4 rounded-xl border text-left font-semibold text-sm flex items-center justify-between transition-all ${
@@ -337,7 +346,7 @@ export default function BookingModal() {
                 Booking ID: <span className="font-bold text-slate-900">{createdBooking.id}</span>
               </p>
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-left space-y-2 text-xs max-w-md mx-auto">
-                <div className="font-bold text-slate-900 text-sm border-b pb-2">Assigned Technician</div>
+                <div className="font-bold text-slate-900 text-sm border-b pb-2">Assigned Indore Technician</div>
                 <div className="flex items-center gap-3 pt-1">
                   <img
                     src={createdBooking.technician.photo}
@@ -352,6 +361,7 @@ export default function BookingModal() {
               </div>
               <div className="pt-2">
                 <button
+                  type="button"
                   onClick={closeBookingModal}
                   className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl text-sm"
                 >
@@ -368,6 +378,7 @@ export default function BookingModal() {
           <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
             {step > 1 ? (
               <button
+                type="button"
                 onClick={handleBackStep}
                 className="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg"
               >
@@ -377,6 +388,7 @@ export default function BookingModal() {
             ) : <div />}
 
             <button
+              type="button"
               onClick={handleNextStep}
               className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm shadow-md flex items-center gap-2"
             >

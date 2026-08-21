@@ -12,19 +12,19 @@ const INITIAL_DEMO_BOOKINGS = [
     serviceName: 'AC Power Foam Service',
     packageTitle: 'Power Foam Jet Service',
     price: 499,
-    pincode: '110001',
-    address: 'Flat 402, Green Park Apartments, Connaught Place, New Delhi',
+    pincode: '452010',
+    address: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP',
     date: 'Today',
     timeSlot: '2:00 PM - 4:00 PM',
     status: 'Technician En Route',
     statusStep: 3, // 1: Booked, 2: Tech Assigned, 3: En Route, 4: In Progress, 5: Completed
     technician: {
-      name: 'Ramesh Kumar',
+      name: 'Ramesh Kumar (Indore Pro)',
       phone: '+91 98765 43210',
       rating: 4.9,
       repairsCount: 480,
       photo: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'Hero Splendor (DL 3S CW 4920)',
+      vehicle: 'Hero Splendor (MP 09 CW 4920)',
       eta: '18 Mins'
     },
     createdAt: new Date().toISOString()
@@ -35,8 +35,8 @@ const INITIAL_DEMO_BOOKINGS = [
     serviceName: 'Washing Machine Repair',
     packageTitle: 'Deep Descaling & Drum Service',
     price: 499,
-    pincode: '110001',
-    address: 'Flat 402, Green Park Apartments, Connaught Place, New Delhi',
+    pincode: '452001',
+    address: 'Flat 201, Industry House, AB Road, Palasia, Indore, MP',
     date: '15 Aug 2026',
     timeSlot: '10:00 AM - 12:00 PM',
     status: 'Completed',
@@ -47,7 +47,7 @@ const INITIAL_DEMO_BOOKINGS = [
       rating: 4.85,
       repairsCount: 310,
       photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'TVS Jupiter (DL 4S EV 8812)',
+      vehicle: 'TVS Jupiter (MP 09 EV 8812)',
       eta: 'Completed'
     },
     createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
@@ -62,7 +62,7 @@ export function BookingProvider({ children }) {
   const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
   const [trackingBookingId, setTrackingBookingId] = useState(null);
 
-  const [userPincode, setUserPincodeState] = useState('110001');
+  const [userPincode, setUserPincodeState] = useState('452010');
   const [userBookings, setUserBookings] = useState([]);
   
   const [userProfile, setUserProfile] = useState({
@@ -70,8 +70,8 @@ export function BookingProvider({ children }) {
     phone: '+91 98765 12345',
     email: 'ansh@zaprepair.in',
     addresses: [
-      { id: 'addr-1', tag: 'Home', fullAddress: 'Flat 402, Green Park Apartments, Connaught Place, New Delhi - 110001' },
-      { id: 'addr-2', tag: 'Office', fullAddress: 'Tower B, 7th Floor, DLF Tech Park, Noida - 201309' }
+      { id: 'addr-1', tag: 'Home', fullAddress: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP - 452010' },
+      { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
     ]
   });
 
@@ -138,12 +138,12 @@ export function BookingProvider({ children }) {
       status: 'Technician Assigned',
       statusStep: 2,
       technician: {
-        name: 'Vikram Singh (Verified Pro)',
+        name: 'Vikram Singh (Verified Indore Pro)',
         phone: '+91 98765 09876',
         rating: 4.95,
         repairsCount: 520,
         photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=200&q=80',
-        vehicle: 'Honda Activa (DL 8S CZ 1122)',
+        vehicle: 'Honda Activa (MP 09 CZ 1122)',
         eta: '30 Mins'
       },
       createdAt: new Date().toISOString()
