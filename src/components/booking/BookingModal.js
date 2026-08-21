@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Zap, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Wrench, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { checkPincodeServiceability } from '../../data/pincodesData';
@@ -96,7 +96,7 @@ export default function BookingModal() {
         <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
-              <Zap className="w-5 h-5 fill-slate-950" />
+              <Wrench className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
               <h3 className="font-bold text-base font-heading">Book {currentService.name}</h3>
@@ -104,6 +104,7 @@ export default function BookingModal() {
             </div>
           </div>
           <button
+            type="button"
             onClick={closeBookingModal}
             className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
           >
@@ -335,7 +336,7 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 8: Success Screen */}
+          {/* STEP 8: Success Screen (Technician Person Name Removed as requested!) */}
           {step === 8 && createdBooking && (
             <div className="text-center py-6 space-y-4">
               <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -346,17 +347,15 @@ export default function BookingModal() {
                 Booking ID: <span className="font-bold text-slate-900">{createdBooking.id}</span>
               </p>
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-left space-y-2 text-xs max-w-md mx-auto">
-                <div className="font-bold text-slate-900 text-sm border-b pb-2">Assigned Indore Technician</div>
-                <div className="flex items-center gap-3 pt-1">
-                  <img
-                    src={createdBooking.technician.photo}
-                    alt={createdBooking.technician.name}
-                    className="w-10 h-10 rounded-full object-cover border border-amber-400"
-                  />
-                  <div>
-                    <div className="font-bold text-slate-900">{createdBooking.technician.name}</div>
-                    <div className="text-[11px] text-emerald-600 font-semibold">★ {createdBooking.technician.rating} Verified Expert</div>
-                  </div>
+                <div className="font-bold text-slate-900 text-sm border-b pb-2 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Doorstep Technician Status</span>
+                </div>
+                <div className="text-xs text-emerald-700 font-bold pt-1">
+                  ✓ Verified Doorstep Expert Assigned & En Route
+                </div>
+                <div className="text-[11px] text-slate-500">
+                  Est. Doorstep Arrival: 30 Mins | Vehicle: Service Van (MP 09)
                 </div>
               </div>
               <div className="pt-2">

@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Zap, CheckSquare, Search, ArrowRight, ShieldCheck, Check } from 'lucide-react';
-import { INDORE_SERVICE_AREAS } from '../../data/pincodesData';
+import { MapPin, Wrench, Search, ArrowRight, Check } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function IndoreServiceAreas() {
@@ -48,7 +47,7 @@ export default function IndoreServiceAreas() {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* LEFT SIDE: Stylized City Silhouette Map with Teardrop Pins (Matching Reference Image) */}
+          {/* LEFT SIDE: Stylized City Silhouette Map with Teardrop Pins */}
           <div className="lg:col-span-5 w-full">
             <div className="relative w-full h-[380px] sm:h-[430px] bg-gradient-to-b from-slate-800 to-slate-900 rounded-3xl border border-slate-700 shadow-2xl p-6 overflow-hidden flex flex-col justify-between">
               
@@ -63,7 +62,7 @@ export default function IndoreServiceAreas() {
                 <path d="M 30 220 C 180 180, 250 280, 380 200" />
               </svg>
 
-              {/* Floating Teardrop Pin Badges (Matching Reference Photo) */}
+              {/* Floating Teardrop Pin Badges */}
               {mapTeardropPins.map((pin, idx) => (
                 <div
                   key={idx}
@@ -78,7 +77,7 @@ export default function IndoreServiceAreas() {
                     
                     {/* Teardrop Pin Shape */}
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-500 via-emerald-400 to-teal-300 text-slate-950 flex items-center justify-center shadow-lg shadow-emerald-500/30 border-2 border-white transform hover:scale-110 transition-transform">
-                      <Zap className="w-5 h-5 fill-slate-950" />
+                      <Wrench className="w-4 h-4 stroke-[2.5]" />
                     </div>
                     {/* Pin pointer tail */}
                     <div className="w-2 h-2 bg-emerald-500 rotate-45 -mt-1 shadow-sm" />
@@ -101,7 +100,7 @@ export default function IndoreServiceAreas() {
             </div>
           </div>
 
-          {/* RIGHT SIDE: Layout Matching Reference Photo ("We serve all the major boroughs in London" -> "We serve all the major areas in Indore") */}
+          {/* RIGHT SIDE: Layout ("We serve all the major areas in Indore") */}
           <div className="lg:col-span-7 space-y-6">
             
             <div className="space-y-3">
@@ -109,22 +108,22 @@ export default function IndoreServiceAreas() {
                 Doorstep Coverage
               </span>
 
-              {/* Exact Heading Style matching the Reference Photo */}
+              {/* Exact Heading Style */}
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 font-heading leading-tight tracking-tight">
                 We serve all the major areas in Indore
               </h2>
 
               <p className="text-sm text-slate-600 leading-relaxed max-w-xl">
-                Get reliable home appliance repair services at your doorstep across major residential and commercial sectors of Indore.
+                Get reliable home plumbing & appliance repair services at your doorstep across major residential and commercial sectors of Indore.
               </p>
             </div>
 
             {/* Natural Local SEO Statement */}
             <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-soft-sm text-xs sm:text-sm text-slate-700 leading-relaxed">
-              ZapRepair provides home appliance repair services across Indore, including AC repair, refrigerator repair, washing machine repair, RO repair, geyser repair and other doorstep appliance services.
+              PlumberIndore provides home plumbing & appliance repair services across Indore, including AC repair, refrigerator repair, washing machine repair, RO repair, geyser repair, electrician, and plumbing services.
             </div>
 
-            {/* Checklist Grid matching Reference Image Layout ([✓] Green Checkbox Style) */}
+            {/* Checklist Grid ([✓] Green Checkbox Style) */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
               {indoreBoroughList.map((area, index) => (
                 <div

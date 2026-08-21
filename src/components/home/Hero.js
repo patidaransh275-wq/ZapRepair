@@ -1,170 +1,177 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShieldCheck, MapPin, Search, ArrowRight, Zap, CheckCircle2, Star, Clock } from 'lucide-react';
-import { useBooking } from '../../context/BookingContext';
-import { SERVICES_DATA } from '../../data/servicesData';
+import { ShieldCheck, MapPin, Search, Star, Clock, CheckCircle2, PhoneCall, ArrowRight, Wrench } from 'lucide-react';
 import { checkPincodeServiceability } from '../../data/pincodesData';
+import { useBooking } from '../../context/BookingContext';
 
 export default function Hero() {
-  const { openBookingModal, userPincode, setUserPincode } = useBooking();
-  const [selectedApplianceId, setSelectedApplianceId] = useState('ac-repair');
-  const [pincodeInput, setPincodeInput] = useState(userPincode || '452010');
-  const [checkResult, setCheckResult] = useState(null);
+  const [pincode, setPincode] = useState('');
+  const [pincodeResult, setPincodeResult] = useState(null);
+  const { openBookingModal } = useBooking();
 
-  const handleCheckAvailability = (e) => {
+  const handleCheckPincode = (e) => {
     e.preventDefault();
-    const result = checkPincodeServiceability(pincodeInput);
-    setCheckResult(result);
-    if (result.valid) {
-      setUserPincode(pincodeInput);
-      // Open booking flow after brief delay
-      setTimeout(() => {
-        openBookingModal(selectedApplianceId);
-      }, 500);
-    }
+    if (!pincode) return;
+    const result = checkPincodeServiceability(pincode);
+    setPincodeResult(result);
   };
 
   return (
-    <section className="relative bg-slate-900 text-white pt-12 pb-20 md:py-24 overflow-hidden border-b border-slate-800">
+    <section className="relative bg-slate-950 text-white pt-10 pb-16 md:py-24 overflow-hidden">
       
-      {/* Background Subtle Gradient Blobs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-40 -mt-40" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none -ml-40 -mb-40" />
-
+      {/* Background Decorative Lighting Effect */}
+      <div className="absolute top-0 right-0 -mt-12 -mr-12 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column - Headline & Badges */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          {/* Left Hero Content */}
+          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-amber-400 backdrop-blur-sm">
-              <Zap className="w-4 h-4 fill-amber-400" />
-              <span>Indore’s #1 Doorstep Appliance Service Platform</span>
+            {/* Indore Location Exclusive Badge */}
+            <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+              <MapPin className="w-3.5 h-3.5 text-amber-400" />
+              <span>Doorstep Plumbing & Appliance Repair in Indore, MP</span>
             </div>
 
-            {/* Main H1 Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-heading leading-[1.15]">
-              Trusted Home Appliance Repair, <span className="text-amber-400">At Your Doorstep</span>
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-white tracking-tight leading-[1.1]">
+              Indore's Premier <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500">Doorstep Plumbing & Appliance</span> Repair
             </h1>
 
-            {/* Description */}
-            <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
-              Expert technicians, transparent pricing, and fast service across Indore. We fix your appliances so you can get back to your life.
+            {/* Subtitle */}
+            <p className="text-base sm:text-lg text-slate-300 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              Certified technicians reach your home in <strong className="text-white font-bold">45 minutes</strong> across Vijay Nagar, Palasia, Bhanwarkuan, Rau, and all Indore sectors. Fixed rates with 30-day repair warranty.
             </p>
 
-            {/* Key Value Props Pills */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>45-Min Arrival in Indore</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>100% Genuine Parts</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>30-Day Warranty</span>
-              </div>
+            {/* Pincode Availability Checker Widget */}
+            <div className="pt-2 max-w-md mx-auto lg:mx-0">
+              <form onSubmit={handleCheckPincode} className="flex flex-col sm:flex-row gap-2.5">
+                <div className="relative flex-1">
+                  <MapPin className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Enter Indore Pincode (e.g. 452010)"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-900/90 border border-slate-700 rounded-xl text-sm font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-500/20 shrink-0 flex items-center justify-center gap-2"
+                >
+                  <Search className="w-4 h-4" />
+                  <span>Check Availability</span>
+                </button>
+              </form>
+
+              {/* Pincode Result Alert */}
+              {pincodeResult && (
+                <div className={`mt-3 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 border ${
+                  pincodeResult.valid
+                    ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-300'
+                    : 'bg-red-950/80 border-red-500/50 text-red-300'
+                }`}>
+                  {pincodeResult.valid ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  ) : (
+                    <MapPin className="w-4 h-4 text-red-400 shrink-0" />
+                  )}
+                  <span>{pincodeResult.message}</span>
+                </div>
+              )}
             </div>
 
-            {/* Rating summary */}
-            <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400" />
-                ))}
+            {/* Trust Highlights */}
+            <div className="pt-4 grid grid-cols-3 gap-4 text-left border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-amber-400 font-heading">45 Mins</div>
+                <div className="text-[11px] text-slate-400 font-medium">Fast Arrival</div>
               </div>
-              <div className="text-xs text-slate-300">
-                <span className="font-bold text-white text-sm">4.9/5</span> Rating from over <span className="font-bold text-white">10,000+ happy Indore homeowners</span>
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-amber-400 font-heading">10,000+</div>
+                <div className="text-[11px] text-slate-400 font-medium">Indore Repairs</div>
+              </div>
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-amber-400 font-heading">★ 4.9/5</div>
+                <div className="text-[11px] text-slate-400 font-medium">Rating in Indore</div>
               </div>
             </div>
 
           </div>
 
-          {/* Right Column - Google Stitch Interactive Booking Widget */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 text-slate-900 border border-slate-100">
+          {/* Right Hero Card / Quick Booking Entry */}
+          <div className="lg:col-span-5 w-full">
+            <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md space-y-6">
               
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div>
-                  <h3 className="text-xl font-bold font-heading text-slate-900">Book Doorstep Service</h3>
-                  <p className="text-xs text-slate-500">Check Indore technician availability in 10 seconds</p>
+                  <h3 className="text-lg font-bold text-white font-heading">Book Doorstep Service</h3>
+                  <p className="text-xs text-amber-400 font-medium">Instant 60-Second Booking</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
-                  <Clock className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <Wrench className="w-5 h-5 stroke-[2.5]" />
                 </div>
               </div>
 
-              <form onSubmit={handleCheckAvailability} className="space-y-4">
-                
-                {/* 1. Select Appliance */}
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    1. Select Appliance
-                  </label>
-                  <select
-                    value={selectedApplianceId}
-                    onChange={(e) => setSelectedApplianceId(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                  >
-                    {SERVICES_DATA.map((srv) => (
-                      <option key={srv.id} value={srv.id}>
-                        {srv.name} (Starts ₹{srv.startingPrice})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 2. Enter Pincode */}
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    2. Enter Indore Pincode
-                  </label>
-                  <div className="relative">
-                    <MapPin className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="text"
-                      maxLength={6}
-                      value={pincodeInput}
-                      onChange={(e) => setPincodeInput(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                      placeholder="e.g. 452010 or 452001"
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Feedback message */}
-                {checkResult && (
-                  <div className={`p-3 rounded-xl text-xs font-semibold ${
-                    checkResult.valid 
-                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
-                      : 'bg-red-50 text-red-800 border border-red-200'
-                  }`}>
-                    {checkResult.message}
-                  </div>
-                )}
-
-                {/* Submit / Check Availability Button */}
+              {/* Service Selection Buttons */}
+              <div className="grid grid-cols-2 gap-2.5">
                 <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold py-3.5 px-6 rounded-xl shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 transition-all transform active:scale-98"
+                  type="button"
+                  onClick={() => openBookingModal('plumber')}
+                  className="p-3 rounded-xl bg-slate-800/70 hover:bg-amber-500 hover:text-slate-950 text-slate-200 border border-slate-700/80 text-left transition-all duration-200 group"
                 >
-                  <span>Check Availability & Book</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <div className="font-extrabold text-xs group-hover:text-slate-950">Plumber Service</div>
+                  <div className="text-[10px] text-slate-400 group-hover:text-slate-900 mt-0.5">From ₹149</div>
                 </button>
 
-              </form>
+                <button
+                  type="button"
+                  onClick={() => openBookingModal('ac-repair')}
+                  className="p-3 rounded-xl bg-slate-800/70 hover:bg-amber-500 hover:text-slate-950 text-slate-200 border border-slate-700/80 text-left transition-all duration-200 group"
+                >
+                  <div className="font-extrabold text-xs group-hover:text-slate-950">AC Repair</div>
+                  <div className="text-[10px] text-slate-400 group-hover:text-slate-900 mt-0.5">From ₹399</div>
+                </button>
 
-              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  Free Inspection with Repair
-                </span>
-                <span>No Payment Required Now</span>
+                <button
+                  type="button"
+                  onClick={() => openBookingModal('washing-machine')}
+                  className="p-3 rounded-xl bg-slate-800/70 hover:bg-amber-500 hover:text-slate-950 text-slate-200 border border-slate-700/80 text-left transition-all duration-200 group"
+                >
+                  <div className="font-extrabold text-xs group-hover:text-slate-950">Washing Machine</div>
+                  <div className="text-[10px] text-slate-400 group-hover:text-slate-900 mt-0.5">From ₹349</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => openBookingModal('refrigerator')}
+                  className="p-3 rounded-xl bg-slate-800/70 hover:bg-amber-500 hover:text-slate-950 text-slate-200 border border-slate-700/80 text-left transition-all duration-200 group"
+                >
+                  <div className="font-extrabold text-xs group-hover:text-slate-950">Refrigerator</div>
+                  <div className="text-[10px] text-slate-400 group-hover:text-slate-900 mt-0.5">From ₹299</div>
+                </button>
+              </div>
+
+              {/* Main CTA */}
+              <button
+                type="button"
+                onClick={() => openBookingModal('ac-repair')}
+                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 text-sm transition-all duration-200"
+              >
+                <span>Book Technician Now</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="text-center pt-1">
+                <a href="tel:+919876543210" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 font-medium">
+                  <PhoneCall className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Call Indore Helpline: <strong>+91 98765 43210</strong></span>
+                </a>
               </div>
 
             </div>

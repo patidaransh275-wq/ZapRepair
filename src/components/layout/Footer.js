@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Zap, Phone, Mail, MapPin, ShieldCheck, Heart, MessageSquare } from 'lucide-react';
+import { Wrench, Phone, Mail, MapPin, ShieldCheck, Heart, MessageSquare } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 
 export default function Footer() {
@@ -15,14 +15,14 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center shadow-md">
-                <Zap className="w-5 h-5 text-slate-950 fill-slate-950" />
+                <Wrench className="w-5 h-5 text-slate-950 stroke-[2.5]" />
               </div>
               <span className="text-2xl font-extrabold tracking-tight text-white font-heading">
-                Zap<span className="text-amber-400">Repair</span>
+                Plumber<span className="text-amber-400">Indore</span>
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              ZapRepair is Indore’s premier doorstep appliance repair & home service platform. Verified technicians, transparent pricing, and fast 45-minute service across Indore, Madhya Pradesh.
+              PlumberIndore is Indore’s premier doorstep plumbing, appliance repair & electrical service platform. Verified technicians, transparent pricing, and fast 45-minute service across Indore, Madhya Pradesh.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-3 py-1.5 rounded-lg">
@@ -38,7 +38,7 @@ export default function Footer() {
           {/* Core Services Column */}
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider font-heading">
-              Appliance Repair
+              Doorstep Services
             </h3>
             <ul className="space-y-2 text-xs">
               {SERVICES_DATA.slice(0, 7).map((s) => (
@@ -86,9 +86,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:support@zaprepair.in" className="flex items-center gap-2 hover:text-amber-400 transition-colors">
+                <a href="mailto:plumberindore@gmail.com" className="flex items-center gap-2 hover:text-amber-400 transition-colors">
                   <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>support@zaprepair.in</span>
+                  <span>plumberindore@gmail.com</span>
                 </a>
               </li>
               <li className="flex items-start gap-2 pt-1">
@@ -102,7 +102,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {new Date().getFullYear()} ZapRepair Tech Services Pvt Ltd (Indore, MP). All rights reserved.</p>
+          <p>© {new Date().getFullYear()} PlumberIndore Tech Services (Indore, MP). All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">
               Privacy Policy

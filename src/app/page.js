@@ -3,7 +3,6 @@
 import React from 'react';
 import Hero from '../components/home/Hero';
 import TrustBar from '../components/home/TrustBar';
-import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import ServiceTabs from '../components/home/ServiceTabs';
 import PopularRepairs from '../components/home/PopularRepairs';
 import HowItWorks from '../components/home/HowItWorks';
@@ -11,6 +10,7 @@ import WhyChooseUs from '../components/home/WhyChooseUs';
 import TechnicianTrust from '../components/home/TechnicianTrust';
 import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
+import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import ReviewsSection from '../components/home/ReviewsSection';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
 import FinalCTA from '../components/home/FinalCTA';
@@ -24,31 +24,31 @@ export default function HomePage() {
       {/* 2. Trust Bar */}
       <TrustBar />
 
-      {/* 3. Service Areas in Indore (Moved Upside for Top Visibility) */}
-      <IndoreServiceAreas />
-
-      {/* 4. Services (Appliance, Electrician, Plumber) */}
+      {/* 3. Services (Appliance, Electrician, Plumber) */}
       <ServiceTabs />
 
-      {/* 5. Popular Repairs */}
+      {/* 4. Popular Repairs */}
       <PopularRepairs />
 
-      {/* 6. How It Works */}
+      {/* 5. How It Works */}
       <HowItWorks />
 
-      {/* 7. Why Choose ZapRepair */}
+      {/* 6. Why Choose PlumberIndore */}
       <WhyChooseUs />
 
-      {/* 8. Technician Trust Section */}
+      {/* 7. Technician Trust Section */}
       <TechnicianTrust />
 
-      {/* 9. Service Tracking UI */}
+      {/* 8. Service Tracking UI */}
       <TrackingPreview />
 
-      {/* 10. Transparent Pricing */}
+      {/* 9. Transparent Pricing */}
       <PricingSection />
 
-      {/* 11. Customer Reviews */}
+      {/* 10. Service Areas in Indore (Placed right before ReviewsSection as requested!) */}
+      <IndoreServiceAreas />
+
+      {/* 11. Customer Reviews ("What Homeowners Say About PlumberIndore") */}
       <ReviewsSection />
 
       {/* 12. Service Location / Pincode Checker */}

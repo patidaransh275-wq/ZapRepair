@@ -40,7 +40,7 @@ export async function POST(request) {
 
     // Set httpOnly session cookie
     const cookieStore = cookies();
-    cookieStore.set('zaprepair_session', JSON.stringify(userSession), {
+    cookieStore.set('plumberindore_session', JSON.stringify(userSession), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

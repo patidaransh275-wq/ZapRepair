@@ -7,7 +7,7 @@ const BookingContext = createContext();
 
 const INITIAL_DEMO_BOOKINGS = [
   {
-    id: 'ZAP-84920',
+    id: 'IND-84920',
     serviceId: 'ac-repair',
     serviceName: 'AC Power Foam Service',
     packageTitle: 'Power Foam Jet Service',
@@ -19,18 +19,17 @@ const INITIAL_DEMO_BOOKINGS = [
     status: 'Technician En Route',
     statusStep: 3,
     technician: {
-      name: 'Ramesh Kumar (Indore Pro)',
-      phone: '+91 98765 43210',
+      title: 'Verified Doorstep Expert',
       rating: 4.9,
       repairsCount: 480,
       photo: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'Hero Splendor (MP 09 CW 4920)',
+      vehicle: 'Service Vehicle (MP 09 CW 4920)',
       eta: '18 Mins'
     },
     createdAt: new Date().toISOString()
   },
   {
-    id: 'ZAP-72109',
+    id: 'IND-72109',
     serviceId: 'washing-machine',
     serviceName: 'Washing Machine Repair',
     packageTitle: 'Deep Descaling & Drum Service',
@@ -42,12 +41,11 @@ const INITIAL_DEMO_BOOKINGS = [
     status: 'Completed',
     statusStep: 5,
     technician: {
-      name: 'Sunil Sharma',
-      phone: '+91 98123 45678',
+      title: 'Certified Service Specialist',
       rating: 4.85,
       repairsCount: 310,
       photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'TVS Jupiter (MP 09 EV 8812)',
+      vehicle: 'Service Vehicle (MP 09 EV 8812)',
       eta: 'Completed'
     },
     createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
@@ -74,7 +72,7 @@ export function BookingProvider({ children }) {
   const [userProfile, setUserProfile] = useState({
     name: 'Ansh Patidar',
     phone: '+91 98765 12345',
-    email: 'ansh@zaprepair.in',
+    email: 'plumberindore@gmail.com',
     addresses: [
       { id: 'addr-1', tag: 'Home', fullAddress: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP - 452010' },
       { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
@@ -114,15 +112,15 @@ export function BookingProvider({ children }) {
   // Load bookings from localStorage
   useEffect(() => {
     try {
-      const savedBookings = localStorage.getItem('zaprepair_bookings');
+      const savedBookings = localStorage.getItem('plumberindore_bookings');
       if (savedBookings) {
         setUserBookings(JSON.parse(savedBookings));
       } else {
         setUserBookings(INITIAL_DEMO_BOOKINGS);
-        localStorage.setItem('zaprepair_bookings', JSON.stringify(INITIAL_DEMO_BOOKINGS));
+        localStorage.setItem('plumberindore_bookings', JSON.stringify(INITIAL_DEMO_BOOKINGS));
       }
 
-      const savedPincode = localStorage.getItem('zaprepair_pincode');
+      const savedPincode = localStorage.getItem('plumberindore_pincode');
       if (savedPincode) setUserPincodeState(savedPincode);
     } catch (e) {
       setUserBookings(INITIAL_DEMO_BOOKINGS);
@@ -211,7 +209,7 @@ export function BookingProvider({ children }) {
   const setUserPincode = (code) => {
     setUserPincodeState(code);
     try {
-      localStorage.setItem('zaprepair_pincode', code);
+      localStorage.setItem('plumberindore_pincode', code);
     } catch (e) {}
   };
 
@@ -237,7 +235,7 @@ export function BookingProvider({ children }) {
   };
 
   const addBooking = (bookingData) => {
-    const randomId = `ZAP-${Math.floor(10000 + Math.random() * 90000)}`;
+    const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
     const newBooking = {
       id: randomId,
       serviceId: bookingData.serviceId,
@@ -253,12 +251,12 @@ export function BookingProvider({ children }) {
       status: 'Technician Assigned',
       statusStep: 2,
       technician: {
-        name: 'Vikram Singh (Verified Indore Pro)',
+        title: 'Verified Doorstep Technician',
         phone: '+91 98765 09876',
         rating: 4.95,
         repairsCount: 520,
         photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=200&q=80',
-        vehicle: 'Honda Activa (MP 09 CZ 1122)',
+        vehicle: 'Service Vehicle (MP 09 CZ 1122)',
         eta: '30 Mins'
       },
       createdAt: new Date().toISOString()
@@ -267,7 +265,7 @@ export function BookingProvider({ children }) {
     const updated = [newBooking, ...userBookings];
     setUserBookings(updated);
     try {
-      localStorage.setItem('zaprepair_bookings', JSON.stringify(updated));
+      localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
 
     return newBooking;
@@ -282,7 +280,7 @@ export function BookingProvider({ children }) {
     });
     setUserBookings(updated);
     try {
-      localStorage.setItem('zaprepair_bookings', JSON.stringify(updated));
+      localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
   };
 

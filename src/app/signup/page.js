@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { User, Phone, Mail, Lock, Zap, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
+import { User, Phone, Mail, Lock, Wrench, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 function SignupContent() {
@@ -50,10 +50,10 @@ function SignupContent() {
         {/* Header */}
         <div className="bg-slate-900 text-white p-6 sm:p-8 text-center space-y-2">
           <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center mx-auto shadow-lg shadow-amber-500/20 font-bold mb-3">
-            <Zap className="w-7 h-7 fill-slate-950" />
+            <Wrench className="w-7 h-7 stroke-[2.5]" />
           </div>
-          <h1 className="text-2xl font-extrabold font-heading text-white">Create ZapRepair Account</h1>
-          <p className="text-xs text-amber-400 font-semibold">Doorstep Appliance Repair in Indore</p>
+          <h1 className="text-2xl font-extrabold font-heading text-white">Create PlumberIndore Account</h1>
+          <p className="text-xs text-amber-400 font-semibold">Doorstep Plumbing & Appliance Repair in Indore</p>
         </div>
 
         <div className="p-6 space-y-6">

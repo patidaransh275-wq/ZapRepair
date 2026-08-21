@@ -1,82 +1,73 @@
 'use client';
 
 import React from 'react';
-import { Tag, CheckCircle2, ShieldCheck, HelpCircle } from 'lucide-react';
+import { DollarSign, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function PricingSection() {
   const { openBookingModal } = useBooking();
 
+  const pricingPolicies = [
+    { title: 'Free Inspection With Repair', desc: 'The ₹299 inspection fee is completely waived when you proceed with the repair.' },
+    { title: 'Upfront Fixed Rate Card', desc: 'Our technician presents a fixed price quote before starting any work.' },
+    { title: 'No Hidden Charges', desc: 'No surcharges, travelling fees, or unexpected bill add-ons.' },
+    { title: '30-Day Money Back Warranty', desc: 'Coverage on all replaced spare parts and workmanship.' }
+  ];
+
   return (
     <section className="py-16 md:py-24 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
-            Zero Hidden Surprises
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading mt-3">
-            Transparent Pricing Policy
-          </h2>
-          <p className="text-sm text-slate-600 mt-2">
-            No unexpected charges. Know exactly what you pay before work starts.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
           
-          {/* Card 1 */}
-          <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-soft-sm flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
-                01
-              </div>
-              <h3 className="text-xl font-bold font-heading text-slate-900">Doorstep Inspection</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Nominal ₹199 inspection fee to cover technician travel and thorough fault diagnosis.
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+            
+            <div className="lg:col-span-7 space-y-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 inline-block">
+                Transparent Pricing
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-heading leading-tight">
+                Fair, Honest & Upfront Pricing Card
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
+                At PlumberIndore, we believe in 100% pricing transparency. You get a clear, itemized rate card before any job starts.
               </p>
-              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Inspection Fee WAIVED 100% when repair is accepted!</span>
-              </div>
-            </div>
-          </div>
 
-          {/* Card 2 */}
-          <div className="bg-slate-900 text-white rounded-2xl p-8 border border-slate-800 shadow-xl flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase">
-              Standard Policy
-            </div>
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
-                02
-              </div>
-              <h3 className="text-xl font-bold font-heading text-white">Fixed Rate Card</h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Standard rate cards for labor and spare parts. Technician shares the exact total estimate before starting any work.
-              </p>
-              <div className="p-3 bg-slate-800 border border-slate-700 text-amber-400 rounded-xl text-xs font-bold flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>30-Day Free Re-repair Warranty</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                {pricingPolicies.map((p, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">{p.title}</h4>
+                      <p className="text-[11px] text-slate-400 leading-relaxed">{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Card 3 */}
-          <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-soft-sm flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
-                03
+            <div className="lg:col-span-5 bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 space-y-4 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xl mx-auto">
+                <DollarSign className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold font-heading text-slate-900">Genuine Parts Guarantee</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                All replacement components are 100% original factory sealed parts with manufacturer warranty invoice.
+              <h3 className="text-xl font-bold text-white font-heading">Doorstep Inspection</h3>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-4xl font-extrabold text-amber-400 font-heading">₹299</span>
+                <span className="text-xs text-slate-400 line-through">₹499</span>
+              </div>
+              <p className="text-xs text-slate-300">
+                Fee is <strong className="text-amber-400">100% waived</strong> when repair is performed!
               </p>
-              <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs font-bold flex items-center gap-2">
-                <Tag className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Original Part MRP Billing Only</span>
-              </div>
+
+              <button
+                onClick={() => openBookingModal('ac-repair')}
+                className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                <span>Book Doorstep Inspection</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
+
           </div>
 
         </div>

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('zaprepair_session');
+    const sessionCookie = cookieStore.get('plumberindore_session');
 
     if (!sessionCookie || !sessionCookie.value) {
       return NextResponse.json({ isAuthenticated: false, user: null });

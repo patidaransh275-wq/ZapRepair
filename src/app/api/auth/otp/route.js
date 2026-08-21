@@ -91,7 +91,7 @@ export async function POST(request) {
         id: `usr_${cleanPhone}`,
         name: name || 'Indore Customer',
         phone: `+91 ${cleanPhone}`,
-        email: `user_${cleanPhone.slice(-4)}@zaprepair.in`,
+        email: `user_${cleanPhone.slice(-4)}@plumberindore.in`,
         role: 'user',
         authMethod: 'phone',
         authenticatedAt: new Date().toISOString()
@@ -99,7 +99,7 @@ export async function POST(request) {
 
       // Set httpOnly session cookie
       const cookieStore = cookies();
-      cookieStore.set('zaprepair_session', JSON.stringify(userSession), {
+      cookieStore.set('plumberindore_session', JSON.stringify(userSession), {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',

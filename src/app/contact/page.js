@@ -1,180 +1,147 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, MessageSquare, Clock, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, Clock, Send, CheckCircle2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: ''
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', phone: '', email: '', message: '' });
-    }, 4000);
+    setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
-      
-      {/* Banner */}
-      <div className="bg-slate-900 text-white py-16 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3.5 py-1 rounded-full border border-slate-700">
-            Indore Support Center
+    <div className="py-12 md:py-20 bg-slate-50 min-h-screen">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* Header */}
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
+            Helpline Support
           </span>
-          <h1 className="text-4xl font-extrabold font-heading">
-            Contact ZapRepair Indore
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
+            Contact PlumberIndore
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300">
-            Have questions about doorstep service in Indore, active bookings, or invoices? We are here 24/7.
+          <p className="text-sm text-slate-600">
+            Have a question or need assistance with your booking in Indore? Reach out to our 24/7 customer support desk.
           </p>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* Contact Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          {/* Left Column: Direct Helpline Cards */}
-          <div className="lg:col-span-5 space-y-6">
-            
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-4">
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Indore Helplines</h3>
-              
-              <a
-                href="tel:+919876543210"
-                className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-amber-400 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">+91 98765 43210</div>
-                  <div className="text-[11px] text-slate-500">24/7 Indore Customer Helpline</div>
-                </div>
-              </a>
-
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200 hover:border-emerald-400 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-emerald-900">WhatsApp Support</div>
-                  <div className="text-[11px] text-emerald-700">Chat directly with support desk</div>
-                </div>
-              </a>
-
-              <a
-                href="mailto:support@zaprepair.in"
-                className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-amber-400 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">support@zaprepair.in</div>
-                  <div className="text-[11px] text-slate-500">Email Response within 2 hours</div>
-                </div>
-              </a>
-
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-3 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto font-bold">
+              <Phone className="w-6 h-6" />
             </div>
+            <h3 className="font-bold text-slate-900 text-base font-heading">Phone Helpline</h3>
+            <p className="text-xs text-slate-500">Instant Booking & Status Updates</p>
+            <a href="tel:+919876543210" className="inline-block text-sm font-extrabold text-amber-600 hover:underline pt-1">
+              +91 98765 43210
+            </a>
+          </div>
 
-            {/* Office Address */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Indore Operations Hub</h3>
-              <div className="flex items-start gap-2 text-xs text-slate-600">
-                <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>ZapRepair Tech Services Pvt Ltd, 304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-3 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto font-bold">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-900 text-base font-heading">WhatsApp Support</h3>
+            <p className="text-xs text-slate-500">Quick Chat & Location Sharing</p>
+            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-extrabold text-emerald-600 hover:underline pt-1">
+              Chat on WhatsApp
+            </a>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft-sm space-y-3 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto font-bold">
+              <Mail className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-900 text-base font-heading">Email Us</h3>
+            <p className="text-xs text-slate-500">For Business & Customer Inquiries</p>
+            <a href="mailto:plumberindore@gmail.com" className="inline-block text-xs font-extrabold text-slate-900 hover:underline pt-1">
+              plumberindore@gmail.com
+            </a>
+          </div>
+
+        </div>
+
+        {/* Office Location & Contact Form */}
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-soft-md grid grid-cols-1 md:grid-cols-2 gap-10">
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold text-slate-900 font-heading">Indore Support Hub</h3>
+            <div className="space-y-4 text-xs text-slate-600">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <span>PlumberIndore Tech Services, Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <span>Operating Hours: Monday – Sunday, 8:00 AM – 9:00 PM</span>
               </div>
             </div>
 
-          </div>
-
-          {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-soft-sm space-y-6">
-              <h3 className="text-xl font-bold text-slate-900 font-heading">Send Us a Message</h3>
-
-              {submitted ? (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  <span>Thank you! Your message has been received. Our Indore team will contact you shortly.</span>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      placeholder="Ansh Patidar"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+91 98765 43210"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      placeholder="ansh@example.com"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Message / Inquiry</label>
-                    <textarea
-                      rows={4}
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      placeholder="How can we help you in Indore?"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-amber-500"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs shadow-md"
-                  >
-                    Submit Inquiry
-                  </button>
-                </form>
-              )}
-
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-700 font-semibold space-y-1">
+              <div className="text-slate-900 font-bold">Doorstep Service Coverage:</div>
+              <div>Vijay Nagar, Palasia, Bhanwarkuan, Bengali Square, Rau, Rajendra Nagar, Annapurna, Sudama Nagar, Nipania, Super Corridor, MR-10, Bhawrasla</div>
             </div>
           </div>
 
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-900 font-heading">Send a Message</h3>
+              
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ansh Patidar"
+                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Mobile Number</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="+91 98765 12345"
+                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Message / Service Query</label>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="How can we help you with your appliance repair or plumbing in Indore?"
+                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+
+              {submitted && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Message sent! Our Indore support team will call you back shortly.</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4 text-amber-400" />
+                <span>Submit Message</span>
+              </button>
+            </form>
+          </div>
+
         </div>
+
       </div>
     </div>
   );

@@ -1,44 +1,33 @@
+import React from 'react';
 import './globals.css';
-import { Manrope, Inter } from 'next/font/google';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MobileNav from '../components/layout/MobileNav';
-import { BookingProvider } from '../context/BookingContext';
 import BookingModal from '../components/booking/BookingModal';
 import TrackingModal from '../components/booking/TrackingModal';
-
-const manrope = Manrope({
-  subsets: ['latin'],
-  variable: '--font-manrope',
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
+import { BookingProvider } from '../context/BookingContext';
 
 export const metadata = {
-  title: 'ZapRepair | Trusted Home Appliance Repair & Doorstep Services',
-  description: 'Expert doorstep AC repair, refrigerator, washing machine, RO purifier, electrician & plumber services. Verified technicians, transparent pricing, 45-min arrival.',
-  keywords: 'ZapRepair, appliance repair, AC repair doorstep, refrigerator repair, washing machine service, electrician, plumber, home services India',
+  title: 'PlumberIndore | Trusted Doorstep Plumbing & Appliance Repair in Indore',
+  description: 'Indore premier doorstep plumbing, AC repair, washing machine, refrigerator, RO purifier & electrician services across Indore. Verified technicians in 45 mins.',
+  keywords: 'PlumberIndore, plumber indore, appliance repair indore, AC repair doorstep indore, refrigerator repair, washing machine service, electrician indore',
   openGraph: {
-    title: 'ZapRepair | Doorstep Home Appliance Repair',
-    description: '45-minute doorstep repair service with verified technicians and 30-day warranty.',
-    url: 'https://zaprepair.in',
-    siteName: 'ZapRepair',
+    title: 'PlumberIndore | Doorstep Plumbing & Appliance Repair in Indore',
+    description: '45-Minute doorstep plumbing, electrical, and appliance repair services in Vijay Nagar, Palasia, Bhanwarkuan, Rau, and all Indore areas.',
+    url: 'https://plumberindore.in',
+    siteName: 'PlumberIndore',
+    locale: 'en_IN',
     type: 'website',
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${inter.variable}`}>
-      <body className="bg-slate-50 text-slate-900 font-body antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
+    <html lang="en" className="scroll-smooth">
+      <body className="font-sans antialiased text-slate-900 bg-slate-50 min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
         <BookingProvider>
           <Header />
-          <main className="flex-1">
+          <main className="flex-grow">
             {children}
           </main>
           <Footer />

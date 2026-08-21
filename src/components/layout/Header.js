@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Zap, Phone, Menu, X, ShieldCheck, User, LogOut, ChevronDown } from 'lucide-react';
+import { Wrench, Phone, Menu, X, ShieldCheck, User, LogOut, ChevronDown } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function Header() {
@@ -44,17 +44,17 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           
-          {/* Brand Logo */}
+          {/* Brand Logo - PlumberIndore */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-300 flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-200">
-              <Zap className="w-6 h-6 text-slate-950 fill-slate-950" />
+              <Wrench className="w-6 h-6 text-slate-950 stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-extrabold tracking-tight text-white font-heading">
-                Zap<span className="text-amber-400">Repair</span>
+                Plumber<span className="text-amber-400">Indore</span>
               </span>
               <span className="text-[10px] font-medium tracking-wider text-slate-400 uppercase -mt-1">
-                Indore Experts
+                Doorstep Experts
               </span>
             </div>
           </Link>
