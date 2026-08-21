@@ -3,6 +3,7 @@
 import React from 'react';
 import Hero from '../components/home/Hero';
 import TrustBar from '../components/home/TrustBar';
+import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import ServiceTabs from '../components/home/ServiceTabs';
 import PopularRepairs from '../components/home/PopularRepairs';
 import HowItWorks from '../components/home/HowItWorks';
@@ -11,18 +12,20 @@ import TechnicianTrust from '../components/home/TechnicianTrust';
 import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
 import ReviewsSection from '../components/home/ReviewsSection';
-import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
 import FinalCTA from '../components/home/FinalCTA';
 
 export default function HomePage() {
   return (
     <div className="space-y-0">
-      {/* 2. Hero */}
+      {/* 1. Hero */}
       <Hero />
 
-      {/* 3. Trust Bar */}
+      {/* 2. Trust Bar */}
       <TrustBar />
+
+      {/* 3. Service Areas in Indore (Moved Upside for Top Visibility) */}
+      <IndoreServiceAreas />
 
       {/* 4. Services (Appliance, Electrician, Plumber) */}
       <ServiceTabs />
@@ -39,22 +42,19 @@ export default function HomePage() {
       {/* 8. Technician Trust Section */}
       <TechnicianTrust />
 
-      {/* 9. Service Areas in Indore */}
-      <IndoreServiceAreas />
-
-      {/* 10. Service Tracking UI */}
+      {/* 9. Service Tracking UI */}
       <TrackingPreview />
 
-      {/* 11. Transparent Pricing */}
+      {/* 10. Transparent Pricing */}
       <PricingSection />
 
-      {/* 12. Customer Reviews */}
+      {/* 11. Customer Reviews */}
       <ReviewsSection />
 
-      {/* 13. Service Location / Pincode Checker */}
+      {/* 12. Service Location / Pincode Checker */}
       <PincodeCheckerSection />
 
-      {/* 14. Final CTA */}
+      {/* 13. Final CTA */}
       <FinalCTA />
     </div>
   );
