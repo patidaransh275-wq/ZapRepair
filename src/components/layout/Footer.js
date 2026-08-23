@@ -2,117 +2,114 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Wrench, Phone, Mail, MapPin, ShieldCheck, Heart, MessageSquare } from 'lucide-react';
+import { Wrench, Phone, Mail, MapPin, ShieldCheck, Heart, ExternalLink } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 
 export default function Footer() {
+  const currentYear = 2026;
+
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-900 pt-16 pb-24 md:pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-900">
+    <footer className="bg-slate-950 text-slate-400 pt-16 pb-24 md:pb-12 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* Top Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
-          {/* Brand Info Column */}
+          {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center shadow-md">
-                <Wrench className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+            <Link href="/" className="flex items-center gap-2 group inline-block">
+              <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center font-bold text-slate-950">
+                <Wrench className="w-5 h-5 stroke-[2.5]" />
               </div>
-              <span className="text-2xl font-extrabold tracking-tight text-white font-heading">
+              <span className="text-xl font-extrabold text-white font-heading">
                 Plumber<span className="text-amber-400">Indore</span>
               </span>
             </Link>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              PlumberIndore is Indore’s premier doorstep plumbing, appliance repair & electrical service platform. Verified technicians, transparent pricing, and fast 45-minute service across Indore, Madhya Pradesh.
+
+            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+              PlumberIndore is Indore’s premier doorstep plumbing and home appliance repair network. Certified HVAC engineers and plumbing specialists at your doorstep in 45 minutes.
             </p>
-            <div className="flex items-center gap-3 pt-2">
-              <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-3 py-1.5 rounded-lg">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Verified Technicians</span>
+
+            <div className="space-y-2 text-xs text-slate-300 pt-2">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
               </div>
-              <div className="text-xs text-amber-400 bg-amber-950/50 border border-amber-800/40 px-3 py-1.5 rounded-lg">
-                ★ 4.9 Rating in Indore
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
+                <a href="tel:+917314928800" className="hover:text-amber-400 font-bold">+91 731 492 8800 / +91 91114 92880</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
+                <a href="mailto:support@plumberindore.in" className="hover:text-amber-400 font-semibold">support@plumberindore.in / plumberindore@gmail.com</a>
               </div>
             </div>
           </div>
 
-          {/* Core Services Column */}
+          {/* Col 2: Services List */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider font-heading">
-              Doorstep Services
-            </h3>
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
+              Our Services
+            </h4>
             <ul className="space-y-2 text-xs">
-              {SERVICES_DATA.slice(0, 7).map((s) => (
-                <li key={s.id}>
-                  <Link href={`/services/${s.slug}`} className="hover:text-amber-400 transition-colors">
-                    {s.name}
+              {SERVICES_DATA.slice(0, 6).map((srv) => (
+                <li key={srv.id}>
+                  <Link href={`/services/${srv.slug}`} className="hover:text-amber-400 transition-colors">
+                    {srv.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* More Services Column */}
+          {/* Col 3: Service Areas */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider font-heading">
-              More Services
-            </h3>
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
+              Indore Hubs
+            </h4>
             <ul className="space-y-2 text-xs">
-              {SERVICES_DATA.slice(7).map((s) => (
-                <li key={s.id}>
-                  <Link href={`/services/${s.slug}`} className="hover:text-amber-400 transition-colors">
-                    {s.name}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/service-areas/vijay-nagar" className="hover:text-amber-400">Vijay Nagar (Apollo Tower)</Link></li>
+              <li><Link href="/service-areas/palasia" className="hover:text-amber-400">Palasia (Industry House)</Link></li>
+              <li><Link href="/service-areas/bhanwarkuan" className="hover:text-amber-400">Bhanwarkuan (DAVV)</Link></li>
+              <li><Link href="/service-areas/rau" className="hover:text-amber-400">Rau Bypass</Link></li>
+              <li><Link href="/service-areas/sudama-nagar" className="hover:text-amber-400">Sudama Nagar</Link></li>
             </ul>
           </div>
 
-          {/* Contact & Support */}
+          {/* Col 4: Trust & Google Badge */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider font-heading">
-              Indore Support Desk
-            </h3>
-            <ul className="space-y-3 text-xs">
-              <li>
-                <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-amber-400 transition-colors text-slate-300">
-                  <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>+91 98765 43210</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-emerald-400 transition-colors text-slate-300">
-                  <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>WhatsApp Chat Support</span>
-                </a>
-              </li>
-              <li>
-                <a href="mailto:plumberindore@gmail.com" className="flex items-center gap-2 hover:text-amber-400 transition-colors">
-                  <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>plumberindore@gmail.com</span>
-                </a>
-              </li>
-              <li className="flex items-start gap-2 pt-1">
-                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>Vijay Nagar, Palasia, Bhanwarkuan, Rau & All Indore Sectors, MP</span>
-              </li>
-            </ul>
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
+              Verified Trust
+            </h4>
+            <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
+              <div className="text-amber-400 font-bold flex items-center gap-1">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>Google Score: 4.9 ★</span>
+              </div>
+              <p className="text-[11px] text-slate-400">480+ Verified Customer Reviews across Indore.</p>
+              <a
+                href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-amber-400 font-bold text-[11px] hover:underline pt-1"
+              >
+                <span>View Google Maps Pin</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {new Date().getFullYear()} PlumberIndore Tech Services (Indore, MP). All rights reserved.</p>
+        {/* Bottom Line */}
+        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <div>
+            © {currentYear} PlumberIndore Tech Services. All Rights Reserved.
+          </div>
+
           <div className="flex items-center gap-6">
-            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-and-conditions" className="hover:text-amber-400 transition-colors">
-              Terms & Conditions
-            </Link>
-            <Link href="/contact" className="hover:text-amber-400 transition-colors">
-              Help Center
-            </Link>
+            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="hover:text-amber-400 transition-colors">Terms of Service</Link>
           </div>
         </div>
 

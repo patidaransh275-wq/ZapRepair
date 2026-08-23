@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Wrench, Phone, Menu, X, Search, Calculator, User, LogOut, ChevronDown } from 'lucide-react';
+import { Wrench, Phone, Menu, X, Search, Calculator, User, LogOut, ChevronDown, Languages } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import { useLanguage } from '../../context/LanguageContext';
 import PushNotificationCenter from './PushNotificationCenter';
 import CostCalculatorModal from '../booking/CostCalculatorModal';
 
@@ -18,6 +19,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { openBookingModal, isAuthenticated, currentUser, logout } = useBooking();
+  const { lang, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,11 +41,11 @@ export default function Header() {
   };
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Services', href: '/services' },
-    { name: 'How It Works', href: '/#how-it-works' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    { name: t.navHome, href: '/' },
+    { name: t.navServices, href: '/services' },
+    { name: t.navHowItWorks, href: '/#how-it-works' },
+    { name: t.navAbout, href: '/about' },
+    { name: t.navContact, href: '/contact' },
   ];
 
   return (
@@ -65,10 +67,10 @@ export default function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-extrabold tracking-tight text-white font-heading">
-                  Plumber<span className="text-amber-400">Indore</span>
+                  {lang === 'hi' ? 'प्लम्बर' : 'Plumber'}<span className="text-amber-400">{lang === 'hi' ? 'इंदौर' : 'Indore'}</span>
                 </span>
                 <span className="text-[10px] font-medium tracking-wider text-slate-400 uppercase -mt-1">
-                  Doorstep Experts
+                  {t.tagline}
                 </span>
               </div>
             </Link>
@@ -80,7 +82,7 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search AC, Plumber, RO..."
+                placeholder={t.searchPlaceholder}
                 className="w-full pl-9 pr-4 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
               />
             </form>
@@ -108,6 +110,17 @@ export default function Header() {
             {/* Right Action CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
               
+              {/* Language Switcher Toggle (EN | हिंदी) */}
+              <button
+                type="button"
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-extrabold px-3 py-2 rounded-xl border border-slate-700 transition-colors"
+                title="Switch Language"
+              >
+                <Languages className="w-4 h-4" />
+                <span>{lang === 'en' ? 'हिंदी' : 'EN'}</span>
+              </button>
+
               {/* Cost Estimator Calculator Button */}
               <button
                 type="button"
@@ -116,21 +129,21 @@ export default function Header() {
                 title="Calculate Repair Cost"
               >
                 <Calculator className="w-4 h-4" />
-                <span className="hidden xl:inline">Cost Estimator</span>
+                <span className="hidden xl:inline">{t.costEstimator}</span>
               </button>
 
               {/* Push Notification Center Bell */}
               <PushNotificationCenter />
 
               <a
-                href="tel:+919876543210"
-                className="flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-amber-400 px-3 py-2 rounded-lg transition-colors border border-slate-800 hover:border-amber-400/30"
+                href="tel:+917314928800"
+                className="flex items-center gap-2 text-xs font-bold text-slate-200 hover:text-amber-400 px-3 py-2 rounded-lg transition-colors border border-slate-800 hover:border-amber-400/30"
               >
                 <Phone className="w-3.5 h-3.5 text-amber-400" />
-                <span>+91 98765 43210</span>
+                <span>+91 731 492 8800</span>
               </a>
 
-              {/* Auth User State / Sign In Button */}
+              {/* Auth User State */}
               {isAuthenticated ? (
                 <div className="relative">
                   <button
@@ -192,18 +205,18 @@ export default function Header() {
                 onClick={() => openBookingModal('ac-repair')}
                 className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 text-sm font-bold px-5 py-2.5 rounded-xl shadow-md shadow-amber-500/20 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
               >
-                Book Now
+                {t.bookNow}
               </button>
             </div>
 
-            {/* Mobile Menu Hamburger */}
+            {/* Mobile Menu Hamburger & Language Switcher */}
             <div className="flex md:hidden items-center gap-2">
               <button
                 type="button"
-                onClick={() => setIsCostModalOpen(true)}
+                onClick={toggleLanguage}
                 className="bg-slate-800 text-amber-400 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700"
               >
-                Cost
+                {lang === 'en' ? 'हिंदी' : 'EN'}
               </button>
               <button
                 type="button"

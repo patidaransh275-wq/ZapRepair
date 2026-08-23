@@ -19,10 +19,10 @@ export default function ContactPage() {
         {/* Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
-            Helpline Support
+            Official Helpline Desk
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Contact PlumberIndore
+            Contact PlumberIndore Tech Services
           </h1>
           <p className="text-sm text-slate-600">
             Have a question or need assistance with your booking in Indore? Reach out to our customer support desk.
@@ -36,10 +36,10 @@ export default function ContactPage() {
             <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto font-bold">
               <Phone className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base font-heading">Phone Helpline</h3>
+            <h3 className="font-bold text-slate-900 text-base font-heading">Business Helpline</h3>
             <p className="text-xs text-slate-500">Instant Booking & Status Updates</p>
-            <a href="tel:+919876543210" className="inline-block text-sm font-extrabold text-amber-600 hover:underline pt-1">
-              +91 98765 43210
+            <a href="tel:+917314928800" className="inline-block text-sm font-extrabold text-amber-600 hover:underline pt-1">
+              +91 731 492 8800
             </a>
           </div>
 
@@ -47,10 +47,10 @@ export default function ContactPage() {
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto font-bold">
               <MessageSquare className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base font-heading">WhatsApp Support</h3>
+            <h3 className="font-bold text-slate-900 text-base font-heading">WhatsApp Helpline</h3>
             <p className="text-xs text-slate-500">Quick Chat & Location Sharing</p>
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-extrabold text-emerald-600 hover:underline pt-1">
-              Chat on WhatsApp
+            <a href="https://wa.me/917314928800" target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-extrabold text-emerald-600 hover:underline pt-1">
+              +91 91114 92880
             </a>
           </div>
 
@@ -58,20 +58,20 @@ export default function ContactPage() {
             <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto font-bold">
               <Mail className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base font-heading">Email Us</h3>
+            <h3 className="font-bold text-slate-900 text-base font-heading">Corporate Email</h3>
             <p className="text-xs text-slate-500">For Business & Customer Inquiries</p>
-            <a href="mailto:plumberindore@gmail.com" className="inline-block text-xs font-extrabold text-slate-900 hover:underline pt-1">
-              plumberindore@gmail.com
+            <a href="mailto:support@plumberindore.in" className="inline-block text-xs font-extrabold text-slate-900 hover:underline pt-1">
+              support@plumberindore.in
             </a>
           </div>
 
         </div>
 
-        {/* Embedded Interactive Google Map Block */}
+        {/* Embedded Interactive Google Map Block (Apollo Tower Pin) */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft-md space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Interactive Indore Map Hub</h3>
+              <h3 className="text-lg font-bold text-slate-900 font-heading">Official Apollo Tower Vijay Nagar Map Pin</h3>
               <p className="text-xs text-slate-500">304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</p>
             </div>
             <a
@@ -88,7 +88,7 @@ export default function ContactPage() {
           <div className="w-full h-72 rounded-2xl overflow-hidden border border-slate-200">
             <iframe
               title="Indore Hub Directions"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117763.55160867823!2d75.81156828551465!3d22.724109724128526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fcad1b410ddb%3A0x96ec4da356240f4!2sIndore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.528419263921!2d75.89151631502447!3d22.7533319850901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af40340639%3A0xe54388e3adca3633!2sApollo%20Tower%2C%20Vijay%20Nagar%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               className="w-full h-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -137,7 +137,7 @@ export default function ContactPage() {
                 <input
                   type="tel"
                   required
-                  placeholder="+91 98765 12345"
+                  placeholder="+91 731 492 8800"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 />
               </div>

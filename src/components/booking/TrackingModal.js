@@ -107,7 +107,7 @@ export default function TrackingModal() {
                 </button>
 
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917314928800"
                   className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5"
                 >
                   <Phone className="w-3.5 h-3.5 text-amber-400" />

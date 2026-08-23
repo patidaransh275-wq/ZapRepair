@@ -37,14 +37,14 @@ export default function IndoreServiceAreas() {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* LEFT SIDE: Interactive Embedded Google Map of Indore Coverage Hub */}
+          {/* LEFT SIDE: Interactive Embedded Specific Google Map Pin (Apollo Tower, Vijay Nagar, Indore) */}
           <div className="lg:col-span-5 w-full">
             <div className="relative w-full h-[380px] sm:h-[430px] bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col justify-between">
               
-              {/* Embedded Interactive Google Map Iframe */}
+              {/* Specific Google Maps Pin Iframe for Apollo Tower */}
               <iframe
-                title="PlumberIndore Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117763.55160867823!2d75.81156828551465!3d22.724109724128526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fcad1b410ddb%3A0x96ec4da356240f4!2sIndore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                title="PlumberIndore Apollo Tower Pin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.528419263921!2d75.89151631502447!3d22.7533319850901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af40340639%3A0xe54388e3adca3633!2sApollo%20Tower%2C%20Vijay%20Nagar%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -53,14 +53,14 @@ export default function IndoreServiceAreas() {
               {/* Floating Map Overlay Label */}
               <div className="absolute top-4 left-4 z-10 bg-slate-950/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700 text-xs font-bold text-amber-400 flex items-center gap-1.5 shadow-lg">
                 <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Indore Hub Map</span>
+                <span>Apollo Tower Hub Pin</span>
               </div>
 
               {/* Bottom Interactive Google Maps Button Overlay */}
               <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-[11px] text-slate-300 bg-slate-950/90 backdrop-blur-md p-3 rounded-xl border border-slate-800 shadow-lg">
                 <div className="flex flex-col">
-                  <span className="font-bold text-white">Apollo Tower, Vijay Nagar</span>
-                  <span className="text-emerald-400 font-extrabold">100% Indore Covered</span>
+                  <span className="font-bold text-white">304 Apollo Tower, Vijay Nagar</span>
+                  <span className="text-emerald-400 font-extrabold">Pincode: 452010 (Indore)</span>
                 </div>
                 <a
                   href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
@@ -115,7 +115,7 @@ export default function IndoreServiceAreas() {
 
             {/* Note below list */}
             <div className="text-[11px] text-slate-500 italic pt-1">
-              * Service availability may vary by exact pincode within Indore.
+              * Service availability verified across all major Indore pincodes.
             </div>
 
             {/* CTAs */}

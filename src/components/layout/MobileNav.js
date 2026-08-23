@@ -19,10 +19,10 @@ export default function MobileNav() {
 
   return (
     <>
-      {/* Prominent Quick Call & WhatsApp Floating Sticky Bar (Above Bottom Nav) */}
+      {/* Prominent Quick Call & WhatsApp Floating Sticky Bar */}
       <div className="md:hidden fixed bottom-16 left-3 right-3 z-40 flex items-center justify-between gap-2.5 pointer-events-auto">
         <a
-          href="tel:+919876543210"
+          href="tel:+917314928800"
           className="flex-1 bg-slate-900/95 backdrop-blur-md hover:bg-slate-900 text-white font-extrabold py-2.5 px-3 rounded-2xl shadow-xl border border-slate-700/80 flex items-center justify-center gap-2 text-xs transition-all active:scale-95"
         >
           <div className="w-6 h-6 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center shrink-0">
@@ -32,7 +32,7 @@ export default function MobileNav() {
         </a>
 
         <a
-          href="https://wa.me/919876543210"
+          href="https://wa.me/917314928800"
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 bg-emerald-600/95 backdrop-blur-md hover:bg-emerald-600 text-white font-extrabold py-2.5 px-3 rounded-2xl shadow-xl border border-emerald-500/80 flex items-center justify-center gap-2 text-xs transition-all active:scale-95"

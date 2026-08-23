@@ -27,7 +27,6 @@ export default function InAppChatDrawer({ isOpen, onClose, booking }) {
     setMessages((prev) => [...prev, newMsg]);
     setInputMsg('');
 
-    // Simulate instant auto-reply from technician
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -61,7 +60,7 @@ export default function InAppChatDrawer({ isOpen, onClose, booking }) {
 
           <div className="flex items-center gap-2">
             <a
-              href="tel:+919876543210"
+              href="tel:+917314928800"
               className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400"
               title="Call Helpline"
             >

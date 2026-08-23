@@ -77,15 +77,14 @@ export function BookingProvider({ children }) {
   
   const [userProfile, setUserProfile] = useState({
     name: 'Ansh Patidar',
-    phone: '+91 98765 12345',
-    email: 'plumberindore@gmail.com',
+    phone: '+91 731 492 8800',
+    email: 'support@plumberindore.in',
     addresses: [
       { id: 'addr-1', tag: 'Home', fullAddress: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP - 452010' },
       { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
     ]
   });
 
-  // Fetch session on load
   const checkSession = async () => {
     try {
       setAuthLoading(true);
@@ -115,7 +114,6 @@ export function BookingProvider({ children }) {
     checkSession();
   }, []);
 
-  // Load bookings from localStorage
   useEffect(() => {
     try {
       const savedBookings = localStorage.getItem('plumberindore_bookings');
@@ -133,7 +131,6 @@ export function BookingProvider({ children }) {
     }
   }, []);
 
-  // AUTH ACTIONS
   const requestPhoneOtp = async (phone) => {
     const res = await fetch('/api/auth/otp', {
       method: 'POST',
@@ -272,7 +269,7 @@ export function BookingProvider({ children }) {
       confirmationSent: { sms: true, email: true },
       technician: {
         title: 'Verified Doorstep Technician',
-        phone: '+91 98765 09876',
+        phone: '+91 731 492 8800',
         rating: 4.95,
         repairsCount: 520,
         photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=200&q=80',
@@ -347,7 +344,6 @@ export function BookingProvider({ children }) {
         cancelBooking,
         userProfile,
         setUserProfile,
-        // Auth Exports
         isAuthenticated,
         currentUser,
         authLoading,
