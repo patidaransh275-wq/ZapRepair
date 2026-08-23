@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Wrench, ArrowRight, ArrowLeft, Mail, MessageSquare } from 'lucide-react';
+import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Wrench, ArrowRight, ArrowLeft, Mail, MessageSquare, Camera, Upload } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { checkPincodeServiceability } from '../../data/pincodesData';
@@ -14,6 +14,7 @@ export default function BookingModal() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [pincode, setPincode] = useState(userPincode || '452010');
   const [address, setAddress] = useState('Flat 402, Apollo Tower, Vijay Nagar, Indore, MP');
+  const [issuePhotoName, setIssuePhotoName] = useState(null);
   
   // Visual Calendar State
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -54,7 +55,6 @@ export default function BookingModal() {
 
   const currentService = SERVICES_DATA.find(s => s.id === selectedServiceId) || SERVICES_DATA[0];
 
-  // Generate 14 selectable upcoming days for visual calendar
   const calendarDays = Array.from({ length: 14 }).map((_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i + 1);
@@ -85,7 +85,6 @@ export default function BookingModal() {
     if (step < 7) {
       setStep(step + 1);
     } else if (step === 7) {
-      // Create final booking with SMS/Email alerts
       const newB = addBooking({
         serviceId: currentService.id,
         serviceName: currentService.name,
@@ -105,6 +104,12 @@ export default function BookingModal() {
 
   const handleBackStep = () => {
     if (step > 1) setStep(step - 1);
+  };
+
+  const handlePhotoChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setIssuePhotoName(e.target.files[0].name);
+    }
   };
 
   return (
@@ -203,10 +208,10 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 3: Enter Pincode & Address */}
+          {/* STEP 3: Enter Pincode, Address & Photo Upload */}
           {step === 3 && (
             <div className="space-y-4">
-              <h4 className="text-lg font-bold text-slate-900 font-heading">3. Doorstep Location</h4>
+              <h4 className="text-lg font-bold text-slate-900 font-heading">3. Location & Issue Photo Upload</h4>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Indore Pincode</label>
                 <div className="flex gap-2">
@@ -224,20 +229,42 @@ export default function BookingModal() {
                   </div>
                 </div>
               </div>
+              
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Complete Address</label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="House/Flat No., Building Name, Street & Landmark"
                 />
               </div>
+
+              {/* Photo Upload Input for Reporting Issue */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1">
+                  <Camera className="w-4 h-4 text-amber-500" />
+                  <span>Attach Appliance Issue Photo (Optional)</span>
+                </label>
+                <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:border-amber-500 bg-slate-50 transition-colors cursor-pointer relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                  <Upload className="w-6 h-6 text-slate-400 mx-auto mb-1" />
+                  <span className="text-xs font-bold text-slate-700 block">
+                    {issuePhotoName ? `✓ Photo Attached: ${issuePhotoName}` : 'Click to Upload / Take Photo of Error Code / Leak'}
+                  </span>
+                  <span className="text-[10px] text-slate-400">Helps technician bring exact replacement spare part</span>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* STEP 4: VISUAL INTERACTIVE CALENDAR DATE PICKER */}
+          {/* STEP 4: Visual Calendar Date Picker */}
           {step === 4 && (
             <div className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900 font-heading flex items-center gap-2">
@@ -341,6 +368,12 @@ export default function BookingModal() {
                   <span className="font-semibold">Address:</span>
                   <span className="text-slate-900 text-right max-w-xs">{address}</span>
                 </div>
+                {issuePhotoName && (
+                  <div className="flex justify-between text-emerald-700 font-bold">
+                    <span>Issue Photo:</span>
+                    <span>Attached ({issuePhotoName})</span>
+                  </div>
+                )}
               </div>
 
               <div className="border-t border-slate-200 pt-3 space-y-2 text-sm">
@@ -360,12 +393,12 @@ export default function BookingModal() {
 
               <div className="bg-amber-50 border border-amber-200 p-3 rounded-xl flex items-center gap-2 text-xs text-amber-900">
                 <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0" />
-                <span>Pay after service completion via Cash, UPI, or Card to technician.</span>
+                <span>Pay online or after service completion via Cash, UPI, or Card.</span>
               </div>
             </div>
           )}
 
-          {/* STEP 8: Success Screen with SMS & Email Confirmation Alert Badge */}
+          {/* STEP 8: Success Screen */}
           {step === 8 && createdBooking && (
             <div className="text-center py-6 space-y-4">
               <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -376,7 +409,6 @@ export default function BookingModal() {
                 Booking ID: <span className="font-bold text-slate-900">{createdBooking.id}</span>
               </p>
 
-              {/* SIMULATED SMS & EMAIL CONFIRMATION BADGE */}
               <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-left space-y-2 text-xs max-w-md mx-auto">
                 <div className="font-bold text-emerald-900 flex items-center gap-2 border-b border-emerald-200 pb-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -399,9 +431,6 @@ export default function BookingModal() {
                 </div>
                 <div className="text-xs text-emerald-700 font-bold">
                   ✓ Verified Doorstep Expert Assigned & En Route
-                </div>
-                <div className="text-[11px] text-slate-500">
-                  Scheduled: {selectedDate}, {timeSlot}
                 </div>
               </div>
 
