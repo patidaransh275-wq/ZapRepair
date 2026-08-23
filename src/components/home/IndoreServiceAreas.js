@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Wrench, Search, ArrowRight, Check } from 'lucide-react';
+import { MapPin, Wrench, Search, ArrowRight, Check, ExternalLink } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function IndoreServiceAreas() {
@@ -15,16 +15,6 @@ export default function IndoreServiceAreas() {
       openBookingModal('ac-repair');
     }
   };
-
-  // Teardrop pin locations matching the reference image layout
-  const mapTeardropPins = [
-    { name: 'Super Corridor', top: '22%', left: '26%' },
-    { name: 'Vijay Nagar', top: '28%', left: '72%' },
-    { name: 'Palasia', top: '48%', left: '52%' },
-    { name: 'Bengali Square', top: '52%', left: '80%' },
-    { name: 'Bhanwarkuan', top: '68%', left: '46%' },
-    { name: 'Rau', top: '80%', left: '28%' }
-  ];
 
   const indoreBoroughList = [
     "Vijay Nagar",
@@ -47,54 +37,40 @@ export default function IndoreServiceAreas() {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* LEFT SIDE: Stylized City Silhouette Map with Teardrop Pins */}
+          {/* LEFT SIDE: Interactive Embedded Google Map of Indore Coverage Hub */}
           <div className="lg:col-span-5 w-full">
-            <div className="relative w-full h-[380px] sm:h-[430px] bg-gradient-to-b from-slate-800 to-slate-900 rounded-3xl border border-slate-700 shadow-2xl p-6 overflow-hidden flex flex-col justify-between">
+            <div className="relative w-full h-[380px] sm:h-[430px] bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col justify-between">
               
-              {/* Subtle background grid & city silhouette shape */}
-              <div className="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[85%] bg-slate-800/80 rounded-[40%] border-2 border-slate-700/60 blur-[1px] transform -rotate-6 pointer-events-none" />
-              
-              {/* Map Road Network Lines */}
-              <svg className="absolute inset-0 w-full h-full stroke-slate-700/60 stroke-2 pointer-events-none" fill="none">
-                <path d="M 50 350 Q 200 200 350 50" strokeDasharray="6 6" />
-                <path d="M 100 100 Q 220 250 320 380" strokeDasharray="4 4" />
-                <path d="M 30 220 C 180 180, 250 280, 380 200" />
-              </svg>
+              {/* Embedded Interactive Google Map Iframe */}
+              <iframe
+                title="PlumberIndore Location Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117763.55160867823!2d75.81156828551465!3d22.724109724128526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fcad1b410ddb%3A0x96ec4da356240f4!2sIndore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
 
-              {/* Floating Teardrop Pin Badges */}
-              {mapTeardropPins.map((pin, idx) => (
-                <div
-                  key={idx}
-                  style={{ top: pin.top, left: pin.left }}
-                  className="absolute -translate-x-1/2 -translate-y-full z-20 group cursor-pointer"
-                >
-                  <div className="relative flex flex-col items-center">
-                    {/* Floating Label on Hover */}
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-7 bg-slate-950 text-amber-400 text-[10px] font-extrabold px-2 py-0.5 rounded shadow-lg whitespace-nowrap border border-slate-700">
-                      {pin.name}
-                    </span>
-                    
-                    {/* Teardrop Pin Shape */}
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-500 via-emerald-400 to-teal-300 text-slate-950 flex items-center justify-center shadow-lg shadow-emerald-500/30 border-2 border-white transform hover:scale-110 transition-transform">
-                      <Wrench className="w-4 h-4 stroke-[2.5]" />
-                    </div>
-                    {/* Pin pointer tail */}
-                    <div className="w-2 h-2 bg-emerald-500 rotate-45 -mt-1 shadow-sm" />
-                  </div>
-                </div>
-              ))}
-
-              {/* Center Map Tag */}
-              <div className="relative z-10 self-start bg-slate-950/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700 text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              {/* Floating Map Overlay Label */}
+              <div className="absolute top-4 left-4 z-10 bg-slate-950/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700 text-xs font-bold text-amber-400 flex items-center gap-1.5 shadow-lg">
                 <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Indore Coverage Map</span>
+                <span>Indore Hub Map</span>
               </div>
 
-              {/* Bottom Badge */}
-              <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-300 bg-slate-950/90 backdrop-blur-md p-3 rounded-xl border border-slate-800">
-                <span className="font-bold text-white">Doorstep Service Active</span>
-                <span className="text-emerald-400 font-extrabold">100% Indore Covered</span>
+              {/* Bottom Interactive Google Maps Button Overlay */}
+              <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-[11px] text-slate-300 bg-slate-950/90 backdrop-blur-md p-3 rounded-xl border border-slate-800 shadow-lg">
+                <div className="flex flex-col">
+                  <span className="font-bold text-white">Apollo Tower, Vijay Nagar</span>
+                  <span className="text-emerald-400 font-extrabold">100% Indore Covered</span>
+                </div>
+                <a
+                  href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 shrink-0"
+                >
+                  <span>Open Maps</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </div>
 
             </div>
@@ -108,7 +84,6 @@ export default function IndoreServiceAreas() {
                 Doorstep Coverage
               </span>
 
-              {/* Exact Heading Style */}
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 font-heading leading-tight tracking-tight">
                 We serve all the major areas in Indore
               </h2>
