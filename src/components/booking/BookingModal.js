@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Wrench, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, CheckCircle2, MapPin, Calendar, Clock, ShieldCheck, Wrench, ArrowRight, ArrowLeft, Mail, MessageSquare } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { checkPincodeServiceability } from '../../data/pincodesData';
@@ -14,7 +14,14 @@ export default function BookingModal() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [pincode, setPincode] = useState(userPincode || '452010');
   const [address, setAddress] = useState('Flat 402, Apollo Tower, Vijay Nagar, Indore, MP');
-  const [dateOption, setDateOption] = useState('Today');
+  
+  // Visual Calendar State
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  });
+  
   const [timeSlot, setTimeSlot] = useState('2:00 PM - 4:00 PM');
   const [name, setName] = useState(userProfile.name);
   const [phone, setPhone] = useState(userProfile.phone);
@@ -47,6 +54,26 @@ export default function BookingModal() {
 
   const currentService = SERVICES_DATA.find(s => s.id === selectedServiceId) || SERVICES_DATA[0];
 
+  // Generate 14 selectable upcoming days for visual calendar
+  const calendarDays = Array.from({ length: 14 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i + 1);
+    return {
+      fullDate: d.toISOString().split('T')[0],
+      dayName: d.toLocaleDateString('en-US', { weekday: 'short' }),
+      dayNumber: d.getDate(),
+      monthName: d.toLocaleDateString('en-US', { month: 'short' })
+    };
+  });
+
+  const timeSlots = [
+    '9:00 AM - 11:00 AM',
+    '11:00 AM - 1:00 PM',
+    '2:00 PM - 4:00 PM',
+    '4:00 PM - 6:00 PM',
+    '6:00 PM - 8:00 PM'
+  ];
+
   const handleNextStep = () => {
     if (step === 3) {
       const check = checkPincodeServiceability(pincode);
@@ -58,7 +85,7 @@ export default function BookingModal() {
     if (step < 7) {
       setStep(step + 1);
     } else if (step === 7) {
-      // Create final booking
+      // Create final booking with SMS/Email alerts
       const newB = addBooking({
         serviceId: currentService.id,
         serviceName: currentService.name,
@@ -66,27 +93,19 @@ export default function BookingModal() {
         price: selectedPackage?.price || currentService.startingPrice,
         pincode: pincode,
         address: address,
-        date: dateOption,
+        date: selectedDate,
         timeSlot: timeSlot,
         name: name,
         phone: phone
       });
       setCreatedBooking(newB);
-      setStep(8); // Success step
+      setStep(8);
     }
   };
 
   const handleBackStep = () => {
     if (step > 1) setStep(step - 1);
   };
-
-  const timeSlots = [
-    '9:00 AM - 11:00 AM',
-    '11:00 AM - 1:00 PM',
-    '2:00 PM - 4:00 PM',
-    '4:00 PM - 6:00 PM',
-    '6:00 PM - 8:00 PM'
-  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
@@ -218,26 +237,36 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 4: Select Date */}
+          {/* STEP 4: VISUAL INTERACTIVE CALENDAR DATE PICKER */}
           {step === 4 && (
             <div className="space-y-4">
-              <h4 className="text-lg font-bold text-slate-900 font-heading">4. Select Preferred Date</h4>
-              <div className="grid grid-cols-3 gap-3">
-                {['Today', 'Tomorrow', 'Day After'].map((opt) => (
-                  <button
-                    type="button"
-                    key={opt}
-                    onClick={() => setDateOption(opt)}
-                    className={`py-3 px-4 rounded-xl border text-center font-bold text-sm transition-all ${
-                      dateOption === opt
-                        ? 'border-amber-500 bg-amber-50 text-amber-900 ring-2 ring-amber-500/20'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-700'
-                    }`}
-                  >
-                    {opt}
-                  </button>
-                ))}
+              <h4 className="text-lg font-bold text-slate-900 font-heading flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-amber-500" />
+                <span>4. Select Preferred Date (Visual Calendar)</span>
+              </h4>
+              
+              <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 pt-1">
+                {calendarDays.map((day) => {
+                  const isSelected = selectedDate === day.fullDate;
+                  return (
+                    <button
+                      type="button"
+                      key={day.fullDate}
+                      onClick={() => setSelectedDate(day.fullDate)}
+                      className={`p-2.5 rounded-xl border text-center transition-all ${
+                        isSelected
+                          ? 'border-amber-500 bg-amber-50 text-amber-950 font-extrabold ring-2 ring-amber-500/20'
+                          : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-slate-50/50'
+                      }`}
+                    >
+                      <div className="text-[10px] uppercase font-bold text-slate-400">{day.dayName}</div>
+                      <div className="text-base font-extrabold font-heading text-slate-900">{day.dayNumber}</div>
+                      <div className="text-[9px] text-slate-500">{day.monthName}</div>
+                    </button>
+                  );
+                })}
               </div>
+              <p className="text-[11px] text-slate-500">Selected Date: <strong className="text-slate-900 font-bold">{selectedDate}</strong></p>
             </div>
           )}
 
@@ -279,7 +308,7 @@ export default function BookingModal() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Mobile Number (For Technician Updates)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Mobile Number (For SMS & Technician Updates)</label>
                 <input
                   type="tel"
                   value={phone}
@@ -306,7 +335,7 @@ export default function BookingModal() {
                 </div>
                 <div className="flex justify-between text-slate-700">
                   <span className="font-semibold">Scheduled Date & Time:</span>
-                  <span className="text-slate-900">{dateOption}, {timeSlot}</span>
+                  <span className="text-slate-900">{selectedDate}, {timeSlot}</span>
                 </div>
                 <div className="flex justify-between text-slate-700">
                   <span className="font-semibold">Address:</span>
@@ -336,7 +365,7 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 8: Success Screen (Technician Person Name Removed as requested!) */}
+          {/* STEP 8: Success Screen with SMS & Email Confirmation Alert Badge */}
           {step === 8 && createdBooking && (
             <div className="text-center py-6 space-y-4">
               <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -346,18 +375,36 @@ export default function BookingModal() {
               <p className="text-xs text-slate-600">
                 Booking ID: <span className="font-bold text-slate-900">{createdBooking.id}</span>
               </p>
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-left space-y-2 text-xs max-w-md mx-auto">
-                <div className="font-bold text-slate-900 text-sm border-b pb-2 flex items-center gap-2">
+
+              {/* SIMULATED SMS & EMAIL CONFIRMATION BADGE */}
+              <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-left space-y-2 text-xs max-w-md mx-auto">
+                <div className="font-bold text-emerald-900 flex items-center gap-2 border-b border-emerald-200 pb-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Instant Notifications Dispatched</span>
+                </div>
+                <div className="flex items-center gap-2 text-emerald-800 font-semibold pt-1">
+                  <MessageSquare className="w-4 h-4 text-emerald-600" />
+                  <span>SMS confirmation sent to {phone || userProfile.phone}</span>
+                </div>
+                <div className="flex items-center gap-2 text-emerald-800 font-semibold">
+                  <Mail className="w-4 h-4 text-emerald-600" />
+                  <span>Email receipt sent to {userProfile.email}</span>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-left space-y-1.5 text-xs max-w-md mx-auto">
+                <div className="font-bold text-slate-900 flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   <span>Doorstep Technician Status</span>
                 </div>
-                <div className="text-xs text-emerald-700 font-bold pt-1">
+                <div className="text-xs text-emerald-700 font-bold">
                   ✓ Verified Doorstep Expert Assigned & En Route
                 </div>
                 <div className="text-[11px] text-slate-500">
-                  Est. Doorstep Arrival: 30 Mins | Vehicle: Service Van (MP 09)
+                  Scheduled: {selectedDate}, {timeSlot}
                 </div>
               </div>
+
               <div className="pt-2">
                 <button
                   type="button"

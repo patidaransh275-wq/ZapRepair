@@ -14,10 +14,11 @@ const INITIAL_DEMO_BOOKINGS = [
     price: 499,
     pincode: '452010',
     address: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP',
-    date: 'Today',
+    date: '2026-08-25',
     timeSlot: '2:00 PM - 4:00 PM',
     status: 'Technician En Route',
     statusStep: 3,
+    confirmationSent: { sms: true, email: true },
     technician: {
       title: 'Verified Doorstep Expert',
       rating: 4.9,
@@ -36,10 +37,11 @@ const INITIAL_DEMO_BOOKINGS = [
     price: 499,
     pincode: '452001',
     address: 'Flat 201, Industry House, AB Road, Palasia, Indore, MP',
-    date: '15 Aug 2026',
+    date: '2026-08-15',
     timeSlot: '10:00 AM - 12:00 PM',
     status: 'Completed',
     statusStep: 5,
+    confirmationSent: { sms: true, email: true },
     technician: {
       title: 'Certified Service Specialist',
       rating: 4.85,
@@ -60,6 +62,10 @@ export function BookingProvider({ children }) {
   
   const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
   const [trackingBookingId, setTrackingBookingId] = useState(null);
+
+  // Reschedule Modal state
+  const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
+  const [rescheduleBookingId, setRescheduleBookingId] = useState(null);
 
   const [userPincode, setUserPincodeState] = useState('452010');
   const [userBookings, setUserBookings] = useState([]);
@@ -234,6 +240,16 @@ export function BookingProvider({ children }) {
     setTrackingBookingId(null);
   };
 
+  const openRescheduleModal = (bookingId) => {
+    setRescheduleBookingId(bookingId);
+    setIsRescheduleModalOpen(true);
+  };
+
+  const closeRescheduleModal = () => {
+    setIsRescheduleModalOpen(false);
+    setRescheduleBookingId(null);
+  };
+
   const addBooking = (bookingData) => {
     const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
     const newBooking = {
@@ -246,10 +262,14 @@ export function BookingProvider({ children }) {
       address: bookingData.address,
       date: bookingData.date,
       timeSlot: bookingData.timeSlot,
+      isSubscription: bookingData.isSubscription || false,
+      subscriptionPlan: bookingData.subscriptionPlan || null,
       customerName: bookingData.name || userProfile.name,
       customerPhone: bookingData.phone || userProfile.phone,
+      customerEmail: userProfile.email,
       status: 'Technician Assigned',
       statusStep: 2,
+      confirmationSent: { sms: true, email: true },
       technician: {
         title: 'Verified Doorstep Technician',
         phone: '+91 98765 09876',
@@ -269,6 +289,25 @@ export function BookingProvider({ children }) {
     } catch (e) {}
 
     return newBooking;
+  };
+
+  const rescheduleBooking = (bookingId, newDate, newTimeSlot) => {
+    const updated = userBookings.map(b => {
+      if (b.id === bookingId) {
+        return {
+          ...b,
+          date: newDate,
+          timeSlot: newTimeSlot,
+          status: 'Rescheduled',
+          confirmationSent: { sms: true, email: true }
+        };
+      }
+      return b;
+    });
+    setUserBookings(updated);
+    try {
+      localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
+    } catch (e) {}
   };
 
   const cancelBooking = (bookingId) => {
@@ -296,6 +335,11 @@ export function BookingProvider({ children }) {
         openTrackingModal,
         closeTrackingModal,
         trackingBookingId,
+        isRescheduleModalOpen,
+        openRescheduleModal,
+        closeRescheduleModal,
+        rescheduleBookingId,
+        rescheduleBooking,
         userPincode,
         setUserPincode,
         userBookings,

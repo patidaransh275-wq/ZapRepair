@@ -3,12 +3,13 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Calendar, Clock, MapPin, Phone, MessageSquare, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2, User, Loader2 } from 'lucide-react';
+import { Calendar, Clock, MapPin, Phone, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2, User, Loader2, RefreshCw, Mail, MessageSquare } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import RescheduleModal from '../../components/booking/RescheduleModal';
 
 export default function BookingsPage() {
   const router = useRouter();
-  const { userBookings, openTrackingModal, openBookingModal, cancelBooking, isAuthenticated, authLoading } = useBooking();
+  const { userBookings, openTrackingModal, openBookingModal, openRescheduleModal, cancelBooking, isAuthenticated, authLoading } = useBooking();
 
   // Redirect to login if unauthenticated
   useEffect(() => {
@@ -32,19 +33,23 @@ export default function BookingsPage() {
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
+      
+      {/* Reschedule Modal Component */}
+      <RescheduleModal />
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
-              Customer Portal
+              Customer Self-Service Portal
             </span>
             <h1 className="text-3xl font-extrabold text-slate-900 font-heading mt-2">
               My Bookings & Service History
             </h1>
             <p className="text-xs text-slate-500 mt-1">
-              Track live technician location, view invoices, and manage upcoming doorstep visits in Indore.
+              Track live technician location, reschedule online, cancel appointments, and view SMS/Email confirmation receipts.
             </p>
           </div>
 
@@ -94,11 +99,28 @@ export default function BookingsPage() {
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                         : b.status === 'Cancelled'
                         ? 'bg-red-50 text-red-800 border-red-200'
+                        : b.status === 'Rescheduled'
+                        ? 'bg-blue-50 text-blue-800 border-blue-200'
                         : 'bg-amber-50 text-amber-900 border-amber-300 animate-pulse'
                     }`}>
                       ● {b.status}
                     </span>
                   </div>
+                </div>
+
+                {/* Notifications Sent Badge */}
+                <div className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl flex items-center justify-between text-xs text-slate-600">
+                  <div className="flex items-center gap-3">
+                    <span className="flex items-center gap-1 text-emerald-700 font-semibold">
+                      <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                      SMS Confirmation Sent
+                    </span>
+                    <span className="flex items-center gap-1 text-emerald-700 font-semibold">
+                      <Mail className="w-3.5 h-3.5 text-emerald-600" />
+                      Email Receipt Sent
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-mono">Status: Active</span>
                 </div>
 
                 {/* Details Grid */}
@@ -107,7 +129,7 @@ export default function BookingsPage() {
                     <Calendar className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                     <div>
                       <div className="font-bold text-slate-900">Scheduled Date & Time</div>
-                      <div>{b.date}, {b.timeSlot}</div>
+                      <div className="font-semibold text-slate-800">{b.date}, {b.timeSlot}</div>
                     </div>
                   </div>
 
@@ -123,37 +145,50 @@ export default function BookingsPage() {
                     <User className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                     <div>
                       <div className="font-bold text-slate-900">Assigned Pro</div>
-                      <div>{b.technician ? b.technician.name : 'Assigning...'}</div>
+                      <div>{b.technician ? b.technician.title : 'Assigning...'}</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Actions Footer */}
+                {/* Actions Footer with Online Reschedule & Cancel Controls */}
                 <div className="bg-slate-50 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs border border-slate-100">
                   <div className="flex items-baseline gap-1">
                     <span className="text-slate-500">Total Payable:</span>
                     <span className="text-base font-extrabold text-slate-900 font-heading">₹{b.price}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
                     <button
+                      type="button"
                       onClick={() => openTrackingModal(b.id)}
                       className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm"
                     >
-                      Track Service Live
+                      Track Live
                     </button>
 
                     {b.status !== 'Completed' && b.status !== 'Cancelled' && (
-                      <button
-                        onClick={() => {
-                          if (confirm(`Cancel booking ${b.id}?`)) {
-                            cancelBooking(b.id);
-                          }
-                        }}
-                        className="bg-red-50 hover:bg-red-100 text-red-700 font-bold px-3 py-2 rounded-xl text-xs border border-red-200"
-                      >
-                        Cancel
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => openRescheduleModal(b.id)}
+                          className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1 shadow-sm transition-all"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5" />
+                          <span>Reschedule Date</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Are you sure you want to cancel booking ${b.id}?`)) {
+                              cancelBooking(b.id);
+                            }
+                          }}
+                          className="bg-red-50 hover:bg-red-100 text-red-700 font-bold px-3 py-2 rounded-xl text-xs border border-red-200 transition-colors"
+                        >
+                          Cancel Booking
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
