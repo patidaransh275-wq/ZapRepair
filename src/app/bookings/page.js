@@ -10,6 +10,7 @@ import DigitalInvoiceModal from '../../components/booking/DigitalInvoiceModal';
 import OnlinePaymentModal from '../../components/booking/OnlinePaymentModal';
 import ReviewSubmissionModal from '../../components/booking/ReviewSubmissionModal';
 import DisputeTicketModal from '../../components/booking/DisputeTicketModal';
+import WarrantyClaimModal from '../../components/booking/WarrantyClaimModal';
 import InAppChatDrawer from '../../components/tracking/InAppChatDrawer';
 
 export default function BookingsPage() {
@@ -20,6 +21,7 @@ export default function BookingsPage() {
   const [activePaymentBooking, setActivePaymentBooking] = useState(null);
   const [activeReviewBooking, setActiveReviewBooking] = useState(null);
   const [activeTicketBooking, setActiveTicketBooking] = useState(null);
+  const [activeWarrantyBooking, setActiveWarrantyBooking] = useState(null);
   const [activeChatBooking, setActiveChatBooking] = useState(null);
 
   useEffect(() => {
@@ -70,6 +72,12 @@ export default function BookingsPage() {
         booking={activeTicketBooking}
       />
 
+      <WarrantyClaimModal
+        isOpen={!!activeWarrantyBooking}
+        onClose={() => setActiveWarrantyBooking(null)}
+        booking={activeWarrantyBooking}
+      />
+
       <InAppChatDrawer
         isOpen={!!activeChatBooking}
         onClose={() => setActiveChatBooking(null)}
@@ -88,7 +96,7 @@ export default function BookingsPage() {
               My Bookings & Invoices
             </h1>
             <p className="text-xs text-slate-500 mt-1">
-              Live GPS tracking, digital invoices, online payment, reschedule/cancellation, and dispute ticket support.
+              Live GPS tracking, digital invoices, online payment, 30-day warranty claims, and dispute support.
             </p>
           </div>
 
@@ -189,7 +197,7 @@ export default function BookingsPage() {
                   </div>
                 </div>
 
-                {/* Secondary Action Toolbar: Invoices, Pay Online, Chat, Dispute */}
+                {/* Secondary Action Toolbar: Invoices, Pay Online, Chat, Warranty Claim */}
                 <div className="flex items-center gap-2 pt-2 border-t border-slate-100 flex-wrap text-xs">
                   <button
                     type="button"
@@ -211,20 +219,20 @@ export default function BookingsPage() {
 
                   <button
                     type="button"
+                    onClick={() => setActiveWarrantyBooking(b)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold rounded-lg border border-emerald-300 transition-colors"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>30-Day Warranty Claim</span>
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => setActiveChatBooking(b)}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold rounded-lg border border-amber-200 transition-colors"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-amber-600" />
                     <span>Chat In-App</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveReviewBooking(b)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold rounded-lg border border-blue-200 transition-colors"
-                  >
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                    <span>Submit Review</span>
                   </button>
 
                   <button

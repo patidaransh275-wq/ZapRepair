@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MobileNav from '../components/layout/MobileNav';
+import CookieConsentBanner from '../components/layout/CookieConsentBanner';
 import BookingModal from '../components/booking/BookingModal';
 import TrackingModal from '../components/booking/TrackingModal';
 import { BookingProvider } from '../context/BookingContext';
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
             </main>
             <Footer />
             <MobileNav />
+            <CookieConsentBanner />
             <BookingModal />
             <TrackingModal />
           </BookingProvider>

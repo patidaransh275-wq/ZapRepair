@@ -27,7 +27,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              PlumberIndore is Indore’s premier doorstep plumbing and home appliance repair network. Certified HVAC engineers and plumbing specialists at your doorstep in 45 minutes.
+              PlumberIndore Tech Services Private Limited is Indore’s premier doorstep plumbing and home appliance repair network. Certified HVAC engineers and plumbing specialists at your doorstep in 45 minutes.
             </p>
 
             <div className="space-y-2 text-xs text-slate-300 pt-2">
@@ -76,17 +76,18 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Trust & Guarantee Badge */}
+          {/* Col 4: Business Reg & GSTIN Compliance */}
           <div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
-              Verified Guarantee
+              Business Registration
             </h4>
             <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
-              <div className="text-emerald-400 font-bold flex items-center gap-1">
+              <div className="text-amber-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>30-Day Doorstep Warranty</span>
+                <span>GST Registered Business</span>
               </div>
-              <p className="text-[11px] text-slate-400">Fixed rate card & 100% genuine spare parts across all Indore sectors.</p>
+              <p className="text-[11px] text-slate-300 font-mono">GSTIN: 23AAAAA0000A1Z5</p>
+              <p className="text-[10px] text-slate-400">PlumberIndore Tech Services Private Limited</p>
               <a
                 href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
                 target="_blank"
@@ -104,11 +105,11 @@ export default function Footer() {
         {/* Bottom Line */}
         <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div>
-            © {currentYear} PlumberIndore Tech Services. All Rights Reserved.
+            © {currentYear} PlumberIndore Tech Services Private Limited. GSTIN: 23AAAAA0000A1Z5. All Rights Reserved.
           </div>
 
           <div className="flex items-center gap-6">
-            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">Privacy Policy & DPDP</Link>
             <Link href="/terms-and-conditions" className="hover:text-amber-400 transition-colors">Terms of Service</Link>
           </div>
         </div>
