@@ -76,17 +76,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Trust & Google Badge */}
+          {/* Col 4: Trust & Guarantee Badge */}
           <div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
-              Verified Trust
+              Verified Guarantee
             </h4>
             <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
-              <div className="text-amber-400 font-bold flex items-center gap-1">
+              <div className="text-emerald-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Google Score: 4.9 ★</span>
+                <span>30-Day Doorstep Warranty</span>
               </div>
-              <p className="text-[11px] text-slate-400">480+ Verified Customer Reviews across Indore.</p>
+              <p className="text-[11px] text-slate-400">Fixed rate card & 100% genuine spare parts across all Indore sectors.</p>
               <a
                 href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
                 target="_blank"

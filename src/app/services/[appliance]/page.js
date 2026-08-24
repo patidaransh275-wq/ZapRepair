@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Star, ShieldCheck, MapPin, Clock, ArrowRight, CheckCircle2, ChevronDown, ChevronUp, Wrench, HelpCircle, PhoneCall } from 'lucide-react';
+import { ShieldCheck, MapPin, Clock, ArrowRight, CheckCircle2, ChevronDown, ChevronUp, Wrench, HelpCircle, PhoneCall } from 'lucide-react';
 import { SERVICES_DATA } from '../../../data/servicesData';
 import { useBooking } from '../../../context/BookingContext';
 import { checkPincodeServiceability } from '../../../data/pincodesData';
@@ -37,7 +37,6 @@ export default function ServiceDetailPage({ params }) {
     }
   };
 
-  // Structured Data Schema for Google SEO
   const jsonLdSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -45,8 +44,8 @@ export default function ServiceDetailPage({ params }) {
     'provider': {
       '@type': 'LocalBusiness',
       'name': 'PlumberIndore',
-      'telephone': '+91-9876543210',
-      'email': 'plumberindore@gmail.com',
+      'telephone': '+91-7314928800',
+      'email': 'support@plumberindore.in',
       'priceRange': '₹₹',
       'address': {
         '@type': 'PostalAddress',
@@ -114,12 +113,12 @@ export default function ServiceDetailPage({ params }) {
               </p>
 
               <div className="flex items-center gap-4 text-xs pt-2">
-                <div className="flex items-center gap-1 text-amber-400 font-bold">
-                  <Star className="w-4 h-4 fill-amber-400" />
-                  <span>{service.rating} / 5</span>
-                </div>
+                <span className="text-emerald-400 font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  30-Day Warranty
+                </span>
                 <span className="text-slate-400">•</span>
-                <span className="text-slate-300 font-semibold">{service.reviewCount}+ Indore Repairs</span>
+                <span className="text-slate-300 font-semibold">Doorstep Repairs Across Indore</span>
                 <span className="text-slate-400">•</span>
                 <span className="text-emerald-400 font-semibold">100% Genuine Spare Parts</span>
               </div>
@@ -133,11 +132,11 @@ export default function ServiceDetailPage({ params }) {
                   Book Service (Starts ₹{service.startingPrice})
                 </button>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917314928800"
                   className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-xl text-xs border border-slate-700 flex items-center justify-center gap-2"
                 >
                   <PhoneCall className="w-4 h-4 text-amber-400" />
-                  <span>Call Helpline</span>
+                  <span>Call Helpline: +91 731 492 8800</span>
                 </a>
               </div>
 

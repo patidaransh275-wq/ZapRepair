@@ -1,52 +1,52 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, Clock, Award, ThumbsUp, Wrench } from 'lucide-react';
+import { Clock, ShieldCheck, Tag, CheckCircle2 } from 'lucide-react';
 
 export default function TrustBar() {
   const trustItems = [
     {
-      icon: ShieldCheck,
-      title: 'Verified Technicians',
-      desc: 'Police & ID background verified'
-    },
-    {
       icon: Clock,
-      title: '45-Min Doorstep Arrival',
-      desc: 'Prompt response across Indore'
+      title: '45-Min Arrival',
+      desc: 'Rapid doorstep response across all Indore sectors'
     },
     {
-      icon: Award,
-      title: '30-Day Repair Warranty',
-      desc: '100% genuine spare parts'
+      icon: ShieldCheck,
+      title: '30-Day Warranty',
+      desc: 'Full post-repair & spare parts guarantee'
     },
     {
-      icon: ThumbsUp,
-      title: 'Fixed Rate Transparency',
-      desc: 'No hidden charges or surprise fees'
+      icon: Tag,
+      title: 'Fixed Upfront Rates',
+      desc: 'Transparent rate card before work begins'
+    },
+    {
+      icon: CheckCircle2,
+      title: 'Background-Verified',
+      desc: 'Uniformed & certified Indore technicians'
     }
   ];
 
   return (
-    <div className="bg-slate-900 border-y border-slate-800 py-6 text-white">
+    <section className="bg-slate-900 border-b border-slate-800 py-6 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {trustItems.map((item, idx) => {
+          {trustItems.map((item, index) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5" />
+              <div key={index} className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-800 text-amber-400 flex items-center justify-center shrink-0 border border-slate-700">
+                  <Icon className="w-5 h-5 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-white font-heading">{item.title}</h4>
-                  <p className="text-[11px] text-slate-400 font-medium">{item.desc}</p>
+                  <h4 className="text-xs font-bold text-white font-heading">{item.title}</h4>
+                  <p className="text-[11px] text-slate-400 leading-tight">{item.desc}</p>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, ShieldCheck, Clock, Phone, Star, Wrench, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { MapPin, ShieldCheck, Clock, Phone, Wrench, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { INDORE_AREAS_DATA } from '../../../data/indoreAreasData';
 import { SERVICES_DATA } from '../../../data/servicesData';
 import { useBooking } from '../../../context/BookingContext';
@@ -43,14 +43,14 @@ export default function AreaLandingPage({ params }) {
             </p>
 
             <div className="flex items-center gap-4 text-xs pt-2">
-              <span className="text-amber-400 font-bold flex items-center gap-1">
-                <Star className="w-4 h-4 fill-amber-400" />
-                4.9 / 5 Rating
+              <span className="text-emerald-400 font-bold flex items-center gap-1">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                30-Day Warranty
               </span>
               <span className="text-slate-400">•</span>
               <span className="text-emerald-400 font-bold">{areaInfo.activeTechs} On-Duty Technicians</span>
               <span className="text-slate-400">•</span>
-              <span className="text-slate-300 font-semibold">30-Day Warranty</span>
+              <span className="text-slate-300 font-semibold">Fixed Rate Card</span>
             </div>
 
             <div className="pt-4 flex items-center gap-3">

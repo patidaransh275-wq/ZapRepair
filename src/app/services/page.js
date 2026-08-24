@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Search, Star, ShieldCheck, MapPin, ArrowRight, Filter, Loader2 } from 'lucide-react';
+import { Search, ShieldCheck, MapPin, ArrowRight, Filter, Loader2 } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
 import PackageComparisonTable from '../../components/services/PackageComparisonTable';
@@ -90,9 +90,9 @@ function ServicesContent() {
                   alt={srv.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
                 />
-                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-slate-700 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-amber-400" />
-                  <span>{srv.rating}</span>
+                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-emerald-400 text-[11px] font-extrabold px-3 py-1 rounded-full border border-slate-700 flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>30-Day Warranty</span>
                 </div>
               </div>
 
