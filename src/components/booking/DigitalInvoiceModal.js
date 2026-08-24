@@ -1,121 +1,137 @@
 'use client';
 
 import React from 'react';
-import { X, Download, Printer, ShieldCheck, Wrench, CheckCircle2 } from 'lucide-react';
+import { X, Printer, Download, CheckCircle2, ShieldCheck, Wrench, Building2 } from 'lucide-react';
 
 export default function DigitalInvoiceModal({ isOpen, onClose, booking }) {
   if (!isOpen || !booking) return null;
 
-  const handleDownloadInvoice = () => {
-    alert(`Downloading Digital GST Tax Invoice #${booking.id}.pdf...`);
+  const handlePrint = () => {
+    window.print();
   };
 
-  const gstTax = +(booking.price * 0.18).toFixed(2);
-  const basePrice = +(booking.price - gstTax).toFixed(2);
+  const laborCost = booking.price ? Math.round(booking.price * 0.85) : 399;
+  const taxCost = Math.round(booking.price * 0.15) || 60;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
-        {/* Header */}
-        <div className="bg-slate-900 text-white p-6 flex items-center justify-between">
+        {/* Header Action Bar */}
+        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
-              <Printer className="w-5 h-5 stroke-[2.5]" />
-            </div>
-            <div>
-              <h3 className="font-bold text-base font-heading">Digital GST Tax Invoice</h3>
-              <p className="text-xs text-amber-400 font-semibold">Invoice #{booking.id}</p>
-            </div>
+            <Wrench className="w-5 h-5 text-amber-400" />
+            <span className="font-bold text-sm font-heading">Digital Invoice Viewer</span>
           </div>
           
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-1 rounded-lg">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-sm"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print / Download PDF</span>
+            </button>
+
+            <button onClick={onClose} className="text-slate-400 hover:text-white p-1 rounded-lg">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Invoice Printable View */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+        {/* Printable Invoice Sheet */}
+        <div className="p-8 overflow-y-auto space-y-6 text-slate-900 text-xs bg-white print:p-0">
           
-          {/* Company & Bill Details */}
-          <div className="flex justify-between border-b border-slate-200 pb-4">
-            <div>
-              <h4 className="font-extrabold text-slate-900 text-base font-heading">PlumberIndore Tech Services</h4>
-              <p className="text-slate-500">304 Apollo Tower, MG Road / Vijay Nagar Square</p>
-              <p className="text-slate-500">Indore, MP - 452010 | GSTIN: 23AAAAA0000A1Z5</p>
-              <p className="text-slate-500">Helpline: +91 98765 43210 | plumberindore@gmail.com</p>
+          {/* Invoice Header */}
+          <div className="flex items-start justify-between border-b border-slate-200 pb-6">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-extrabold font-heading text-slate-900">
+                Plumber<span className="text-amber-500">Indore</span>
+              </h2>
+              <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
+              <p className="text-slate-500">304 Apollo Tower, Vijay Nagar Square, Indore, MP - 452010</p>
+              <p className="text-slate-500">Helpline: +91 731 492 8800 | support@plumberindore.in</p>
             </div>
 
-            <div className="text-right">
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2.5 py-1 rounded">
-                PAID & VERIFIED
+            <div className="text-right space-y-1">
+              <span className="inline-block bg-emerald-100 text-emerald-800 font-extrabold px-3 py-1 rounded-full text-xs border border-emerald-200">
+                OFFICIAL RECEIPT
               </span>
-              <p className="text-slate-500 mt-2">Date: {new Date(booking.createdAt).toLocaleDateString()}</p>
+              <div className="text-slate-500 pt-1 font-mono">Invoice #: INV-{booking.id}</div>
+              <div className="text-slate-500">Date: {booking.date || '2026-08-25'}</div>
             </div>
           </div>
 
-          {/* Customer Billed To */}
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
-            <div className="font-bold text-slate-900 text-sm">Customer Billed To:</div>
-            <div className="font-semibold text-slate-800">{booking.customerName || 'Indore Homeowner'}</div>
-            <div className="text-slate-600">{booking.customerPhone}</div>
-            <div className="text-slate-600">{booking.address}</div>
+          {/* Billed To Details */}
+          <div className="grid grid-cols-2 gap-6 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div>
+              <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block mb-1">Billed Customer</span>
+              <div className="font-bold text-slate-900 text-sm">{booking.customerName || 'Ansh Patidar'}</div>
+              <div className="text-slate-600">{booking.address}</div>
+              <div className="text-slate-600">Pincode: {booking.pincode} (Indore)</div>
+            </div>
+
+            <div>
+              <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block mb-1">Service Order Summary</span>
+              <div className="font-bold text-slate-900">{booking.serviceName}</div>
+              <div className="text-slate-600">{booking.packageTitle}</div>
+              <div className="text-emerald-700 font-bold mt-1 flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                30-Day Doorstep Warranty Included
+              </div>
+            </div>
           </div>
 
-          {/* Itemized Table */}
+          {/* Line Items Table */}
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-300 text-slate-700 bg-slate-100">
-                <th className="p-2 font-bold">Item & Description</th>
-                <th className="p-2 font-bold text-right">Qty</th>
-                <th className="p-2 font-bold text-right">Amount</th>
+              <tr className="border-b-2 border-slate-200 text-slate-500 text-[11px] font-extrabold uppercase">
+                <th className="py-2">Description</th>
+                <th className="py-2 text-center">Qty</th>
+                <th className="py-2 text-right">Amount</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="border-b border-slate-200">
-                <td className="p-2 font-semibold text-slate-900">{booking.serviceName} ({booking.packageTitle})</td>
-                <td className="p-2 text-right">1</td>
-                <td className="p-2 text-right font-bold">₹{basePrice}</td>
+            <tbody className="divide-y divide-slate-100">
+              <tr>
+                <td className="py-3 font-semibold">
+                  <div>{booking.serviceName} - {booking.packageTitle}</div>
+                  <div className="text-[10px] text-slate-400">Includes 45-min doorstep arrival, diagnostic inspection & labor</div>
+                </td>
+                <td className="py-3 text-center">1</td>
+                <td className="py-3 text-right font-bold">₹{laborCost}</td>
               </tr>
-              <tr className="border-b border-slate-200 text-slate-500">
-                <td className="p-2">Doorstep Inspection & Diagnostics</td>
-                <td className="p-2 text-right">1</td>
-                <td className="p-2 text-right text-emerald-600 font-bold">FREE (Waived)</td>
-              </tr>
-              <tr className="border-b border-slate-200 text-slate-500">
-                <td className="p-2">18% GST Tax (CGST 9% + SGST 9%)</td>
-                <td className="p-2 text-right">1</td>
-                <td className="p-2 text-right font-semibold">₹{gstTax}</td>
+              <tr>
+                <td className="py-3 font-semibold">
+                  <div>Service Tax & Eco-Handling Fee</div>
+                  <div className="text-[10px] text-slate-400">Standard service processing</div>
+                </td>
+                <td className="py-3 text-center">1</td>
+                <td className="py-3 text-right font-bold">₹{taxCost}</td>
               </tr>
             </tbody>
           </table>
 
-          {/* Grand Total */}
-          <div className="bg-slate-900 text-white p-4 rounded-xl flex items-center justify-between text-sm">
-            <span className="font-bold">Total Net Paid Amount</span>
-            <span className="text-xl font-extrabold text-amber-400 font-heading">₹{booking.price}</span>
+          {/* Total Calculation */}
+          <div className="border-t border-slate-200 pt-4 flex justify-end">
+            <div className="w-64 space-y-2">
+              <div className="flex justify-between text-slate-600">
+                <span>Subtotal</span>
+                <span>₹{laborCost + taxCost}</span>
+              </div>
+              <div className="flex justify-between font-extrabold text-base text-slate-900 pt-2 border-t border-slate-200">
+                <span>Total Paid</span>
+                <span className="text-amber-600">₹{booking.price}</span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 p-3 rounded-xl border border-emerald-200 font-semibold">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Includes 30-Day Doorstep Service & Spare Parts Warranty</span>
+          {/* Footer Note */}
+          <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-[11px] text-emerald-900 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Thank you for choosing PlumberIndore! For warranty claims or support, call +91 731 492 8800.</span>
           </div>
 
-        </div>
-
-        {/* Footer Actions */}
-        <div className="bg-slate-50 p-4 border-t border-slate-200 flex items-center justify-between">
-          <button onClick={onClose} className="text-xs font-bold text-slate-600 hover:text-slate-900">
-            Close Preview
-          </button>
-          
-          <button
-            onClick={handleDownloadInvoice}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs shadow-md flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            <span>Download Invoice PDF</span>
-          </button>
         </div>
 
       </div>

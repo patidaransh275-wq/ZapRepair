@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Wrench, Phone, Mail, MapPin, ShieldCheck, Heart, ExternalLink } from 'lucide-react';
+import { Wrench, Phone, Mail, MapPin, ShieldCheck, ExternalLink } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 
 export default function Footer() {
@@ -76,7 +76,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Business Reg & GSTIN Compliance */}
+          {/* Col 4: Business Registration & Compliance */}
           <div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
               Business Registration
@@ -84,10 +84,10 @@ export default function Footer() {
             <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
               <div className="text-amber-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>GST Registered Business</span>
+                <span>Registered Entity</span>
               </div>
-              <p className="text-[11px] text-slate-300 font-mono">GSTIN: 23AAAAA0000A1Z5</p>
-              <p className="text-[10px] text-slate-400">PlumberIndore Tech Services Private Limited</p>
+              <p className="text-[11px] text-slate-300">PlumberIndore Tech Services Private Limited</p>
+              <p className="text-[10px] text-slate-400">Doorstep Home Services Network across Indore</p>
               <a
                 href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
                 target="_blank"
@@ -105,7 +105,7 @@ export default function Footer() {
         {/* Bottom Line */}
         <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div>
-            © {currentYear} PlumberIndore Tech Services Private Limited. GSTIN: 23AAAAA0000A1Z5. All Rights Reserved.
+            © {currentYear} PlumberIndore Tech Services Private Limited. All Rights Reserved.
           </div>
 
           <div className="flex items-center gap-6">
