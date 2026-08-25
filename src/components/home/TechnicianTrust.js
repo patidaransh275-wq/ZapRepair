@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UserCheck, ShieldCheck, Award, CheckCircle2 } from 'lucide-react';
+import { UserCheck, ShieldCheck, Award, CheckCircle2, MapPin } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function TechnicianTrust() {
@@ -9,21 +9,27 @@ export default function TechnicianTrust() {
 
   const techs = [
     {
+      name: 'Ramesh Verma',
       title: 'Senior HVAC & AC Engineer',
+      location: 'Vijay Nagar Hub, Indore',
       exp: '8+ Yrs Experience',
       repairs: '500+ Indore Repairs',
       specialty: 'Daikin, Voltas, LG Inverter AC Specialists',
       image: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&h=300&q=80'
     },
     {
+      name: 'Suresh Sharma',
       title: 'Master Plumbing Technician',
+      location: 'Palasia Hub, Indore',
       exp: '10+ Yrs Experience',
       repairs: '650+ Indore Repairs',
       specialty: 'Sanitary Fittings & Underground Leakage Detection',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80'
     },
     {
+      name: 'Amit Patel',
       title: 'Certified Electrical Specialist',
+      location: 'Bhanwarkuan Hub, Indore',
       exp: '7+ Yrs Experience',
       repairs: '420+ Indore Repairs',
       specialty: '3-Phase Wiring, MCB & Short Circuit Fixes',
@@ -52,12 +58,17 @@ export default function TechnicianTrust() {
             <div key={idx} className="bg-slate-50 rounded-3xl p-6 border border-slate-200 hover:border-amber-400 transition-all flex flex-col justify-between space-y-4">
               <div className="space-y-4">
                 <div className="relative w-24 h-24 rounded-2xl overflow-hidden mx-auto border-2 border-amber-400 shadow-md">
-                  <img src={tc.image} alt={tc.title} className="w-full h-full object-cover" />
+                  <img src={tc.image} alt={tc.name} className="w-full h-full object-cover" />
                 </div>
 
                 <div className="text-center space-y-1">
-                  <h3 className="font-bold text-slate-900 text-base font-heading">{tc.title}</h3>
-                  <div className="text-xs font-bold text-emerald-600 flex items-center justify-center gap-1">
+                  <h3 className="font-extrabold text-slate-900 text-lg font-heading">{tc.name}</h3>
+                  <div className="text-xs font-bold text-amber-600 flex items-center justify-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{tc.location}</span>
+                  </div>
+                  <div className="text-xs font-bold text-slate-700 font-heading pt-0.5">{tc.title}</div>
+                  <div className="text-[11px] font-bold text-emerald-600 flex items-center justify-center gap-1 pt-1">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>{tc.exp} • {tc.repairs}</span>
                   </div>
