@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Wrench, Phone, Menu, X, Search, Calculator, User, LogOut, ChevronDown, Languages } from 'lucide-react';
+import { Wrench, Phone, Menu, X, Search, Calculator } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../context/LanguageContext';
 import PushNotificationCenter from './PushNotificationCenter';
@@ -14,12 +14,11 @@ export default function Header() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isCostModalOpen, setIsCostModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { openBookingModal, isAuthenticated, currentUser, logout } = useBooking();
-  const { lang, toggleLanguage, t } = useLanguage();
+  const { openBookingModal } = useBooking();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,7 +66,7 @@ export default function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-extrabold tracking-tight text-white font-heading">
-                  {lang === 'hi' ? 'प्लम्बर' : 'Plumber'}<span className="text-amber-400">{lang === 'hi' ? 'इंदौर' : 'Indore'}</span>
+                  Plumber<span className="text-amber-400">Indore</span>
                 </span>
                 <span className="text-[10px] font-medium tracking-wider text-slate-400 uppercase -mt-1">
                   {t.tagline}
@@ -110,17 +109,6 @@ export default function Header() {
             {/* Right Action CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
               
-              {/* Language Switcher Toggle (EN | हिंदी) */}
-              <button
-                type="button"
-                onClick={toggleLanguage}
-                className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-extrabold px-3 py-2 rounded-xl border border-slate-700 transition-colors"
-                title="Switch Language"
-              >
-                <Languages className="w-4 h-4" />
-                <span>{lang === 'en' ? 'हिंदी' : 'EN'}</span>
-              </button>
-
               {/* Cost Estimator Calculator Button */}
               <button
                 type="button"
@@ -143,63 +131,6 @@ export default function Header() {
                 <span>+91 91749 34135</span>
               </a>
 
-              {/* Auth User State */}
-              {isAuthenticated ? (
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-2 rounded-xl border border-slate-700 transition-colors"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs">
-                      {currentUser?.name ? currentUser.name.charAt(0) : 'U'}
-                    </div>
-                    <span className="max-w-[100px] truncate">{currentUser?.name || 'Account'}</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {isUserDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl py-2 z-50 text-xs">
-                      <Link
-                        href="/bookings"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-slate-200 hover:bg-slate-800 hover:text-amber-400"
-                      >
-                        My Bookings & Invoices
-                      </Link>
-                      <Link
-                        href="/profile"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-slate-200 hover:bg-slate-800 hover:text-amber-400"
-                      >
-                        Account Profile
-                      </Link>
-                      <div className="border-t border-slate-800 my-1" />
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          setIsUserDropdownOpen(false);
-                          await logout();
-                          router.push('/login');
-                        }}
-                        className="w-full text-left px-4 py-2 text-red-400 hover:bg-slate-800 flex items-center gap-1.5"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>Logout</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className="text-xs font-bold text-slate-200 hover:text-amber-400 px-3 py-2 rounded-lg border border-slate-800 hover:border-slate-700"
-                >
-                  Sign In
-                </Link>
-              )}
-
               <button
                 type="button"
                 onClick={() => openBookingModal('ac-repair')}
@@ -209,15 +140,8 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Mobile Menu Hamburger & Language Switcher */}
+            {/* Mobile Menu Hamburger */}
             <div className="flex md:hidden items-center gap-2">
-              <button
-                type="button"
-                onClick={toggleLanguage}
-                className="bg-slate-800 text-amber-400 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700"
-              >
-                {lang === 'en' ? 'हिंदी' : 'EN'}
-              </button>
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
