@@ -27,6 +27,66 @@ export const SERVICES_DATA = [
     ]
   },
   {
+    id: 'plumber',
+    name: 'Plumber Services',
+    slug: 'plumber',
+    iconName: 'Wrench',
+    badge: 'Essential',
+    startingPrice: 149,
+    bannerImage: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
+    description: 'Urban Company-style doorstep plumbing services in Indore. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
+    heroSubtitle: 'Expert Plumbers | Leakage & Blockage Specialists | 45-Min Doorstep Arrival',
+    packages: [
+      { id: 'plm-tap', title: 'Tap, Nozzle & Wall Mixer Repair', price: 149, originalPrice: 249, duration: '30 mins', description: 'Fixing dripping taps, ceramic spindle change, washer replacement, and single lever basin mixer repair.' },
+      { id: 'plm-toilet', title: 'Toilet & Flush Tank Service', price: 199, originalPrice: 299, duration: '30 mins', description: 'Cistern syphon repair, flush button change, jet spray fitting, and Western/Indian commode leak fix.' },
+      { id: 'plm-drain', title: 'Drainage & Pipe Blockage Removal', price: 349, originalPrice: 499, duration: '45 mins', description: 'Heavy-duty drain snake blockage cleaning for clogged kitchen sinks, washbasins, and bathroom floor traps.' },
+      { id: 'plm-tank', title: 'Water Tank & Motor Pump Fitting', price: 499, originalPrice: 799, duration: '60 mins', description: 'Overhead water tank deep cleaning (up to 1000L), automatic water level controller fitting, and pump connection.' },
+      { id: 'plm-fittings', title: 'Bathroom Accessory & Shower Fitting', price: 299, originalPrice: 449, duration: '45 mins', description: 'Overhead shower arm replacement, towel rod, mirror, soap holder, and health faucet installation.' }
+    ],
+    issues: [
+      { title: 'Dripping Tap / Basin Mixer Leak', startingPrice: 149, cause: 'Worn out spindle gasket, ceramic disc wear, or thread corrosion' },
+      { title: 'Continuous Toilet Flush Tank Leak', startingPrice: 199, cause: 'Faulty flapper valve, damaged inlet ball valve, or syphon seal wear' },
+      { title: 'Blocked Kitchen Sink / Bathroom Floor Trap', startingPrice: 349, cause: 'Accumulated grease, food waste particles, hair, or hard water scale' },
+      { title: 'Underground / Concealed Pipe Seepage', startingPrice: 499, cause: 'Cracked PVC joint, loose CPVC fitting, or wall seepage' }
+    ],
+    faqs: [
+      { q: 'How quickly can an Urban Company style plumber reach Vijay Nagar or Palasia?', a: 'Our assigned local plumber reaches your doorstep within 45 minutes of booking across all Indore sectors.' },
+      { q: 'Do you bring spare parts like ceramic spindles, washers, and flush valves?', a: 'Yes, our plumbers carry 100% genuine spares from Jaquar, Hindware, Cera, and Kohler.' },
+      { q: 'Is there a warranty on plumbing repairs?', a: 'Yes, PlumberIndore provides a 30-day post-service warranty on all fittings and leakage repairs.' },
+      { q: 'What if the plumber inspects but I decide not to do the repair?', a: 'You only pay a nominal doorstep inspection fee of ₹149, which is 100% waived if you approve the repair.' }
+    ]
+  },
+  {
+    id: 'electrician',
+    name: 'Electrician Services',
+    slug: 'electrician',
+    iconName: 'PlugZap',
+    badge: 'Essential',
+    startingPrice: 149,
+    bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
+    description: 'Urban Company-style doorstep electrician services in Indore. Switchboard & socket repair, ceiling fan installation, light & chandelier mounting, MCB tripping fix, and short circuit fault finding.',
+    heroSubtitle: 'Safety First | ITI-Certified Electricians | 45-Min Doorstep Arrival',
+    packages: [
+      { id: 'elec-switch', title: 'Switchboard & Power Socket Repair', price: 149, originalPrice: 249, duration: '30 mins', description: 'Modular switch replacement, 16A heavy power socket fitting for AC/Geyser, and fan speed regulator fix.' },
+      { id: 'elec-fan', title: 'Ceiling Fan & Wall Fan Repair', price: 199, originalPrice: 299, duration: '30 mins', description: 'Ceiling fan installation/uninstallation, motor capacitor change, noisy bearing greasing, and exhaust fan fitting.' },
+      { id: 'elec-light', title: 'Lights & Chandelier Installation', price: 249, originalPrice: 399, duration: '45 mins', description: 'False ceiling LED cob light fitting, decorative tube light/batten mounting, and chandelier assembly.' },
+      { id: 'elec-mcb', title: 'MCB & Distribution Box Safety', price: 399, originalPrice: 599, duration: '45 mins', description: 'Tripping MCB replacement, main RCCB/ELCB safety breaker installation, and 3-phase DB box wiring overhaul.' },
+      { id: 'elec-wiring', title: 'Home Wiring & Short Circuit Fix', price: 499, originalPrice: 799, duration: '60 mins', description: 'Emergency short circuit fault finding with digital multimeter, open casing/concealed copper wiring, and earthing test.' }
+    ],
+    issues: [
+      { title: 'Switch Sparking / Burnt Smell', startingPrice: 149, cause: 'Loose wire contact, overloaded circuit, or carbon accumulation' },
+      { title: 'Ceiling Fan Rotating Slowly', startingPrice: 199, cause: 'Weak motor capacitor or worn out rotor bearing' },
+      { title: 'MCB Frequently Tripping in House', startingPrice: 399, cause: 'Short circuit in appliances, neutral line leakage, or heavy load trip' },
+      { title: 'Complete Power Loss in Room', startingPrice: 299, cause: 'Blown fuse, broken phase wire inside wall conduit, or DB box failure' }
+    ],
+    faqs: [
+      { q: 'Are your electricians ITI-certified for high-voltage short circuit fixes?', a: 'Yes, all our electricians are ITI-certified, background-verified, and carry professional multimeters and insulated safety gear.' },
+      { q: 'Do you install heavy 16A sockets for ACs, Geysers, and Refrigerators?', a: 'Yes, we fit heavy-duty modular 16A sockets with copper wiring and earthing safety.' },
+      { q: 'How fast can an electrician reach my home in Indore?', a: 'Our technician arrives at your doorstep in Vijay Nagar, Palasia, Bhanwarkuan, or any Indore location within 45 minutes.' },
+      { q: 'Is there a warranty on electrical fittings?', a: 'Yes, PlumberIndore offers a 30-day doorstep warranty on all switch, socket, fan, and MCB installations.' }
+    ]
+  },
+  {
     id: 'refrigerator',
     name: 'Refrigerator Repair',
     slug: 'refrigerator',
@@ -70,51 +130,6 @@ export const SERVICES_DATA = [
     faqs: [
       { q: 'Do you fix front load PCB board issues?', a: 'Yes, our technicians specialize in inverter washing machine PCB diagnosis and component repair.' },
       { q: 'Are spare parts covered under warranty?', a: 'All replaced drum bearings, belts, and valves carry a 30-day PlumberIndore warranty.' }
-    ]
-  },
-  {
-    id: 'plumber',
-    name: 'Plumber Services',
-    slug: 'plumber',
-    iconName: 'Wrench',
-    badge: 'Essential',
-    startingPrice: 149,
-    bannerImage: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
-    description: 'Tap leakage repair, pipe blockage removal, toilet fitting, and water tank installation in Indore.',
-    heroSubtitle: 'Expert Plumbers | Leakage & Blockage Specialists | Doorstep Service',
-    packages: [
-      { id: 'plm-leak', title: 'Tap & Flush Tank Leakage Repair', price: 199, originalPrice: 299, duration: '30 mins', description: 'Spindle change, washer replacement, and flush tank valve overhaul.' },
-      { id: 'plm-drain', title: 'Drainage & Pipe Blockage Removal', price: 349, originalPrice: 499, duration: '45 mins', description: 'Heavy-duty pressure drain snake blockage cleaning for sinks & bathrooms.' }
-    ],
-    issues: [
-      { title: 'Water Pipe Seepage', startingPrice: 149, cause: 'Cracked PVC joint or worn thread seal tape' },
-      { title: 'Continuous Toilet Flush Leak', startingPrice: 199, cause: 'Worn flapper valve or syphon mechanism fault' }
-    ],
-    faqs: [
-      { q: 'How quickly can a plumber reach Vijay Nagar or Bhanwarkuan?', a: 'Our local Indore plumbing team arrives in 30 to 45 minutes for urgent leaks and blockages.' },
-      { q: 'Do you provide fittings for bathroom mixers and geysers?', a: 'Yes, we handle complete bathroom sanitary fittings, mixer taps, and underground pipe repair.' }
-    ]
-  },
-  {
-    id: 'electrician',
-    name: 'Electrician Services',
-    slug: 'electrician',
-    iconName: 'PlugZap',
-    badge: 'Essential',
-    startingPrice: 149,
-    bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
-    description: 'Short circuit fix, switchboard repair, MCB trip resolution, and house wiring in Indore.',
-    heroSubtitle: 'Safety First | Certified Electricians | Immediate Short Circuit Fix',
-    packages: [
-      { id: 'elec-fix', title: 'Switchboard & Socket Fix', price: 199, originalPrice: 299, duration: '30 mins', description: 'Wiring check, modular switch replacement, and earthing test.' },
-      { id: 'elec-mcb', title: 'MCB & Distribution Box Repair', price: 399, originalPrice: 599, duration: '45 mins', description: 'Single phase / 3-phase MCB replacement & neutral fault detection.' }
-    ],
-    issues: [
-      { title: 'MCB Frequently Tripping', startingPrice: 149, cause: 'Overload circuit or neutral line leakage' },
-      { title: 'Burnt Switchboard Smell', startingPrice: 199, cause: 'Loose wire contact or spark overheating' }
-    ],
-    faqs: [
-      { q: 'Are your electricians certified for emergency short circuit repair?', a: 'Yes, all electricians are ITI-certified and equipped with digital multimeters and insulation tools.' }
     ]
   },
   {
