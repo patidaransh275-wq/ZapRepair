@@ -51,7 +51,7 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking }) {
               </h2>
               <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
               <p className="text-slate-500">Doorstep Home Service Network, Indore, MP</p>
-              <p className="text-slate-500">Helpline: +91 731 492 8800 | support@plumberindore.in</p>
+              <p className="text-slate-500">Helpline: +91 91749 34135 | support@plumberindore.in</p>
             </div>
 
             <div className="text-right space-y-1">
@@ -129,7 +129,7 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking }) {
           {/* Footer Note */}
           <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-[11px] text-emerald-900 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Thank you for choosing PlumberIndore! For warranty claims or support, call +91 731 492 8800.</span>
+            <span>Thank you for choosing PlumberIndore! For warranty claims or support, call +91 91749 34135.</span>
           </div>
 
         </div>

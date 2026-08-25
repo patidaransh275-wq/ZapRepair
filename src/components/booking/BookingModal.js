@@ -17,7 +17,7 @@ export default function BookingModal() {
 
   const [address, setAddress] = useState('Vijay Nagar, Indore, MP');
   const [customerName, setCustomerName] = useState(userProfile?.name || 'Ansh Patidar');
-  const [customerPhone, setCustomerPhone] = useState(userProfile?.phone || '+91 731 492 8800');
+  const [customerPhone, setCustomerPhone] = useState(userProfile?.phone || '+91 91749 34135');
   const [issueDescription, setIssueDescription] = useState('');
   const [photoUploaded, setPhotoUploaded] = useState(false);
 

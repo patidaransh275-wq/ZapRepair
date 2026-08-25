@@ -44,7 +44,7 @@ export default function ServiceDetailPage({ params }) {
     'provider': {
       '@type': 'LocalBusiness',
       'name': 'PlumberIndore',
-      'telephone': '+91-7314928800',
+      'telephone': '+91-9174934135',
       'email': 'support@plumberindore.in',
       'priceRange': '₹₹',
       'address': {
@@ -131,11 +131,11 @@ export default function ServiceDetailPage({ params }) {
                   Book Service (Starts ₹{service.startingPrice})
                 </button>
                 <a
-                  href="tel:+917314928800"
+                  href="tel:+919174934135"
                   className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-xl text-xs border border-slate-700 flex items-center justify-center gap-2"
                 >
                   <PhoneCall className="w-4 h-4 text-amber-400" />
-                  <span>Call Helpline: +91 731 492 8800</span>
+                  <span>Call Helpline: +91 91749 34135</span>
                 </a>
               </div>
 

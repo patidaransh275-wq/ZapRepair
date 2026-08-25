@@ -38,8 +38,8 @@ export default function ContactPage() {
             </div>
             <h3 className="font-bold text-slate-900 text-base font-heading">Business Helpline</h3>
             <p className="text-xs text-slate-500">Instant Booking & Status Updates</p>
-            <a href="tel:+917314928800" className="inline-block text-sm font-extrabold text-amber-600 hover:underline pt-1">
-              +91 731 492 8800
+            <a href="tel:+919174934135" className="inline-block text-sm font-extrabold text-amber-600 hover:underline pt-1">
+              +91 91749 34135
             </a>
           </div>
 
@@ -49,8 +49,8 @@ export default function ContactPage() {
             </div>
             <h3 className="font-bold text-slate-900 text-base font-heading">WhatsApp Helpline</h3>
             <p className="text-xs text-slate-500">Quick Chat & Location Sharing</p>
-            <a href="https://wa.me/917314928800" target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-extrabold text-emerald-600 hover:underline pt-1">
-              +91 91114 92880
+            <a href="https://wa.me/919174934135" target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-extrabold text-emerald-600 hover:underline pt-1">
+              +91 91749 34135
             </a>
           </div>
 
@@ -108,7 +108,7 @@ export default function ContactPage() {
                 <input
                   type="tel"
                   required
-                  placeholder="+91 731 492 8800"
+                  placeholder="+91 91749 34135"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 />
               </div>

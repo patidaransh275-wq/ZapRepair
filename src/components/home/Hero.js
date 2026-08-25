@@ -110,11 +110,11 @@ export default function Hero() {
               </button>
 
               <a
-                href="tel:+917314928800"
+                href="tel:+919174934135"
                 className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-800 text-xs sm:text-sm transition-all flex items-center justify-center gap-2"
               >
                 <PhoneCall className="w-4 h-4 text-amber-400" />
-                <span>Helpline: +91 731 492 8800</span>
+                <span>Helpline: +91 91749 34135</span>
               </a>
             </div>
 

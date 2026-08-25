@@ -21,6 +21,7 @@ const INITIAL_DEMO_BOOKINGS = [
     confirmationSent: { sms: true, email: true },
     technician: {
       title: 'Verified Doorstep Expert',
+      phone: '+91 91749 34135',
       rating: 4.9,
       repairsCount: 480,
       photo: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&h=200&q=80',
@@ -44,6 +45,7 @@ const INITIAL_DEMO_BOOKINGS = [
     confirmationSent: { sms: true, email: true },
     technician: {
       title: 'Certified Service Specialist',
+      phone: '+91 91749 34135',
       rating: 4.85,
       repairsCount: 310,
       photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
@@ -77,7 +79,7 @@ export function BookingProvider({ children }) {
   
   const [userProfile, setUserProfile] = useState({
     name: 'Ansh Patidar',
-    phone: '+91 731 492 8800',
+    phone: '+91 91749 34135',
     email: 'support@plumberindore.in',
     addresses: [
       { id: 'addr-1', tag: 'Home', fullAddress: 'Vijay Nagar, Indore, MP - 452010' },
@@ -269,7 +271,7 @@ export function BookingProvider({ children }) {
       confirmationSent: { sms: true, email: true },
       technician: {
         title: 'Verified Doorstep Technician',
-        phone: '+91 731 492 8800',
+        phone: '+91 91749 34135',
         rating: 4.95,
         repairsCount: 520,
         photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=200&q=80',

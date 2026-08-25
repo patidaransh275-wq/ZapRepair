@@ -136,11 +136,11 @@ export default function Header() {
               <PushNotificationCenter />
 
               <a
-                href="tel:+917314928800"
+                href="tel:+919174934135"
                 className="flex items-center gap-2 text-xs font-bold text-slate-200 hover:text-amber-400 px-3 py-2 rounded-lg transition-colors border border-slate-800 hover:border-amber-400/30"
               >
                 <Phone className="w-3.5 h-3.5 text-amber-400" />
-                <span>+91 731 492 8800</span>
+                <span>+91 91749 34135</span>
               </a>
 
               {/* Auth User State */}
