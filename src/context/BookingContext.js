@@ -80,7 +80,7 @@ export function BookingProvider({ children }) {
   const [userProfile, setUserProfile] = useState({
     name: 'Ansh Patidar',
     phone: '+91 91749 34135',
-    email: 'support@plumberindore.in',
+    email: 'plumberindore@gmail.com',
     addresses: [
       { id: 'addr-1', tag: 'Home', fullAddress: 'Vijay Nagar, Indore, MP - 452010' },
       { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }

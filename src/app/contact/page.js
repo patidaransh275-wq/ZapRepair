@@ -58,10 +58,10 @@ export default function ContactPage() {
             <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto font-bold">
               <Mail className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base font-heading">Corporate Email</h3>
+            <h3 className="font-bold text-slate-900 text-base font-heading">Official Email</h3>
             <p className="text-xs text-slate-500">For Business & Customer Inquiries</p>
-            <a href="mailto:support@plumberindore.in" className="inline-block text-xs font-extrabold text-slate-900 hover:underline pt-1">
-              support@plumberindore.in
+            <a href="mailto:plumberindore@gmail.com" className="inline-block text-xs font-extrabold text-slate-900 hover:underline pt-1">
+              plumberindore@gmail.com
             </a>
           </div>
 

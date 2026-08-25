@@ -51,7 +51,7 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking }) {
               </h2>
               <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
               <p className="text-slate-500">Doorstep Home Service Network, Indore, MP</p>
-              <p className="text-slate-500">Helpline: +91 91749 34135 | support@plumberindore.in</p>
+              <p className="text-slate-500">Helpline: +91 91749 34135 | plumberindore@gmail.com</p>
             </div>
 
             <div className="text-right space-y-1">

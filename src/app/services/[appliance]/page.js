@@ -45,7 +45,7 @@ export default function ServiceDetailPage({ params }) {
       '@type': 'LocalBusiness',
       'name': 'PlumberIndore',
       'telephone': '+91-9174934135',
-      'email': 'support@plumberindore.in',
+      'email': 'plumberindore@gmail.com',
       'priceRange': '₹₹',
       'address': {
         '@type': 'PostalAddress',
