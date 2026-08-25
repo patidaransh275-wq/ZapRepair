@@ -14,6 +14,19 @@ export const metadata = {
   title: 'PlumberIndore - Indore’s #1 Doorstep Plumbing & Appliance Repair Service',
   description: 'Book certified plumbers, electricians, AC repair, refrigerator repair, washing machine & RO repair in Indore. 45-minute arrival with 30-day post service warranty.',
   keywords: 'plumber indore, AC repair Vijay Nagar, electrician Indore, refrigerator repair Palasia, washing machine service Indore, RO purifier repair Indore',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: ['/favicon.ico']
+  },
+  manifest: '/site.webmanifest'
 };
 
 export default function RootLayout({ children }) {
@@ -31,6 +44,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
+
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        <link rel="manifest" href="/site.webmanifest" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
