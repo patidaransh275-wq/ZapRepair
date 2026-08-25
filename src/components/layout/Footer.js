@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Wrench, Phone, Mail, MapPin, ShieldCheck, ExternalLink } from 'lucide-react';
+import { Phone, Mail, MapPin, ShieldCheck, ExternalLink } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 
 export default function Footer() {
@@ -17,10 +17,12 @@ export default function Footer() {
           
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2 group inline-block">
-              <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center font-bold text-slate-950">
-                <Wrench className="w-5 h-5 stroke-[2.5]" />
-              </div>
+            <Link href="/" className="flex items-center gap-2.5 group inline-block">
+              <img
+                src="/logo.png"
+                alt="PlumberIndore Logo"
+                className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-200"
+              />
               <span className="text-xl font-extrabold text-white font-heading">
                 Plumber<span className="text-amber-400">Indore</span>
               </span>

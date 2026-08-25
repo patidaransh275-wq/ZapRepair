@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Wrench, Phone, Menu, X, Search, Calculator } from 'lucide-react';
+import { Phone, Menu, X, Search, Calculator } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../context/LanguageContext';
 import PushNotificationCenter from './PushNotificationCenter';
@@ -60,10 +60,12 @@ export default function Header() {
           <div className="flex items-center justify-between gap-4">
             
             {/* Brand Logo - PlumberIndore */}
-            <Link href="/" className="flex items-center gap-2 group shrink-0">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-300 flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-200">
-                <Wrench className="w-6 h-6 text-slate-950 stroke-[2.5]" />
-              </div>
+            <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+              <img
+                src="/logo.png"
+                alt="PlumberIndore Logo"
+                className="w-9 h-9 sm:w-10 sm:h-10 object-contain group-hover:scale-105 transition-transform duration-200"
+              />
               <div className="flex flex-col">
                 <span className="text-xl font-extrabold tracking-tight text-white font-heading">
                   Plumber<span className="text-amber-400">Indore</span>
