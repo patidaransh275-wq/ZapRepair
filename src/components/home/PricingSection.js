@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DollarSign, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { IndianRupee, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function PricingSection() {
@@ -48,7 +48,7 @@ export default function PricingSection() {
 
             <div className="lg:col-span-5 bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 space-y-4 text-center">
               <div className="w-14 h-14 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xl mx-auto">
-                <DollarSign className="w-8 h-8" />
+                <IndianRupee className="w-8 h-8 stroke-[2.5]" />
               </div>
               <h3 className="text-xl font-bold text-white font-heading">Doorstep Inspection</h3>
               <div className="flex items-baseline justify-center gap-2">
