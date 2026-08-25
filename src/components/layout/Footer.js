@@ -33,7 +33,7 @@ export default function Footer() {
             <div className="space-y-2 text-xs text-slate-300 pt-2">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
+                <span>Doorstep Service Coverage across Indore, Madhya Pradesh</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-400 shrink-0" />
@@ -68,18 +68,18 @@ export default function Footer() {
               Indore Hubs
             </h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/service-areas/vijay-nagar" className="hover:text-amber-400">Vijay Nagar (Apollo Tower)</Link></li>
-              <li><Link href="/service-areas/palasia" className="hover:text-amber-400">Palasia (Industry House)</Link></li>
-              <li><Link href="/service-areas/bhanwarkuan" className="hover:text-amber-400">Bhanwarkuan (DAVV)</Link></li>
-              <li><Link href="/service-areas/rau" className="hover:text-amber-400">Rau Bypass</Link></li>
-              <li><Link href="/service-areas/sudama-nagar" className="hover:text-amber-400">Sudama Nagar</Link></li>
+              <li><Link href="/service-areas/vijay-nagar" className="hover:text-amber-400">Vijay Nagar Sector</Link></li>
+              <li><Link href="/service-areas/palasia" className="hover:text-amber-400">Palasia Sector</Link></li>
+              <li><Link href="/service-areas/bhanwarkuan" className="hover:text-amber-400">Bhanwarkuan Sector</Link></li>
+              <li><Link href="/service-areas/rau" className="hover:text-amber-400">Rau Bypass Sector</Link></li>
+              <li><Link href="/service-areas/sudama-nagar" className="hover:text-amber-400">Sudama Nagar Sector</Link></li>
             </ul>
           </div>
 
           {/* Col 4: Business Registration & Compliance */}
           <div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white font-heading">
-              Business Registration
+              Business Information
             </h4>
             <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
               <div className="text-amber-400 font-bold flex items-center gap-1">
@@ -88,15 +88,6 @@ export default function Footer() {
               </div>
               <p className="text-[11px] text-slate-300">PlumberIndore Tech Services Private Limited</p>
               <p className="text-[10px] text-slate-400">Doorstep Home Services Network across Indore</p>
-              <a
-                href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-amber-400 font-bold text-[11px] hover:underline pt-1"
-              >
-                <span>View Google Maps Pin</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
             </div>
           </div>
 

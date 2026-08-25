@@ -13,7 +13,7 @@ const INITIAL_DEMO_BOOKINGS = [
     packageTitle: 'Power Foam Jet Service',
     price: 499,
     pincode: '452010',
-    address: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP',
+    address: 'Flat 402, Vijay Nagar, Indore, MP',
     date: '2026-08-25',
     timeSlot: '2:00 PM - 4:00 PM',
     status: 'Technician En Route',
@@ -80,7 +80,7 @@ export function BookingProvider({ children }) {
     phone: '+91 731 492 8800',
     email: 'support@plumberindore.in',
     addresses: [
-      { id: 'addr-1', tag: 'Home', fullAddress: 'Flat 402, Apollo Tower, Vijay Nagar, Indore, MP - 452010' },
+      { id: 'addr-1', tag: 'Home', fullAddress: 'Vijay Nagar, Indore, MP - 452010' },
       { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
     ]
   });

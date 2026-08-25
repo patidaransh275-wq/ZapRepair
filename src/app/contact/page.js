@@ -67,36 +67,7 @@ export default function ContactPage() {
 
         </div>
 
-        {/* Embedded Interactive Google Map Block (Apollo Tower Pin) */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft-md space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h3 className="text-lg font-bold text-slate-900 font-heading">Official Apollo Tower Vijay Nagar Map Pin</h3>
-              <p className="text-xs text-slate-500">304 Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</p>
-            </div>
-            <a
-              href="https://maps.google.com/?q=Apollo+Tower+Vijay+Nagar+Indore"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
-            >
-              <span>Get Directions on Google Maps</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
-          <div className="w-full h-72 rounded-2xl overflow-hidden border border-slate-200">
-            <iframe
-              title="Indore Hub Directions"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.528419263921!2d75.89151631502447!3d22.7533319850901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af40340639%3A0xe54388e3adca3633!2sApollo%20Tower%2C%20Vijay%20Nagar%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-              className="w-full h-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-
-        {/* Office Location & Contact Form */}
+        {/* Doorstep Operations Block */}
         <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-soft-md grid grid-cols-1 md:grid-cols-2 gap-10">
           
           <div className="space-y-6">
@@ -104,7 +75,7 @@ export default function ContactPage() {
             <div className="space-y-4 text-xs text-slate-600">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <span>PlumberIndore Tech Services, Apollo Tower, MG Road / Vijay Nagar Square, Indore, MP - 452010</span>
+                <span>PlumberIndore Tech Services, Doorstep Home Service Network across Indore, MP</span>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />

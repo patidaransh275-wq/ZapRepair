@@ -49,7 +49,6 @@ export default function ServiceDetailPage({ params }) {
       'priceRange': '₹₹',
       'address': {
         '@type': 'PostalAddress',
-        'streetAddress': '304 Apollo Tower, MG Road / Vijay Nagar Square',
         'addressLocality': 'Indore',
         'addressRegion': 'Madhya Pradesh',
         'postalCode': '452010',

@@ -50,7 +50,7 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking }) {
                 Plumber<span className="text-amber-500">Indore</span>
               </h2>
               <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
-              <p className="text-slate-500">304 Apollo Tower, Vijay Nagar Square, Indore, MP - 452010</p>
+              <p className="text-slate-500">Doorstep Home Service Network, Indore, MP</p>
               <p className="text-slate-500">Helpline: +91 731 492 8800 | support@plumberindore.in</p>
             </div>
 
