@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, DollarSign, Clock, Wrench, UserCheck, PhoneCall } from 'lucide-react';
+import { ShieldCheck, IndianRupee, Clock, Wrench, UserCheck, PhoneCall } from 'lucide-react';
 
 export default function WhyChooseUs() {
   const benefits = [
@@ -11,9 +11,9 @@ export default function WhyChooseUs() {
       desc: 'Local Indore technicians stationed across Vijay Nagar, Palasia, Bhanwarkuan & Super Corridor for rapid doorstep arrival.'
     },
     {
-      icon: DollarSign,
+      icon: IndianRupee,
       title: 'Upfront Fixed Rate Card',
-      desc: 'Know the exact cost before work begins. No surprise charges, hidden fees, or inflated spare part prices.'
+      desc: 'Know the exact ₹ cost before work begins. Fixed upfront rate card in Indian Rupees (₹) with zero surprise charges or hidden fees.'
     },
     {
       icon: ShieldCheck,
