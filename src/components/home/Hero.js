@@ -24,7 +24,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative bg-slate-950 text-white overflow-hidden pt-10 pb-20 md:pt-14 md:pb-28 border-b border-slate-800">
+    <section className="relative bg-slate-950 text-white overflow-hidden pt-12 pb-20 md:pt-16 md:pb-28 border-b border-slate-800">
       
       {/* Background Decorative Pattern & Gradient Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:24px_24px] opacity-25 pointer-events-none" />
@@ -37,16 +37,7 @@ export default function Hero() {
           {/* Left Column: Hero Copy & Pincode Checker */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             
-            {/* Transparent Yellow Logo Centered Above Heading */}
-            <div className="flex justify-center lg:justify-start">
-              <img
-                src="/logo.png"
-                alt="PlumberIndore Logo"
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-md"
-              />
-            </div>
-
-            {/* Top Badge: Honest Guarantee Pill */}
+            {/* Top Badge: Honest Guarantee Pill (No Fake Stars) */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-semibold text-amber-400 shadow-md">
               <Clock className="w-4 h-4 text-emerald-400" />
               <span>⚡ 45-Minute Doorstep Arrival Across Indore</span>

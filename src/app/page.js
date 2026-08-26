@@ -11,7 +11,6 @@ import TechnicianTrust from '../components/home/TechnicianTrust';
 import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
 import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
-import ReviewsSection from '../components/home/ReviewsSection';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
 import FinalCTA from '../components/home/FinalCTA';
 
@@ -48,13 +47,10 @@ export default function HomePage() {
       {/* 10. Service Areas in Indore */}
       <IndoreServiceAreas />
 
-      {/* 11. Customer Reviews ("What Homeowners Say About PlumberIndore") */}
-      <ReviewsSection />
-
-      {/* 12. Service Location / Pincode Checker */}
+      {/* 11. Service Location / Pincode Checker */}
       <PincodeCheckerSection />
 
-      {/* 13. Final CTA */}
+      {/* 12. Final CTA */}
       <FinalCTA />
     </div>
   );
