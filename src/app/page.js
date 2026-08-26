@@ -10,7 +10,6 @@ import WhyChooseUs from '../components/home/WhyChooseUs';
 import TechnicianTrust from '../components/home/TechnicianTrust';
 import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
-import SubscriptionPlans from '../components/home/SubscriptionPlans';
 import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import ReviewsSection from '../components/home/ReviewsSection';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
@@ -46,19 +45,16 @@ export default function HomePage() {
       {/* 9. Transparent Pricing */}
       <PricingSection />
 
-      {/* 10. AMC Recurring & Subscription Plans */}
-      <SubscriptionPlans />
-
-      {/* 11. Service Areas in Indore */}
+      {/* 10. Service Areas in Indore */}
       <IndoreServiceAreas />
 
-      {/* 12. Customer Reviews ("What Homeowners Say About PlumberIndore") */}
+      {/* 11. Customer Reviews ("What Homeowners Say About PlumberIndore") */}
       <ReviewsSection />
 
-      {/* 13. Service Location / Pincode Checker */}
+      {/* 12. Service Location / Pincode Checker */}
       <PincodeCheckerSection />
 
-      {/* 14. Final CTA */}
+      {/* 13. Final CTA */}
       <FinalCTA />
     </div>
   );
