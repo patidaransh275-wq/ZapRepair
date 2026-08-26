@@ -13,7 +13,7 @@ export default function TrustBar() {
     {
       icon: ShieldCheck,
       title: '30-Day Warranty',
-      desc: 'Full post-repair & spare parts guarantee'
+      desc: 'Spare parts guarantee'
     },
     {
       icon: Tag,
