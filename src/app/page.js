@@ -8,7 +8,6 @@ import PopularRepairs from '../components/home/PopularRepairs';
 import HowItWorks from '../components/home/HowItWorks';
 import WhyChooseUs from '../components/home/WhyChooseUs';
 import TechnicianTrust from '../components/home/TechnicianTrust';
-import TrackingPreview from '../components/home/TrackingPreview';
 import PricingSection from '../components/home/PricingSection';
 import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
 import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
@@ -38,19 +37,16 @@ export default function HomePage() {
       {/* 7. Technician Trust Section */}
       <TechnicianTrust />
 
-      {/* 8. Service Tracking UI */}
-      <TrackingPreview />
-
-      {/* 9. Transparent Pricing */}
+      {/* 8. Transparent Pricing */}
       <PricingSection />
 
-      {/* 10. Service Areas in Indore */}
+      {/* 9. Service Areas in Indore */}
       <IndoreServiceAreas />
 
-      {/* 11. Service Location / Pincode Checker */}
+      {/* 10. Service Location / Pincode Checker */}
       <PincodeCheckerSection />
 
-      {/* 12. Final CTA */}
+      {/* 11. Final CTA */}
       <FinalCTA />
     </div>
   );
