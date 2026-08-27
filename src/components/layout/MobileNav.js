@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Wrench, PlusCircle, CalendarCheck, Phone, MessageSquare } from 'lucide-react';
+import { Home, Wrench, PlusCircle, Phone, MessageSquare } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function MobileNav() {
@@ -12,9 +12,8 @@ export default function MobileNav() {
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Services', href: '/services', icon: Wrench },
     { name: 'Book', action: () => openBookingModal('ac-repair'), icon: PlusCircle, isHighlight: true },
-    { name: 'Bookings', href: '/bookings', icon: CalendarCheck },
+    { name: 'Services', href: '/services', icon: Wrench },
   ];
 
   return (
@@ -46,7 +45,7 @@ export default function MobileNav() {
 
       {/* Main Bottom Bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800 px-3 py-1.5 shadow-2xl">
-        <div className="grid grid-cols-4 items-center justify-items-center">
+        <div className="grid grid-cols-3 items-center justify-items-center">
           {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = item.href && pathname === item.href;
