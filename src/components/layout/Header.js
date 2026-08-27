@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Phone, Menu, X, Search } from 'lucide-react';
+import { Phone, Menu, X, Search, ChevronDown } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../context/LanguageContext';
+import ServicesMegaMenu from './ServicesMegaMenu';
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const timeoutRef = useRef(null);
 
   const { openBookingModal } = useBooking();
   const { t } = useLanguage();
@@ -36,11 +40,16 @@ export default function Header() {
     }
   };
 
-  const navLinks = [
-    { name: t.navHome, href: '/' },
-    { name: t.navServices, href: '/services' },
-    { name: t.navAbout, href: '/about' },
-  ];
+  const handleMouseEnterServices = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsMegaMenuOpen(true);
+  };
+
+  const handleMouseLeaveServices = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsMegaMenuOpen(false);
+    }, 150);
+  };
 
   return (
     <header className={`sticky top-0 z-40 transition-all duration-300 ${
@@ -48,7 +57,7 @@ export default function Header() {
         ? 'bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-lg py-2.5' 
         : 'bg-slate-900 border-b border-slate-800/80 py-3.5'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between gap-4">
           
           {/* Brand Logo - PlumberIndore */}
@@ -82,22 +91,49 @@ export default function Header() {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`text-sm font-semibold transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-amber-400 font-bold' 
-                      : 'text-slate-300 hover:text-white'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+            <Link
+              href="/"
+              className={`text-sm font-semibold transition-colors duration-200 ${
+                pathname === '/' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t.navHome}
+            </Link>
+
+            {/* Services Link with Mega Menu Trigger */}
+            <div 
+              className="relative py-2"
+              onMouseEnter={handleMouseEnterServices}
+              onMouseLeave={handleMouseLeaveServices}
+            >
+              <button
+                type="button"
+                onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
+                className={`text-sm font-semibold transition-colors duration-200 inline-flex items-center gap-1 focus:outline-none ${
+                  pathname.startsWith('/services') || isMegaMenuOpen
+                    ? 'text-amber-400 font-bold' 
+                    : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <span>{t.navServices}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMegaMenuOpen ? 'rotate-180 text-amber-400' : ''}`} />
+              </button>
+
+              {/* Mega Menu Dropdown */}
+              <ServicesMegaMenu
+                isOpen={isMegaMenuOpen}
+                onClose={() => setIsMegaMenuOpen(false)}
+              />
+            </div>
+
+            <Link
+              href="/about"
+              className={`text-sm font-semibold transition-colors duration-200 ${
+                pathname === '/about' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t.navAbout}
+            </Link>
           </nav>
 
           {/* Right Action CTA Buttons */}
@@ -136,16 +172,30 @@ export default function Header() {
       {/* Mobile Slide-down Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 text-base font-semibold text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg"
-            >
-              {link.name}
-            </Link>
-          ))}
+          <Link
+            href="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg"
+          >
+            {t.navHome}
+          </Link>
+
+          <Link
+            href="/services"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-amber-400 hover:bg-slate-800/50 rounded-lg"
+          >
+            {t.navServices}
+          </Link>
+
+          <Link
+            href="/about"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg"
+          >
+            {t.navAbout}
+          </Link>
+
           <div className="pt-2">
             <button
               type="button"
