@@ -39,9 +39,7 @@ export default function Header() {
   const navLinks = [
     { name: t.navHome, href: '/' },
     { name: t.navServices, href: '/services' },
-    { name: t.navHowItWorks, href: '/#how-it-works' },
     { name: t.navAbout, href: '/about' },
-    { name: t.navContact, href: '/contact' },
   ];
 
   return (
@@ -148,6 +146,18 @@ export default function Header() {
               {link.name}
             </Link>
           ))}
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                openBookingModal('ac-repair');
+              }}
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold py-3 rounded-xl text-sm text-center block shadow-md"
+            >
+              {t.bookNow}
+            </button>
+          </div>
         </div>
       )}
     </header>
