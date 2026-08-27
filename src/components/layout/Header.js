@@ -17,6 +17,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   
   const timeoutRef = useRef(null);
+  const megaMenuContainerRef = useRef(null);
 
   const { openBookingModal } = useBooking();
   const { t } = useLanguage();
@@ -31,6 +32,17 @@ export default function Header() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle click outside to close mega menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (megaMenuContainerRef.current && !megaMenuContainerRef.current.contains(event.target)) {
+        setIsMegaMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSearchSubmit = (e) => {
@@ -48,16 +60,16 @@ export default function Header() {
   const handleMouseLeaveServices = () => {
     timeoutRef.current = setTimeout(() => {
       setIsMegaMenuOpen(false);
-    }, 150);
+    }, 200);
   };
 
   return (
-    <header className={`sticky top-0 z-40 transition-all duration-300 ${
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled 
         ? 'bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-lg py-2.5' 
         : 'bg-slate-900 border-b border-slate-800/80 py-3.5'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" ref={megaMenuContainerRef}>
         <div className="flex items-center justify-between gap-4">
           
           {/* Brand Logo - PlumberIndore */}
@@ -102,14 +114,14 @@ export default function Header() {
 
             {/* Services Link with Mega Menu Trigger */}
             <div 
-              className="relative py-2"
+              className="py-1"
               onMouseEnter={handleMouseEnterServices}
               onMouseLeave={handleMouseLeaveServices}
             >
               <button
                 type="button"
                 onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
-                className={`text-sm font-semibold transition-colors duration-200 inline-flex items-center gap-1 focus:outline-none ${
+                className={`text-sm font-semibold transition-colors duration-200 inline-flex items-center gap-1 focus:outline-none py-1 ${
                   pathname.startsWith('/services') || isMegaMenuOpen
                     ? 'text-amber-400 font-bold' 
                     : 'text-slate-300 hover:text-white'
@@ -118,12 +130,6 @@ export default function Header() {
                 <span>{t.navServices}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMegaMenuOpen ? 'rotate-180 text-amber-400' : ''}`} />
               </button>
-
-              {/* Mega Menu Dropdown */}
-              <ServicesMegaMenu
-                isOpen={isMegaMenuOpen}
-                onClose={() => setIsMegaMenuOpen(false)}
-              />
             </div>
 
             <Link
@@ -167,6 +173,14 @@ export default function Header() {
           </div>
 
         </div>
+
+        {/* Mega Menu Dropdown anchored to header container */}
+        <ServicesMegaMenu
+          isOpen={isMegaMenuOpen}
+          onClose={() => setIsMegaMenuOpen(false)}
+          onMouseEnter={handleMouseEnterServices}
+          onMouseLeave={handleMouseLeaveServices}
+        />
       </div>
 
       {/* Mobile Slide-down Menu */}
