@@ -12,9 +12,16 @@ import { BookingProvider } from '../context/BookingContext';
 import { LanguageProvider } from '../context/LanguageContext';
 
 export const metadata = {
+  metadataBase: new URL('https://www.plumberindore.in'),
   title: 'PlumberIndore - Indore’s #1 Doorstep Plumbing & Appliance Repair Service',
   description: 'Book certified plumbers, electricians, AC repair, refrigerator repair, washing machine & RO repair in Indore. 45-minute arrival with 30-day post service warranty.',
   keywords: 'plumber indore, AC repair Vijay Nagar, electrician Indore, refrigerator repair Palasia, washing machine service Indore, RO purifier repair Indore',
+  alternates: {
+    canonical: './',
+  },
+  verification: {
+    google: 'oSTdaPCqjeWHhITF2gAlNUorKjDSGUO0kMTSB8GGG84',
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -41,12 +48,13 @@ export default function RootLayout({ children }) {
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K8B67BDW');`,
           }}
         />
         {/* End Google Tag Manager */}
 
+        <meta name="google-site-verification" content="oSTdaPCqjeWHhITF2gAlNUorKjDSGUO0kMTSB8GGG84" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />

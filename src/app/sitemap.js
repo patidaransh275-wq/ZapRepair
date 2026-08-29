@@ -1,7 +1,7 @@
 import { SERVICES_DATA } from '../data/servicesData';
 
 export default async function sitemap() {
-  const baseUrl = 'https://plumberindore.in';
+  const baseUrl = 'https://www.plumberindore.in';
 
   // Static routes
   const staticRoutes = [
