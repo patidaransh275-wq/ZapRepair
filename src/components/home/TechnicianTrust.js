@@ -15,7 +15,7 @@ export default function TechnicianTrust() {
       exp: '8+ Yrs Experience',
       repairs: '500+ Indore Repairs',
       specialty: 'Daikin, Voltas, LG Inverter AC Specialists',
-      image: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&h=300&q=80'
+      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80'
     },
     {
       name: 'Suresh Sharma',
@@ -23,17 +23,17 @@ export default function TechnicianTrust() {
       location: 'Palasia Hub, Indore',
       exp: '10+ Yrs Experience',
       repairs: '650+ Indore Repairs',
-      specialty: 'Sanitary Fittings & Underground Leakage Detection',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80'
+      specialty: 'Sanitary Fittings & Concealed Leakage Detection',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=400&q=80'
     },
     {
-      name: 'Amit Patel',
+      name: 'Rajesh Patel',
       title: 'Certified Electrical Specialist',
       location: 'Bhanwarkuan Hub, Indore',
       exp: '7+ Yrs Experience',
       repairs: '420+ Indore Repairs',
       specialty: '3-Phase Wiring, MCB & Short Circuit Fixes',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&h=300&q=80'
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80'
     }
   ];
 

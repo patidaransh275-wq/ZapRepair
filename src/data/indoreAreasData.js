@@ -45,6 +45,24 @@ export const INDORE_AREAS_DATA = [
     description: 'Serving Rau, AB Road Bypass townships, and IIM Indore vicinity with heavy-duty AC gas charging and plumbing fittings.'
   },
   {
+    slug: 'rajendra-nagar',
+    name: 'Rajendra Nagar',
+    pincode: '452012',
+    landmark: 'Treasure Fantasy / CAT / Silicon City',
+    eta: '35 Mins',
+    activeTechs: 8,
+    description: 'Prompt plumbing, electrical troubleshooting, and appliance servicing across Rajendra Nagar, Silicon City, and CAT colony.'
+  },
+  {
+    slug: 'annapurna',
+    name: 'Annapurna',
+    pincode: '452009',
+    landmark: 'Annapurna Temple / Narendra Tiwari Marg / Gopur',
+    eta: '30 Mins',
+    activeTechs: 9,
+    description: 'Comprehensive doorstep plumbing maintenance, RO water purifier servicing, and electrical repairs for Annapurna & Usha Nagar residents.'
+  },
+  {
     slug: 'sudama-nagar',
     name: 'Sudama Nagar',
     pincode: '452009',
@@ -70,5 +88,23 @@ export const INDORE_AREAS_DATA = [
     eta: '40 Mins',
     activeTechs: 6,
     description: 'Fast doorstep service for tech park employees and township residents along Super Corridor & Airport Road.'
+  },
+  {
+    slug: 'mr-10',
+    name: 'MR-10 & Sukhlia',
+    pincode: '452010',
+    landmark: 'MR-10 Bridge / Bapat Square / Sukhlia',
+    eta: '30 Mins',
+    activeTechs: 10,
+    description: 'Dedicated technician hub providing 30-minute doorstep AC maintenance, water motor repairs, and sanitary fixes around MR-10 corridor.'
+  },
+  {
+    slug: 'bhawrasla',
+    name: 'Bhawrasla & Ujjain Road',
+    pincode: '453555',
+    landmark: 'Aurobindo Hospital / Sanwer Road / Bhawrasla Square',
+    eta: '35 Mins',
+    activeTechs: 7,
+    description: 'Specialized plumbing installations, heavy appliance diagnostics, and electrician dispatch near Aurobindo Hospital and Bhawrasla.'
   }
 ];

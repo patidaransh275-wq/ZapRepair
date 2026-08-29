@@ -6,6 +6,7 @@ import { ShieldCheck, MapPin, Clock, ArrowRight, CheckCircle2, ChevronDown, Chev
 import { SERVICES_DATA } from '../../../data/servicesData';
 import { useBooking } from '../../../context/BookingContext';
 import { checkPincodeServiceability } from '../../../data/pincodesData';
+import PlumbingServicesGrid from '../../../components/services/PlumbingServicesGrid';
 
 export default function ServiceDetailPage({ params }) {
   const { appliance } = params;
@@ -196,60 +197,65 @@ export default function ServiceDetailPage({ params }) {
           </form>
         </div>
 
-        {/* Pricing / Packages Section */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900 font-heading">
-                Service Packages & Fixed Pricing
-              </h2>
-              <p className="text-xs text-slate-500">
-                Transparent labor & service charges. Doorstep inspection fee waived if repair is approved.
-              </p>
+        {/* Dedicated 11-Category Plumbing Services Grid if Plumber service */}
+        {service.id === 'plumber' ? (
+          <PlumbingServicesGrid />
+        ) : (
+          /* Standard Pricing / Packages Section for other appliances */
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 font-heading">
+                  Service Packages & Fixed Pricing
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Transparent labor & service charges. Doorstep inspection fee waived if repair is approved.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {service.packages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft-sm hover:shadow-soft-md transition-all duration-200 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-bold text-slate-900 font-heading">{pkg.title}</h3>
-                    <div className="text-right">
-                      <div className="text-xl font-extrabold text-slate-900 font-heading">₹{pkg.price}</div>
-                      {pkg.originalPrice && (
-                        <div className="text-xs text-slate-400 line-through">₹{pkg.originalPrice}</div>
-                      )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {service.packages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft-sm hover:shadow-soft-md transition-all duration-200 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-lg font-bold text-slate-900 font-heading">{pkg.title}</h3>
+                      <div className="text-right">
+                        <div className="text-xl font-extrabold text-slate-900 font-heading">₹{pkg.price}</div>
+                        {pkg.originalPrice && (
+                          <div className="text-xs text-slate-400 line-through">₹{pkg.originalPrice}</div>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed mb-4">{pkg.description}</p>
+                    
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-4">
+                      <Clock className="w-4 h-4 text-amber-500" />
+                      <span>Duration: {pkg.duration}</span>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed mb-4">{pkg.description}</p>
-                  
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mb-4">
-                    <Clock className="w-4 h-4 text-amber-500" />
-                    <span>Duration: {pkg.duration}</span>
+
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                      <ShieldCheck className="w-4 h-4" />
+                      30-Day Warranty Included
+                    </span>
+
+                    <button
+                      onClick={() => openBookingModal(service.id, pkg)}
+                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-sm transition-all"
+                    >
+                      Select & Book
+                    </button>
                   </div>
                 </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                    <ShieldCheck className="w-4 h-4" />
-                    30-Day Warranty Included
-                  </span>
-
-                  <button
-                    onClick={() => openBookingModal(service.id, pkg)}
-                    className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-sm transition-all"
-                  >
-                    Select & Book
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Common Issues Solved */}
         {service.issues && service.issues.length > 0 && (

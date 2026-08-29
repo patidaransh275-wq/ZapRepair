@@ -68,13 +68,13 @@ export default function ServiceTabs() {
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2">
+        {/* Filter Pills with smooth horizontal touch scroll on mobile */}
+        <div className="flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-3 pt-1 px-4 sm:px-0 -mx-4 sm:mx-0 flex-nowrap scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all shrink-0 ${
+              className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
                 activeCategory === cat.id
                   ? 'bg-slate-900 text-white shadow-md'
                   : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
@@ -99,26 +99,18 @@ export default function ServiceTabs() {
                     <div className="w-12 h-12 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-bold shadow-md group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                       <IconComp className="w-6 h-6 stroke-[2.5]" />
                     </div>
-                    {srv.badge && (
-                      <span className="text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-200">
-                        {srv.badge}
-                      </span>
-                    )}
                   </div>
 
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 font-heading group-hover:text-amber-600 transition-colors">
                       {srv.name}
                     </h3>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-2">
-                      {srv.description}
-                    </p>
                   </div>
                 </div>
 
                 <div className="pt-4 mt-4 border-t border-slate-100 space-y-3">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500">Starting from</span>
+                    <span className="text-slate-500 font-semibold">Starting from</span>
                     <span className="text-base font-extrabold text-slate-900 font-heading">
                       ₹{srv.startingPrice}
                     </span>

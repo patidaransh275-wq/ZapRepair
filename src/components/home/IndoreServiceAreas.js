@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Wrench, Search, ArrowRight, Check } from 'lucide-react';
+import Link from 'next/link';
+import { MapPin, Search, ArrowRight, Check } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import { INDORE_AREAS_DATA } from '../../data/indoreAreasData';
 
 export default function IndoreServiceAreas() {
   const { openBookingModal } = useBooking();
@@ -16,30 +18,15 @@ export default function IndoreServiceAreas() {
     }
   };
 
-  const indoreBoroughList = [
-    "Vijay Nagar",
-    "Palasia",
-    "Bhanwarkuan",
-    "Bengali Square",
-    "Rau",
-    "Rajendra Nagar",
-    "Annapurna",
-    "Sudama Nagar",
-    "Nipania",
-    "Super Corridor",
-    "MR-10",
-    "Bhawrasla"
-  ];
-
   return (
-    <section id="indore-service-areas" className="py-16 md:py-24 bg-slate-50 border-b border-slate-200">
+    <section id="indore-service-areas" className="py-16 md:py-24 bg-slate-50 border-b border-slate-200 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
           {/* LEFT SIDE: Interactive General Indore Service Area Map */}
           <div className="lg:col-span-5 w-full">
-            <div className="relative w-full h-[380px] sm:h-[430px] bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col justify-between">
+            <div className="relative w-full h-[360px] sm:h-[430px] bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col justify-between">
               
               {/* General Indore Map Iframe */}
               <iframe
@@ -68,7 +55,7 @@ export default function IndoreServiceAreas() {
           </div>
 
           {/* RIGHT SIDE: Layout ("We serve all the major areas in Indore") */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-7 space-y-6 w-full">
             
             <div className="space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3.5 py-1 rounded-full border border-emerald-200 inline-block">
@@ -89,24 +76,28 @@ export default function IndoreServiceAreas() {
               PlumberIndore provides home plumbing & appliance repair services across Indore, including AC repair, refrigerator repair, washing machine repair, RO repair, geyser repair, electrician, and plumbing services.
             </div>
 
-            {/* Checklist Grid ([✓] Green Checkbox Style) */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
-              {indoreBoroughList.map((area, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-emerald-50/50 transition-colors"
+            {/* Clickable Area Links Grid with robust mobile spacing */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3.5 pt-2">
+              {INDORE_AREAS_DATA.map((area) => (
+                <Link
+                  key={area.slug}
+                  href={`/${area.slug}`}
+                  className="flex items-center gap-2 sm:gap-2.5 p-2 sm:p-2.5 rounded-xl border border-slate-200/80 bg-white hover:border-emerald-300 hover:bg-emerald-50/60 transition-all group shadow-sm"
+                  title={`View Plumber & Repair Services in ${area.name}`}
                 >
-                  <div className="w-5 h-5 rounded border border-emerald-500 bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded border border-emerald-500 bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-xs font-bold text-slate-900 truncate">{area}</span>
-                </div>
+                  <span className="text-xs font-bold text-slate-900 group-hover:text-emerald-800 transition-colors truncate">
+                    {area.name}
+                  </span>
+                </Link>
               ))}
             </div>
 
             {/* Note below list */}
             <div className="text-[11px] text-slate-500 italic pt-1">
-              * Service availability verified across all major Indore pincodes.
+              * Click any area to view active technicians, arrival speed & localized pricing.
             </div>
 
             {/* CTAs */}

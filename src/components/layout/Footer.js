@@ -70,11 +70,11 @@ export default function Footer() {
               Indore Hubs
             </h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/service-areas/vijay-nagar" className="hover:text-amber-400">Vijay Nagar Sector</Link></li>
-              <li><Link href="/service-areas/palasia" className="hover:text-amber-400">Palasia Sector</Link></li>
-              <li><Link href="/service-areas/bhanwarkuan" className="hover:text-amber-400">Bhanwarkuan Sector</Link></li>
-              <li><Link href="/service-areas/rau" className="hover:text-amber-400">Rau Bypass Sector</Link></li>
-              <li><Link href="/service-areas/sudama-nagar" className="hover:text-amber-400">Sudama Nagar Sector</Link></li>
+              <li><Link href="/vijay-nagar" className="hover:text-amber-400">Vijay Nagar Sector</Link></li>
+              <li><Link href="/palasia" className="hover:text-amber-400">Palasia Sector</Link></li>
+              <li><Link href="/bhanwarkuan" className="hover:text-amber-400">Bhanwarkuan Sector</Link></li>
+              <li><Link href="/rau" className="hover:text-amber-400">Rau Bypass Sector</Link></li>
+              <li><Link href="/sudama-nagar" className="hover:text-amber-400">Sudama Nagar Sector</Link></li>
             </ul>
           </div>
 

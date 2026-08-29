@@ -98,7 +98,6 @@ function ServicesContent() {
 
               <div className="p-6 space-y-3">
                 <h3 className="text-xl font-bold text-slate-900 font-heading">{srv.name}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
                 
                 <div className="pt-2 flex items-center justify-between text-xs border-t border-slate-100">
                   <span className="text-slate-500 font-medium">Starts from</span>
