@@ -69,6 +69,9 @@ export function BookingProvider({ children }) {
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [rescheduleBookingId, setRescheduleBookingId] = useState(null);
 
+  // All Services Categorized Modal state
+  const [isAllServicesModalOpen, setIsAllServicesModalOpen] = useState(false);
+
   const [userPincode, setUserPincodeState] = useState('452010');
   const [userBookings, setUserBookings] = useState([]);
 
@@ -249,6 +252,14 @@ export function BookingProvider({ children }) {
     setRescheduleBookingId(null);
   };
 
+  const openAllServicesModal = () => {
+    setIsAllServicesModalOpen(true);
+  };
+
+  const closeAllServicesModal = () => {
+    setIsAllServicesModalOpen(false);
+  };
+
   const addBooking = (bookingData) => {
     const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
     const newBooking = {
@@ -339,6 +350,9 @@ export function BookingProvider({ children }) {
         closeRescheduleModal,
         rescheduleBookingId,
         rescheduleBooking,
+        isAllServicesModalOpen,
+        openAllServicesModal,
+        closeAllServicesModal,
         userPincode,
         setUserPincode,
         userBookings,

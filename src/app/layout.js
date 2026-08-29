@@ -7,6 +7,7 @@ import MobileNav from '../components/layout/MobileNav';
 import CookieConsentBanner from '../components/layout/CookieConsentBanner';
 import BookingModal from '../components/booking/BookingModal';
 import TrackingModal from '../components/booking/TrackingModal';
+import AllServicesModal from '../components/services/AllServicesModal';
 import { BookingProvider } from '../context/BookingContext';
 import { LanguageProvider } from '../context/LanguageContext';
 
@@ -80,6 +81,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <CookieConsentBanner />
             <BookingModal />
             <TrackingModal />
+            <AllServicesModal />
           </BookingProvider>
         </LanguageProvider>
       </body>
