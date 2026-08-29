@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Phone, ArrowRight, Wrench } from 'lucide-react';
+import { Phone, ArrowRight } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function FinalCTA() {
@@ -11,8 +11,13 @@ export default function FinalCTA() {
     <section className="py-16 md:py-24 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
         
-        <div className="w-14 h-14 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center font-bold mx-auto shadow-xl">
-          <Wrench className="w-7 h-7 stroke-[2.5]" />
+        {/* Website Icon Container */}
+        <div className="w-16 h-16 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center font-bold mx-auto shadow-xl p-2.5">
+          <img 
+            src="/logo.png" 
+            alt="PlumberIndore Icon" 
+            className="w-10 h-10 object-contain drop-shadow"
+          />
         </div>
 
         <div className="max-w-2xl mx-auto space-y-2">
@@ -34,11 +39,11 @@ export default function FinalCTA() {
           </button>
 
           <a
-            href="tel:+919876543210"
+            href="tel:+919174934135"
             className="w-full sm:w-auto bg-white/90 hover:bg-white text-slate-950 font-bold px-8 py-4 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2 border border-slate-950/20"
           >
             <Phone className="w-4 h-4 text-slate-950" />
-            <span>Call Helpline: +91 98765 43210</span>
+            <span>Call Helpline: +91 91749 34135</span>
           </a>
         </div>
 
