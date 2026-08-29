@@ -1,6 +1,6 @@
 import React from 'react';
 
-// High quality minimalist appliance & service vector illustrations inspired by Urban Company design
+// High quality minimalist appliance & service vector illustrations
 
 export function ACIcon({ className = "w-14 h-10" }) {
   return (
