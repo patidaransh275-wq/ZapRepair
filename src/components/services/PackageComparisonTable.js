@@ -31,14 +31,14 @@ export default function PackageComparisonTable() {
       btnText: 'Book Foam Service'
     },
     {
-      name: 'Annual Care AMC',
-      price: 1499,
-      desc: '4 Quarterly foam servicings + free unlimited calls',
+      name: 'Master Overhaul & Repair',
+      price: 899,
+      desc: 'Complete deep overhaul, chemical wash & wiring safety tune',
       foamJet: true,
-      spareDiscount: '15% OFF',
-      warranty: '365-Day AMC Protection',
-      arrival: 'VIP Immediate Dispatch',
-      btnText: 'Subscribe AMC Plan'
+      spareDiscount: '10% OFF',
+      warranty: '60-Day Extended Warranty',
+      arrival: 'Immediate Priority',
+      btnText: 'Book Master Overhaul'
     }
   ];
 
@@ -52,7 +52,7 @@ export default function PackageComparisonTable() {
           Service Package Comparison Matrix
         </h3>
         <p className="text-xs text-slate-500">
-          Compare features across Basic Inspection, Deep Power Servicing, and Annual AMC Protection.
+          Compare features across Basic Inspection, Deep Power Servicing, and Master Overhaul.
         </p>
       </div>
 

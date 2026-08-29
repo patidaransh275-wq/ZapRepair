@@ -24,10 +24,6 @@ export default function BookingModal() {
   // Date and Time slot picker
   const [selectedDate, setSelectedDate] = useState('2026-08-25');
   const [selectedSlot, setSelectedSlot] = useState('2:00 PM - 4:00 PM');
-  
-  // AMC Subscription toggle
-  const [isSubscription, setIsSubscription] = useState(false);
-  const [subscriptionPlan, setSubscriptionPlan] = useState('Standard AMC (2 Services/Yr)');
 
   const [createdBooking, setCreatedBooking] = useState(null);
 
@@ -58,19 +54,17 @@ export default function BookingModal() {
   };
 
   const handleCreateBooking = () => {
-    const finalPrice = isSubscription ? 1499 : (selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice);
+    const finalPrice = selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice;
     
     const newBooking = addBooking({
       serviceId: currentServiceObj.id,
       serviceName: currentServiceObj.name,
-      packageTitle: isSubscription ? `AMC Plan: ${subscriptionPlan}` : (selectedPackage ? selectedPackage.title : 'Standard Repair & Diagnostics'),
+      packageTitle: selectedPackage ? selectedPackage.title : 'Standard Repair & Diagnostics',
       price: finalPrice,
       pincode: pincode,
       address: address,
       date: selectedDate,
       timeSlot: selectedSlot,
-      isSubscription: isSubscription,
-      subscriptionPlan: isSubscription ? subscriptionPlan : null,
       name: customerName,
       phone: customerPhone,
       description: issueDescription
@@ -228,27 +222,6 @@ export default function BookingModal() {
                     </div>
                   );
                 })}
-              </div>
-
-              {/* AMC Annual Subscription Toggle Option */}
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-amber-900 flex items-center gap-1">
-                    <ShieldCheck className="w-4 h-4 text-amber-600" />
-                    Save with AMC Subscription (2 Servicings/Year)
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={isSubscription}
-                    onChange={(e) => setIsSubscription(e.target.checked)}
-                    className="w-4 h-4 text-amber-600 rounded focus:ring-amber-500"
-                  />
-                </div>
-                {isSubscription && (
-                  <p className="text-[11px] text-slate-700 leading-tight">
-                    Get 2 complete deep foam jet servicings per year + free unlimited priority breakdown visits for ₹1499/year.
-                  </p>
-                )}
               </div>
 
               <div className="flex gap-2 pt-2">
@@ -421,7 +394,7 @@ export default function BookingModal() {
                 <div className="flex justify-between font-bold text-slate-900">
                   <span>Total Amount Payable:</span>
                   <span className="text-amber-600 text-sm font-extrabold">
-                    ₹{isSubscription ? 1499 : (selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice)}
+                    ₹{selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice}
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500">Pay via UPI QR / Card online or cash to technician after repair completion.</p>
