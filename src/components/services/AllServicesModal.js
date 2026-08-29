@@ -16,7 +16,8 @@ import {
   Flame, 
   BatteryCharging,
   Sparkles,
-  ChevronRight
+  Hammer,
+  Paintbrush
 } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
@@ -37,6 +38,13 @@ export const ALL_SERVICES_CATEGORIZED = [
         slug: 'electrician',
         icon: PlugZap,
         startingPrice: 149
+      },
+      {
+        id: 'carpenter',
+        name: 'Carpenter Services',
+        slug: 'carpenter',
+        icon: Hammer,
+        startingPrice: 199
       }
     ]
   },
@@ -103,6 +111,25 @@ export const ALL_SERVICES_CATEGORIZED = [
         slug: 'atta-chakki',
         icon: Wheat,
         startingPrice: 349
+      }
+    ]
+  },
+  {
+    category: 'Cleaning & Home Care',
+    services: [
+      {
+        id: 'cleaning-pest-control',
+        name: 'Cleaning & Pest Control',
+        slug: 'cleaning-pest-control',
+        icon: Sparkles,
+        startingPrice: 499
+      },
+      {
+        id: 'painting-waterproofing',
+        name: 'Painting & Waterproofing',
+        slug: 'painting-waterproofing',
+        icon: Paintbrush,
+        startingPrice: 999
       }
     ]
   },
@@ -187,7 +214,7 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">
-                Doorstep Catalogue
+                Urban Company Equivalent Indore Catalogue
               </span>
             </div>
             <h2 
@@ -226,7 +253,7 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
               </div>
 
               {/* Service Cards Responsive Grid */}
-              <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {section.services.map((service) => {
                   const Icon = service.icon;
                   return (

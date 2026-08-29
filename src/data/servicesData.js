@@ -7,7 +7,7 @@ export const SERVICES_DATA = [
     badge: 'Popular',
     startingPrice: 399,
     bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
-    description: 'PlumberIndore offers professional, doorstep Air Conditioner repair, servicing, and installation by certified HVAC technicians in Indore. We service all brands including Daikin, Voltas, LG, Samsung, Blue Star, Carrier, and Hitachi with 100% original spare parts.',
+    description: 'Urban Company-grade doorstep Air Conditioner repair, foam jet servicing, gas leak refill, and installation by certified HVAC technicians across Indore.',
     heroSubtitle: '45-Minute Arrival | 30-Day Warranty | Certified HVAC Pros in Indore',
     packages: [
       { id: 'ac-foam', title: 'Power Foam Jet Service', price: 499, originalPrice: 699, duration: '45 mins', description: 'Deep foam jet cleaning of indoor cooling coils, outdoor condenser unit, drain pipe flush & gas check.' },
@@ -34,7 +34,7 @@ export const SERVICES_DATA = [
     badge: 'Essential',
     startingPrice: 149,
     bannerImage: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
-    description: 'Urban Company-style doorstep plumbing services in Indore. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
+    description: 'Expert doorstep plumbing services in Indore inspired by Urban Company standards. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
     heroSubtitle: 'Expert Plumbers | Leakage & Blockage Specialists | 45-Min Doorstep Arrival',
     packages: [
       { id: 'plm-tap', title: 'Tap, Nozzle & Wall Mixer Repair', price: 149, originalPrice: 249, duration: '30 mins', description: 'Fixing dripping taps, ceramic spindle change, washer replacement, and single lever basin mixer repair.' },
@@ -50,7 +50,7 @@ export const SERVICES_DATA = [
       { title: 'Underground / Concealed Pipe Seepage', startingPrice: 499, cause: 'Cracked PVC joint, loose CPVC fitting, or wall seepage' }
     ],
     faqs: [
-      { q: 'How quickly can an Urban Company style plumber reach Vijay Nagar or Palasia?', a: 'Our assigned local plumber reaches your doorstep within 45 minutes of booking across all Indore sectors.' },
+      { q: 'How quickly can a plumber reach Vijay Nagar or Palasia?', a: 'Our assigned local plumber reaches your doorstep within 45 minutes of booking across all Indore sectors.' },
       { q: 'Do you bring spare parts like ceramic spindles, washers, and flush valves?', a: 'Yes, our plumbers carry 100% genuine spares from Jaquar, Hindware, Cera, and Kohler.' },
       { q: 'Is there a warranty on plumbing repairs?', a: 'Yes, PlumberIndore provides a 30-day post-service warranty on all fittings and leakage repairs.' },
       { q: 'What if the plumber inspects but I decide not to do the repair?', a: 'You only pay a nominal doorstep inspection fee of ₹149, which is 100% waived if you approve the repair.' }
@@ -64,7 +64,7 @@ export const SERVICES_DATA = [
     badge: 'Essential',
     startingPrice: 149,
     bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
-    description: 'Urban Company-style doorstep electrician services in Indore. Switchboard & socket repair, ceiling fan installation, light & chandelier mounting, MCB tripping fix, and short circuit fault finding.',
+    description: 'Certified doorstep electrician services in Indore. Switchboard & socket repair, ceiling fan installation, light & chandelier mounting, MCB tripping fix, and short circuit fault finding.',
     heroSubtitle: 'Safety First | ITI-Certified Electricians | 45-Min Doorstep Arrival',
     packages: [
       { id: 'elec-switch', title: 'Switchboard & Power Socket Repair', price: 149, originalPrice: 249, duration: '30 mins', description: 'Modular switch replacement, 16A heavy power socket fitting for AC/Geyser, and fan speed regulator fix.' },
@@ -87,6 +87,80 @@ export const SERVICES_DATA = [
     ]
   },
   {
+    id: 'cleaning-pest-control',
+    name: 'Cleaning & Pest Control',
+    slug: 'cleaning-pest-control',
+    iconName: 'Sparkles',
+    badge: 'Popular',
+    startingPrice: 499,
+    bannerImage: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
+    description: 'Urban Company style home cleaning & pest control in Indore. Deep bathroom cleaning, kitchen degreasing, sofa & carpet shampooing, full home sanitization, and odorless herbal cockroach pest control.',
+    heroSubtitle: 'Hospital-Grade Sanitization | Odorless Pest Control | 45-Min Arrival',
+    packages: [
+      { id: 'cln-bath', title: 'Bathroom Deep Cleaning & Hard Water Stain Removal', price: 499, originalPrice: 799, duration: '45 mins', description: 'Floor scrub, tile descaling, toilet bowl sanitization, tap chrome shine & mirror polishing.' },
+      { id: 'cln-kitchen', title: 'Kitchen Deep Cleaning & Degreasing', price: 799, originalPrice: 1199, duration: '60 mins', description: 'Countertop degreasing, cabinet exterior wipe, sink sanitization, exhaust fan & tile stain cleanup.' },
+      { id: 'cln-sofa', title: 'Sofa & Mattress Shampooing (Per Seat)', price: 299, originalPrice: 449, duration: '45 mins', description: 'Deep extraction vacuuming, fabric foam shampooing, and dust mite sanitization.' },
+      { id: 'cln-full-home', title: 'Full House Deep Cleaning (1BHK/2BHK/3BHK)', price: 1999, originalPrice: 2799, duration: '180 mins', description: 'Complete floor scrubbing, window track cleaning, balcony wash, kitchen & bathroom deep sanitation.' },
+      { id: 'cln-pest', title: 'Cockroach & General Pest Control', price: 599, originalPrice: 899, duration: '45 mins', description: '100% odorless gel baiting and chemical spray in kitchen, cabinets, drain holes & rooms.' }
+    ],
+    issues: [
+      { title: 'Hard Water Yellow Stains on Bathroom Tiles', startingPrice: 499, cause: 'Indore hard water mineral build-up and soap scum' },
+      { title: 'Greasy Kitchen Tiles & Exhaust Fan', startingPrice: 799, cause: 'Accumulated cooking oil vapours and spice dust' },
+      { title: 'Cockroach Infestation in Cabinets', startingPrice: 599, cause: 'Hidden nests near warm appliances and kitchen sinks' }
+    ],
+    faqs: [
+      { q: 'Are the cleaning and pest control chemicals safe for kids and pets?', a: 'Yes, we use eco-friendly, non-toxic, and odorless chemicals approved for residential use.' },
+      { q: 'Do you bring your own mechanized scrubbing machines and vacuum cleaners?', a: 'Yes, our cleaning team comes fully equipped with high-pressure steamers, vacuums, and specialized cleaning tools.' }
+    ]
+  },
+  {
+    id: 'carpenter',
+    name: 'Carpenter Services',
+    slug: 'carpenter',
+    iconName: 'Hammer',
+    badge: 'Essential',
+    startingPrice: 199,
+    bannerImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    description: 'Doorstep carpenter services in Indore. Door lock replacement, wardrobe & cupboard hinge repair, bed and sofa assembly, wall hanging drill work, and custom furniture adjustments.',
+    heroSubtitle: 'Master Carpenters | Precision Woodwork & Hardware Fixes | 45-Min Arrival',
+    packages: [
+      { id: 'crp-lock', title: 'Door Lock, Latch & Handle Repair', price: 199, originalPrice: 299, duration: '30 mins', description: 'Main door lock replacement, cylindrical lock fix, tower bolt, handle & magnetic catcher fitting.' },
+      { id: 'crp-hinge', title: 'Cupboard & Wardrobe Hinge / Slider Fix', price: 249, originalPrice: 399, duration: '30 mins', description: 'Hydraulic soft-close hinge fitting, drawer channel replacement, and sliding door alignment.' },
+      { id: 'crp-drill', title: 'Drill & Hang (Frames, Mirrors, Curtains)', price: 199, originalPrice: 299, duration: '30 mins', description: 'Precision hammer drilling for TV mounts, curtain rods, heavy mirrors, paintings & wall shelves.' },
+      { id: 'crp-bed', title: 'Bed Assembly & Furniture Repair', price: 399, originalPrice: 599, duration: '45 mins', description: 'Hydraulic bed lift repair, dining table wobble fix, chair joint tightening, and wardrobe dismantling/assembly.' }
+    ],
+    issues: [
+      { title: 'Door Scraping Floor / Not Latching', startingPrice: 199, cause: 'Loose hinge screws, frame warping, or misaligned latch plate' },
+      { title: 'Wardrobe Drawer Jammed', startingPrice: 249, cause: 'Bent telescopic channel or broken ball bearings' }
+    ],
+    faqs: [
+      { q: 'Do carpenters bring their own power tools and drill bits?', a: 'Yes, our carpenters carry professional power drills, circular saws, and standard hardware fittings.' },
+      { q: 'Can you assemble IKEA / Urban Ladder / Pepperfry furniture?', a: 'Yes, we specialize in flat-pack furniture assembly and dismantling across all Indore locations.' }
+    ]
+  },
+  {
+    id: 'painting-waterproofing',
+    name: 'Painting & Waterproofing',
+    slug: 'painting-waterproofing',
+    iconName: 'Paintbrush',
+    badge: 'Trending',
+    startingPrice: 999,
+    bannerImage: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=800&q=80',
+    description: 'Professional home painting, wall dampness waterproofing, wall putty, and touch-up services in Indore with dust-free mechanized tools and Asian Paints/Berger products.',
+    heroSubtitle: 'Dust-Free Mechanized Painting | Wall Dampness Fix | Asian Paints Certified',
+    packages: [
+      { id: 'pnt-touch', title: 'Wall Putty, Crack & Touch-up Painting', price: 999, originalPrice: 1499, duration: '60 mins', description: 'Filling cracks, anti-fungal putty application, sanding & double coat touch-up paint match.' },
+      { id: 'pnt-damp', title: 'Wall Dampness & Leakage Waterproofing', price: 1499, originalPrice: 2199, duration: '90 mins', description: 'Dr. Fixit / Asian Paints SmartCare waterproofing barrier coating for peeling paint and wet patches.' },
+      { id: 'pnt-room', title: 'Single Room Painting (Walls & Ceiling)', price: 2499, originalPrice: 3499, duration: '180 mins', description: 'Primer coat, 2 coats of premium plastic emulsion paint, and complete masking protection.' }
+    ],
+    issues: [
+      { title: 'Wall Paint Peeling & White Powder Seepage', startingPrice: 999, cause: 'Underlying moisture in bricks or bathroom pipe leakage' }
+    ],
+    faqs: [
+      { q: 'Do you offer a free site inspection for full home painting in Indore?', a: 'Yes, we provide free doorstep laser measurement and color consultation across Indore.' }
+    ]
+  },
+  {
     id: 'refrigerator',
     name: 'Refrigerator Repair',
     slug: 'refrigerator',
@@ -97,8 +171,9 @@ export const SERVICES_DATA = [
     description: 'Expert single door, double door, and side-by-side refrigerator repair services in Indore.',
     heroSubtitle: 'Same-Day Cooling Repair | Original Spare Parts | Doorstep Service',
     packages: [
-      { id: 'ref-gas', title: 'Compressor & Gas Charging', price: 1299, originalPrice: 1699, duration: '60 mins', description: 'Eco-friendly R600a gas charging, filter drier replacement, and copper pipe sealing.' },
-      { id: 'ref-defrost', title: 'Defrost & Thermostat Repair', price: 499, originalPrice: 699, duration: '45 mins', description: 'Fixing ice buildup, defrost timer/heater issues, and temperature sensor replacement.' }
+      { id: 'ref-gas', title: 'Compressor & Gas Charging', price: 1299, originalPrice: 1699, duration: '60 mins', description: 'Eco-friendly R600a/R134a gas charging, filter drier replacement, and copper pipe sealing.' },
+      { id: 'ref-defrost', title: 'Defrost & Thermostat Repair', price: 499, originalPrice: 699, duration: '45 mins', description: 'Fixing ice buildup, defrost timer/heater issues, and temperature sensor replacement.' },
+      { id: 'ref-pcb', title: 'Inverter Fridge PCB Board Repair', price: 799, originalPrice: 1199, duration: '60 mins', description: 'Micro-controller diagnostics, capacitor replacement, and power supply circuit repair.' }
     ],
     issues: [
       { title: 'Fridge Not Cooling Below', startingPrice: 299, cause: 'Gas leak, relay switch failure, or clogged coils' },
@@ -121,11 +196,12 @@ export const SERVICES_DATA = [
     heroSubtitle: 'Drum & Motor Specialists | Genuine Spares | Doorstep Inspection',
     packages: [
       { id: 'wm-descaling', title: 'Deep Descaling & Drum Service', price: 499, originalPrice: 699, duration: '45 mins', description: 'Complete drum descaling, inlet filter cleaning, and vibration dampening adjustment.' },
-      { id: 'wm-motor', title: 'Motor & Belt Repair', price: 799, originalPrice: 1099, duration: '60 mins', description: 'Drive belt replacement, gear box repair, and PCB error code resolution.' }
+      { id: 'wm-motor', title: 'Motor & Belt Repair', price: 799, originalPrice: 1099, duration: '60 mins', description: 'Drive belt replacement, gear box repair, and PCB error code resolution.' },
+      { id: 'wm-drain', title: 'Drain Pump & Water Inlet Valve Fix', price: 399, originalPrice: 599, duration: '30 mins', description: 'Clogged drain pump cleaning, solenoid inlet valve replacement & pipe leak fix.' }
     ],
     issues: [
       { title: 'Vibration & Loud Noise', startingPrice: 349, cause: 'Worn drum bearings or unbalanced shock absorbers' },
-      { title: 'Water Drainage Error', startingPrice: 299, cause: 'Clogged drain pump or faulty pressure sensor' }
+      { title: 'Water Drainage Error (OE/5E/E20)', startingPrice: 299, cause: 'Clogged drain pump or faulty pressure sensor' }
     ],
     faqs: [
       { q: 'Do you fix front load PCB board issues?', a: 'Yes, our technicians specialize in inverter washing machine PCB diagnosis and component repair.' },
@@ -143,10 +219,12 @@ export const SERVICES_DATA = [
     description: 'RO water purifier filter change, membrane replacement, and TDS balancing in Indore.',
     heroSubtitle: '100% Pure Drinking Water | Authentic Membrane & Carbon Filters',
     packages: [
-      { id: 'ro-service', title: 'Complete Filter Kit Service', price: 799, originalPrice: 1199, duration: '45 mins', description: 'Pre-filter, sediment filter, activated carbon, and post-carbon filter replacement.' }
+      { id: 'ro-service', title: 'Complete Filter Kit Service', price: 799, originalPrice: 1199, duration: '45 mins', description: 'Pre-filter, sediment filter, activated carbon, and post-carbon filter replacement.' },
+      { id: 'ro-membrane', title: 'RO Membrane & Pump Replacement', price: 1299, originalPrice: 1799, duration: '60 mins', description: 'High TDS 80 GPD Filmtec/CSM membrane installation and booster pump pressure test.' }
     ],
     issues: [
-      { title: 'Bad Water Taste / High TDS', startingPrice: 299, cause: 'Exhausted RO membrane or clogged carbon filters' }
+      { title: 'Bad Water Taste / High TDS', startingPrice: 299, cause: 'Exhausted RO membrane or clogged carbon filters' },
+      { title: 'Continuous Water Drain / Low Output', startingPrice: 299, cause: 'Choked pre-filter or faulty auto-cut off switch' }
     ],
     faqs: [
       { q: 'What is the recommended TDS level for Indore groundwater?', a: 'Our technician checks and adjusts TDS to optimal healthy drinking levels between 80-150 ppm.' }
@@ -162,10 +240,12 @@ export const SERVICES_DATA = [
     description: 'Electric and gas geyser repair, heating element replacement, and safety valve fitting in Indore.',
     heroSubtitle: 'Safe & Instant Heating Fix | Thermostat & Element Specialists',
     packages: [
-      { id: 'gys-element', title: 'Heating Element & Thermostat Replacement', price: 599, originalPrice: 899, duration: '45 mins', description: 'Heavy-duty copper heating element installation with safety thermostat testing.' }
+      { id: 'gys-element', title: 'Heating Element & Thermostat Replacement', price: 599, originalPrice: 899, duration: '45 mins', description: 'Heavy-duty copper heating element installation with safety thermostat testing.' },
+      { id: 'gys-install', title: 'Geyser Installation / Uninstallation', price: 399, originalPrice: 599, duration: '45 mins', description: 'Wall mounting with heavy fastener anchors, inlet-outlet connection & earthing verification.' }
     ],
     issues: [
-      { title: 'Water Not Heating', startingPrice: 299, cause: 'Burnt heating coil or tripped safety thermostat' }
+      { title: 'Water Not Heating', startingPrice: 299, cause: 'Burnt heating coil or tripped safety thermostat' },
+      { title: 'Geyser Tank Water Leakage', startingPrice: 349, cause: 'Corroded inlet gasket or loose safety valve fitting' }
     ],
     faqs: [
       { q: 'Is heating element replacement safe?', a: 'Yes, we use shockproof copper elements with dual thermostat cutouts.' }
@@ -181,10 +261,12 @@ export const SERVICES_DATA = [
     description: 'Solo, Grill, and Convection microwave repair. Magnetron and touch panel fixes.',
     heroSubtitle: 'Magnetron & High-Voltage Repair | Doorlock & Touch Panel Fixes',
     packages: [
-      { id: 'mw-heat', title: 'Heating & Magnetron Repair', price: 699, originalPrice: 999, duration: '45 mins', description: 'High-voltage diode, capacitor & magnetron diagnostic and replacement.' }
+      { id: 'mw-heat', title: 'Heating & Magnetron Repair', price: 699, originalPrice: 999, duration: '45 mins', description: 'High-voltage diode, capacitor & magnetron diagnostic and replacement.' },
+      { id: 'mw-touch', title: 'Touchpad & PCB Repair', price: 499, originalPrice: 799, duration: '45 mins', description: 'Membrane keypad replacement, display circuit repair & door switch alignment.' }
     ],
     issues: [
-      { title: 'Sparks Inside Microwave', startingPrice: 299, cause: 'Damaged mica wave-guide sheet or metal contact' }
+      { title: 'Sparks Inside Microwave', startingPrice: 299, cause: 'Damaged mica wave-guide sheet or metal contact' },
+      { title: 'Plate Rotating but Food Cold', startingPrice: 299, cause: 'Failed high-voltage capacitor or magnetron burnout' }
     ],
     faqs: [
       { q: 'Why is the microwave plate turning but food not heating?', a: 'This is usually caused by a blown high-voltage diode or magnetron failure, which our technician replaces at home.' }
@@ -200,7 +282,8 @@ export const SERVICES_DATA = [
     description: 'Honey-comb pad replacement, water pump repair, and motor rewinding for all cooler types.',
     heroSubtitle: 'Quick Summer Servicing | Pump & Motor Repair | Original Honeycomb Pads',
     packages: [
-      { id: 'clr-full', title: 'Complete Cooler Overhaul', price: 299, originalPrice: 449, duration: '30 mins', description: 'Cleaning, motor lubrication, fan blade balancing, and water distribution check.' }
+      { id: 'clr-full', title: 'Complete Cooler Overhaul & Tank Clean', price: 299, originalPrice: 449, duration: '30 mins', description: 'Tank descaling, motor lubrication, fan blade balancing, and water distribution check.' },
+      { id: 'clr-pump', title: 'Submersible Water Pump Replacement', price: 249, originalPrice: 399, duration: '30 mins', description: 'High-lift submersible pump installation with anti-rust wiring.' }
     ],
     issues: [
       { title: 'Water Pump Not Working', startingPrice: 199, cause: 'Burned pump winding or hard water limescale blockage' }
@@ -216,10 +299,11 @@ export const SERVICES_DATA = [
     iconName: 'UtensilsCrossed',
     startingPrice: 399,
     bannerImage: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80',
-    description: 'Deep degreasing, baffle filter washing, motor repair, and ducting installation.',
+    description: 'Deep degreasing, baffle filter washing, motor repair, and ducting installation in Indore.',
     heroSubtitle: 'High Suction Restored | Baffle & Mesh Cleaning | Motor Repair',
     packages: [
-      { id: 'chm-clean', title: 'Deep Degreasing Service', price: 599, originalPrice: 899, duration: '60 mins', description: 'Chemical degreasing of blower, motor housing, and baffle filters.' }
+      { id: 'chm-clean', title: 'Deep Degreasing Service', price: 599, originalPrice: 899, duration: '60 mins', description: 'Chemical degreasing of blower, motor housing, and baffle filters.' },
+      { id: 'chm-motor', title: 'Chimney Motor & Duct Pipe Fix', price: 699, originalPrice: 999, duration: '60 mins', description: 'Heavy suction motor capacitor fix, noise reduction, and flexible duct pipe installation.' }
     ],
     issues: [
       { title: 'Low Suction Power', startingPrice: 399, cause: 'Heavy oil & grease accumulation in blower rotor' }
@@ -235,7 +319,7 @@ export const SERVICES_DATA = [
     iconName: 'Zap',
     startingPrice: 299,
     bannerImage: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
-    description: 'Inverter PCB repair, battery distilled water top-up, and terminal cleaning.',
+    description: 'Inverter PCB repair, battery distilled water top-up, and terminal cleaning in Indore.',
     heroSubtitle: 'Uninterrupted Power Backup | Inverter PCB & Battery Care',
     packages: [
       { id: 'inv-check', title: 'Inverter & Battery Checkup', price: 299, originalPrice: 499, duration: '30 mins', description: 'Charging current test, battery gravity test, and acid top-up.' }

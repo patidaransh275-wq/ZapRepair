@@ -2,7 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Wind, Refrigerator, Shirt, Wrench, PlugZap, Droplets, Flame, Microwave, Fan, UtensilsCrossed, Zap, Wheat, ArrowRight, ShieldCheck } from 'lucide-react';
+import { 
+  Wind, Refrigerator, Shirt, Wrench, PlugZap, Droplets, Flame, 
+  Microwave, Fan, UtensilsCrossed, Zap, Wheat, Sparkles, Hammer, 
+  Paintbrush, ArrowRight 
+} from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
 
@@ -18,7 +22,10 @@ const ICON_MAP = {
   Fan,
   UtensilsCrossed,
   Zap,
-  Wheat
+  Wheat,
+  Sparkles,
+  Hammer,
+  Paintbrush
 };
 
 export default function ServiceTabs() {
@@ -29,14 +36,18 @@ export default function ServiceTabs() {
     { id: 'all', label: 'All Services' },
     { id: 'appliance', label: 'Appliance Repair' },
     { id: 'plumber', label: 'Plumbing' },
-    { id: 'electrician', label: 'Electrician' }
+    { id: 'electrician', label: 'Electrician' },
+    { id: 'cleaning', label: 'Cleaning & Pest' },
+    { id: 'carpenter', label: 'Carpenter & Paint' }
   ];
 
   const filteredServices = SERVICES_DATA.filter((s) => {
     if (activeCategory === 'all') return true;
-    if (activeCategory === 'appliance') return ['ac-repair', 'refrigerator', 'washing-machine', 'ro-purifier', 'geyser', 'microwave'].includes(s.id);
+    if (activeCategory === 'appliance') return ['ac-repair', 'refrigerator', 'washing-machine', 'ro-purifier', 'geyser', 'microwave', 'air-cooler', 'kitchen-chimney', 'inverter', 'atta-chakki'].includes(s.id);
     if (activeCategory === 'plumber') return s.id === 'plumber';
     if (activeCategory === 'electrician') return s.id === 'electrician';
+    if (activeCategory === 'cleaning') return s.id === 'cleaning-pest-control';
+    if (activeCategory === 'carpenter') return ['carpenter', 'painting-waterproofing'].includes(s.id);
     return true;
   });
 
@@ -47,10 +58,10 @@ export default function ServiceTabs() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200 inline-block">
-            Our Expertise
+            Our Doorstep Catalogue
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Doorstep Plumbing & Appliance Services
+            Urban Company Grade Home & Appliance Services
           </h2>
           <p className="text-sm text-slate-600">
             Select your required home service in Indore for fixed upfront rates and 45-minute arrival.

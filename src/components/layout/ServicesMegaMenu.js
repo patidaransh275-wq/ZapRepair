@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Wind, Wrench, PlugZap, Refrigerator, Shirt, Droplets, Flame, 
-  Microwave, Fan, UtensilsCrossed, Zap, Wheat, ChevronRight, ArrowRight, Sparkles 
+  Microwave, Fan, UtensilsCrossed, Zap, Wheat, ChevronRight, ArrowRight, Sparkles,
+  Hammer, Paintbrush
 } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
@@ -21,7 +22,10 @@ const ICON_MAP = {
   Fan,
   UtensilsCrossed,
   Zap,
-  Wheat
+  Wheat,
+  Sparkles,
+  Hammer,
+  Paintbrush
 };
 
 export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMouseLeave }) {
@@ -42,10 +46,10 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
       <div className="bg-white border border-slate-200/90 rounded-3xl shadow-2xl overflow-hidden text-slate-900 animate-in fade-in slide-in-from-top-2 duration-150">
         
         {/* Mega Menu Body */}
-        <div className="flex min-h-[430px]">
+        <div className="flex min-h-[440px]">
           
           {/* Left Column - Category Sidebar */}
-          <div className="w-1/3 max-w-[280px] bg-slate-50/90 border-r border-slate-200/80 p-3 space-y-1 overflow-y-auto max-h-[480px] scrollbar-thin">
+          <div className="w-1/3 max-w-[280px] bg-slate-50/90 border-r border-slate-200/80 p-3 space-y-1 overflow-y-auto max-h-[500px] scrollbar-thin">
             <div className="px-3 py-2 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
               Select Service Category
             </div>
@@ -91,7 +95,7 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
           </div>
 
           {/* Right Column - Service Details & 2-Column Grid */}
-          <div className="flex-1 p-6 bg-white space-y-6 flex flex-col justify-between overflow-y-auto max-h-[480px]">
+          <div className="flex-1 p-6 bg-white space-y-6 flex flex-col justify-between overflow-y-auto max-h-[500px]">
             <div className="space-y-5">
               
               {/* Category Header Banner */}
@@ -130,7 +134,7 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                     key={pkg.id}
                     onClick={() => {
                       onClose();
-                      openBookingModal(activeCategory.id);
+                      openBookingModal(activeCategory.id, pkg);
                     }}
                     className="p-3.5 rounded-2xl border border-slate-100 hover:border-amber-300 bg-slate-50/50 hover:bg-amber-50/40 transition-all duration-200 cursor-pointer group space-y-1.5"
                   >
