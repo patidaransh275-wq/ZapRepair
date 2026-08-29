@@ -43,10 +43,10 @@ export default function TechnicianTrust() {
         
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3.5 py-1 rounded-full border border-amber-200 inline-block">
-            Verified Professionals
+            Verified Indian Experts
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Background-Verified Technicians
+            Indian Technicians
           </h2>
           <p className="text-sm text-slate-600">
             Our engineers carry digital ID badges, uniformed work wear, and diagnostic tools to deliver 100% safe doorstep repairs in Indore.

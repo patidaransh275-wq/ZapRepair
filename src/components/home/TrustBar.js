@@ -22,7 +22,7 @@ export default function TrustBar() {
     },
     {
       icon: CheckCircle2,
-      title: 'Background-Verified',
+      title: 'Indian Technicians',
       desc: 'Uniformed & certified Indore technicians'
     }
   ];

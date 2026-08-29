@@ -80,7 +80,7 @@ export const SERVICES_DATA = [
       { title: 'Complete Power Loss in Room', startingPrice: 299, cause: 'Blown fuse, broken phase wire inside wall conduit, or DB box failure' }
     ],
     faqs: [
-      { q: 'Are your electricians ITI-certified for high-voltage short circuit fixes?', a: 'Yes, all our electricians are ITI-certified, background-verified, and carry professional multimeters and insulated safety gear.' },
+      { q: 'Are your electricians ITI-certified for high-voltage short circuit fixes?', a: 'Yes, all our electricians are ITI-certified Indian technicians and carry professional multimeters and insulated safety gear.' },
       { q: 'Do you install heavy 16A sockets for ACs, Geysers, and Refrigerators?', a: 'Yes, we fit heavy-duty modular 16A sockets with copper wiring and earthing safety.' },
       { q: 'How fast can an electrician reach my home in Indore?', a: 'Our technician arrives at your doorstep in Vijay Nagar, Palasia, Bhanwarkuan, or any Indore location within 45 minutes.' },
       { q: 'Is there a warranty on electrical fittings?', a: 'Yes, PlumberIndore offers a 30-day doorstep warranty on all switch, socket, fan, and MCB installations.' }

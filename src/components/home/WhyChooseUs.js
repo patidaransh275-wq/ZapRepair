@@ -22,8 +22,8 @@ export default function WhyChooseUs() {
     },
     {
       icon: UserCheck,
-      title: 'Background-Verified Pros',
-      desc: '100% police verified, skilled technicians equipped with uniforms, photo IDs, and safety gear.'
+      title: 'Indian Technicians',
+      desc: '100% skilled Indian technicians equipped with uniforms, photo IDs, and safety gear.'
     },
     {
       icon: Wrench,

@@ -134,7 +134,7 @@ export default function Hero() {
               <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700/80 shadow-xl space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>100% Background-Verified Indore Engineers</span>
+                  <span>100% Verified Indian Technicians</span>
                 </div>
                 <div className="text-[11px] text-slate-300">
                   Fixed upfront rate card. Inspection fee waived if repair is approved.

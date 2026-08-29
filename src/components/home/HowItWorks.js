@@ -17,7 +17,7 @@ export default function HowItWorks() {
     {
       num: '02',
       title: 'Technician Dispatched',
-      desc: 'A background-verified, uniformed PlumberIndore engineer arrives at your doorstep in 45 minutes.',
+      desc: 'A skilled Indian technician from PlumberIndore arrives at your doorstep in 45 minutes.',
       icon: UserCheck
     },
     {
