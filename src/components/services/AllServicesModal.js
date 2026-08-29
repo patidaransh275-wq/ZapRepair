@@ -1,154 +1,144 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { 
-  X, 
-  Wrench, 
-  PlugZap, 
-  Wind, 
-  Refrigerator, 
-  Shirt, 
-  Fan, 
-  Droplets, 
-  Microwave, 
-  UtensilsCrossed, 
-  Wheat, 
-  Flame, 
-  BatteryCharging,
-  Sparkles,
-  Hammer,
-  Paintbrush
-} from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import { 
+  ACIcon, 
+  WashingMachineIcon, 
+  RefrigeratorIcon, 
+  MicrowaveIcon, 
+  ROPurifierIcon, 
+  GeyserIcon, 
+  PlumberIcon, 
+  ElectricianIcon, 
+  CleaningIcon, 
+  CarpenterIcon, 
+  PaintingIcon, 
+  ChimneyIcon, 
+  AirCoolerIcon, 
+  InverterIcon, 
+  AttaChakkiIcon 
+} from '../ui/ApplianceIcons';
 
 export const ALL_SERVICES_CATEGORIZED = [
   {
-    category: 'Core Home Services',
+    category: 'Large appliances',
+    services: [
+      {
+        id: 'ac-repair',
+        name: 'AC',
+        slug: 'ac-repair',
+        icon: ACIcon,
+        startingPrice: 399
+      },
+      {
+        id: 'washing-machine',
+        name: 'Washing Machine',
+        slug: 'washing-machine',
+        icon: WashingMachineIcon,
+        startingPrice: 349
+      },
+      {
+        id: 'refrigerator',
+        name: 'Refrigerator Repair',
+        slug: 'refrigerator',
+        icon: RefrigeratorIcon,
+        startingPrice: 299
+      },
+      {
+        id: 'air-cooler',
+        name: 'Air Cooler',
+        slug: 'air-cooler',
+        icon: AirCoolerIcon,
+        startingPrice: 199
+      }
+    ]
+  },
+  {
+    category: 'Other appliances & Utilities',
+    services: [
+      {
+        id: 'microwave',
+        name: 'Microwave',
+        slug: 'microwave',
+        icon: MicrowaveIcon,
+        startingPrice: 299
+      },
+      {
+        id: 'ro-purifier',
+        name: 'RO/Water Purifier',
+        slug: 'ro-purifier',
+        icon: ROPurifierIcon,
+        startingPrice: 299
+      },
+      {
+        id: 'geyser',
+        name: 'Geyser',
+        slug: 'geyser',
+        icon: GeyserIcon,
+        startingPrice: 299
+      },
+      {
+        id: 'kitchen-chimney',
+        name: 'Kitchen Chimney',
+        slug: 'kitchen-chimney',
+        icon: ChimneyIcon,
+        startingPrice: 399
+      },
+      {
+        id: 'inverter',
+        name: 'Inverter & Battery',
+        slug: 'inverter',
+        icon: InverterIcon,
+        startingPrice: 299
+      },
+      {
+        id: 'atta-chakki',
+        name: 'Atta Chakki',
+        slug: 'atta-chakki',
+        icon: AttaChakkiIcon,
+        startingPrice: 349
+      }
+    ]
+  },
+  {
+    category: 'Electrician, Plumber & Home Care',
     services: [
       {
         id: 'plumber',
         name: 'Plumber Services',
         slug: 'plumber',
-        icon: Wrench,
+        icon: PlumberIcon,
         startingPrice: 149
       },
       {
         id: 'electrician',
         name: 'Electrician Services',
         slug: 'electrician',
-        icon: PlugZap,
+        icon: ElectricianIcon,
         startingPrice: 149
       },
       {
         id: 'carpenter',
         name: 'Carpenter Services',
         slug: 'carpenter',
-        icon: Hammer,
+        icon: CarpenterIcon,
         startingPrice: 199
-      }
-    ]
-  },
-  {
-    category: 'Large Appliances',
-    services: [
-      {
-        id: 'ac-repair',
-        name: 'AC Repair & Service',
-        slug: 'ac-repair',
-        icon: Wind,
-        startingPrice: 399
       },
-      {
-        id: 'refrigerator',
-        name: 'Refrigerator Repair',
-        slug: 'refrigerator',
-        icon: Refrigerator,
-        startingPrice: 299
-      },
-      {
-        id: 'washing-machine',
-        name: 'Washing Machine Repair',
-        slug: 'washing-machine',
-        icon: Shirt,
-        startingPrice: 349
-      },
-      {
-        id: 'air-cooler',
-        name: 'Air Cooler Repair',
-        slug: 'air-cooler',
-        icon: Fan,
-        startingPrice: 199
-      }
-    ]
-  },
-  {
-    category: 'Kitchen & Small Appliances',
-    services: [
-      {
-        id: 'ro-purifier',
-        name: 'RO Purifier Repair',
-        slug: 'ro-purifier',
-        icon: Droplets,
-        startingPrice: 299
-      },
-      {
-        id: 'microwave',
-        name: 'Microwave Repair',
-        slug: 'microwave',
-        icon: Microwave,
-        startingPrice: 299
-      },
-      {
-        id: 'kitchen-chimney',
-        name: 'Kitchen Chimney Repair',
-        slug: 'kitchen-chimney',
-        icon: UtensilsCrossed,
-        startingPrice: 399
-      },
-      {
-        id: 'atta-chakki',
-        name: 'Atta Chakki Repair',
-        slug: 'atta-chakki',
-        icon: Wheat,
-        startingPrice: 349
-      }
-    ]
-  },
-  {
-    category: 'Cleaning & Home Care',
-    services: [
       {
         id: 'cleaning-pest-control',
-        name: 'Cleaning & Pest Control',
+        name: 'Cleaning & Pest',
         slug: 'cleaning-pest-control',
-        icon: Sparkles,
+        icon: CleaningIcon,
         startingPrice: 499
       },
       {
         id: 'painting-waterproofing',
-        name: 'Painting & Waterproofing',
+        name: 'Painting & Dampness',
         slug: 'painting-waterproofing',
-        icon: Paintbrush,
+        icon: PaintingIcon,
         startingPrice: 999
-      }
-    ]
-  },
-  {
-    category: 'Utilities',
-    services: [
-      {
-        id: 'geyser',
-        name: 'Geyser Repair',
-        slug: 'geyser',
-        icon: Flame,
-        startingPrice: 299
-      },
-      {
-        id: 'inverter',
-        name: 'Inverter & Battery',
-        slug: 'inverter',
-        icon: BatteryCharging,
-        startingPrice: 299
       }
     ]
   }
@@ -221,7 +211,7 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
               id="modal-all-services-title" 
               className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading tracking-tight"
             >
-              All Services
+              AC & Appliance Repair
             </h2>
           </div>
 
@@ -237,14 +227,13 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
         </div>
 
         {/* Modal Body: Categorized Sections */}
-        <div className="overflow-y-auto py-6 space-y-8 pr-1 flex-1 scrollbar-thin scrollbar-thumb-slate-200">
+        <div className="overflow-y-auto py-6 space-y-7 pr-1 flex-1 scrollbar-thin scrollbar-thumb-slate-200">
           {ALL_SERVICES_CATEGORIZED.map((section, idx) => (
-            <div key={idx} className="space-y-4">
+            <div key={idx} className="space-y-3.5">
               
               {/* Category Title */}
               <div className="flex items-center justify-between">
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500 font-heading flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 font-heading flex items-center gap-2">
                   <span>{section.category}</span>
                 </h3>
                 <span className="text-[11px] text-slate-400 font-medium">
@@ -253,23 +242,23 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
               </div>
 
               {/* Service Cards Responsive Grid */}
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
                 {section.services.map((service) => {
-                  const Icon = service.icon;
+                  const IconComp = service.icon;
                   return (
                     <button
                       key={service.id}
                       type="button"
                       onClick={() => handleCardClick(service)}
-                      className="flex flex-col items-center group cursor-pointer focus:outline-none text-left"
+                      className="flex flex-col items-center group cursor-pointer focus:outline-none text-center"
                     >
                       {/* Gray Container (#F3F4F6) with rounded corners and fixed dimensions */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-[#F3F4F6] flex items-center justify-center transition-all duration-200 group-hover:bg-amber-50 group-hover:shadow-md group-hover:scale-105 border border-transparent group-hover:border-amber-200/80 shrink-0">
-                        <Icon className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 text-slate-800 group-hover:text-amber-600 transition-colors stroke-[1.75]" />
+                      <div className="w-full aspect-[4/3] max-h-[85px] sm:max-h-[95px] rounded-2xl bg-[#F3F4F6] hover:bg-amber-50/60 border border-transparent hover:border-amber-300/80 flex items-center justify-center p-2.5 transition-all duration-200 group-hover:scale-105 group-hover:shadow-md shrink-0">
+                        <IconComp className="w-full h-full max-h-[50px] object-contain drop-shadow-sm transition-transform duration-200 group-hover:scale-110" />
                       </div>
 
                       {/* Clean Small Sans-Serif Text Label Centered Below */}
-                      <span className="text-[11px] sm:text-xs font-medium text-slate-700 text-center mt-2 leading-tight line-clamp-2 max-w-[76px] sm:max-w-[96px] group-hover:text-slate-950 group-hover:font-semibold transition-colors">
+                      <span className="text-[11px] sm:text-xs font-medium text-slate-700 group-hover:text-slate-950 group-hover:font-bold text-center mt-2 leading-tight line-clamp-2 max-w-[96px] transition-colors">
                         {service.name}
                       </span>
                     </button>
