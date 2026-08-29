@@ -2,17 +2,40 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Award, Clock, Users, Wrench, ArrowRight, Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Award, Clock, Users, Wrench, ArrowRight, Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
 export default function AboutPage() {
   const { openBookingModal } = useBooking();
+  const [formData, setFormData] = useState({ name: '', phone: '', message: '' });
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setLoading(true);
+    setError('');
+    setSubmitted(false);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        setFormData({ name: '', phone: '', message: '' });
+      } else {
+        setError(data.error || 'Failed to deliver message via Resend. Please call helpline directly.');
+      }
+    } catch (err) {
+      setError('Connection error. Please call our Indore helpline +91 91749 34135 directly.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -165,6 +188,8 @@ export default function AboutPage() {
                 <input
                   type="text"
                   required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ansh Patidar"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 />
@@ -175,6 +200,8 @@ export default function AboutPage() {
                 <input
                   type="tel"
                   required
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="+91 91749 34135"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 />
@@ -185,24 +212,43 @@ export default function AboutPage() {
                 <textarea
                   rows={3}
                   required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="How can we help you with your appliance repair or plumbing in Indore?"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               {submitted && (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Message submitted! Our Indore support team will call you back shortly.</span>
+                <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Message delivered to support desk via Resend! We will call you back within 15 minutes.</span>
+                </div>
+              )}
+
+              {error && (
+                <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs font-semibold flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                  <span>{error}</span>
                 </div>
               )}
 
               <button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4 text-amber-400" />
-                <span>Submit Message</span>
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
+                    <span>Sending via Resend...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 text-amber-400" />
+                    <span>Submit Message</span>
+                  </>
+                )}
               </button>
             </form>
           </div>

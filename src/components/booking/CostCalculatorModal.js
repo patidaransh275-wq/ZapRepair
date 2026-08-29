@@ -54,7 +54,24 @@ export default function CostCalculatorModal({ isOpen, onClose }) {
   const currentIssues = issuesList[category] || issuesList['ac-repair'];
   const selectedIssueObj = currentIssues.find(i => i.title === issue) || currentIssues[0];
 
-  const handleBookEstimate = () => {
+  const handleBookEstimate = async () => {
+    // Send quote notification to Resend
+    try {
+      fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category,
+          brand,
+          modelType,
+          issue: selectedIssueObj.title,
+          estimatedPrice: `${selectedIssueObj.min} - ${selectedIssueObj.max}`
+        })
+      }).catch(err => console.error('Background quote notification error:', err));
+    } catch (e) {
+      console.error(e);
+    }
+
     onClose();
     openBookingModal(category, {
       title: `${brand} ${modelType} - ${selectedIssueObj.title}`,

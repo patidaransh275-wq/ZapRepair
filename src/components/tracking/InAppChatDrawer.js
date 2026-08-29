@@ -15,17 +15,35 @@ export default function InAppChatDrawer({ isOpen, onClose, booking }) {
 
   const handleSend = (e) => {
     e.preventDefault();
-    if (!inputMsg.trim()) return;
+    const messageText = inputMsg.trim();
+    if (!messageText) return;
 
     const newMsg = {
       id: Date.now(),
       sender: 'user',
-      text: inputMsg.trim(),
+      text: messageText,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
     setMessages((prev) => [...prev, newMsg]);
     setInputMsg('');
+
+    // Asynchronously notify backend via Resend API
+    try {
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: messageText,
+          orderId: booking?.id || 'IND-84920',
+          customerName: booking?.customerName || 'Customer',
+          customerPhone: booking?.customerPhone || '+91 91749 34135',
+          chatHistory: [...messages, newMsg]
+        })
+      }).catch(err => console.error('Background chat notification error:', err));
+    } catch (err) {
+      console.error(err);
+    }
 
     setTimeout(() => {
       setMessages((prev) => [
