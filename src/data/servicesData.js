@@ -7,7 +7,7 @@ export const SERVICES_DATA = [
     badge: 'Popular',
     startingPrice: 399,
     bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
-    description: 'Urban Company-grade doorstep Air Conditioner repair, foam jet servicing, gas leak refill, and installation by certified HVAC technicians across Indore.',
+    description: 'Expert doorstep Air Conditioner repair, foam jet servicing, gas leak refill, and installation by certified HVAC technicians across Indore.',
     heroSubtitle: '45-Minute Arrival | 30-Day Warranty | Certified HVAC Pros in Indore',
     packages: [
       { id: 'ac-foam', title: 'Power Foam Jet Service', price: 499, originalPrice: 699, duration: '45 mins', description: 'Deep foam jet cleaning of indoor cooling coils, outdoor condenser unit, drain pipe flush & gas check.' },
@@ -34,7 +34,7 @@ export const SERVICES_DATA = [
     badge: 'Essential',
     startingPrice: 149,
     bannerImage: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
-    description: 'Expert doorstep plumbing services in Indore inspired by Urban Company standards. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
+    description: 'Expert doorstep plumbing services in Indore. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
     heroSubtitle: 'Expert Plumbers | Leakage & Blockage Specialists | 45-Min Doorstep Arrival',
     packages: [
       { id: 'plm-tap', title: 'Tap, Nozzle & Wall Mixer Repair', price: 149, originalPrice: 249, duration: '30 mins', description: 'Fixing dripping taps, ceramic spindle change, washer replacement, and single lever basin mixer repair.' },
@@ -94,7 +94,7 @@ export const SERVICES_DATA = [
     badge: 'Popular',
     startingPrice: 499,
     bannerImage: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
-    description: 'Urban Company style home cleaning & pest control in Indore. Deep bathroom cleaning, kitchen degreasing, sofa & carpet shampooing, full home sanitization, and odorless herbal cockroach pest control.',
+    description: 'Professional home cleaning & pest control in Indore. Deep bathroom cleaning, kitchen degreasing, sofa & carpet shampooing, full home sanitization, and odorless herbal cockroach pest control.',
     heroSubtitle: 'Hospital-Grade Sanitization | Odorless Pest Control | 45-Min Arrival',
     packages: [
       { id: 'cln-bath', title: 'Bathroom Deep Cleaning & Hard Water Stain Removal', price: 499, originalPrice: 799, duration: '45 mins', description: 'Floor scrub, tile descaling, toilet bowl sanitization, tap chrome shine & mirror polishing.' },

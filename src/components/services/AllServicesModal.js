@@ -204,7 +204,7 @@ export default function AllServicesModal({ isOpen: propIsOpen, onClose: propOnCl
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">
-                Urban Company Equivalent Indore Catalogue
+                Doorstep Home Services Indore
               </span>
             </div>
             <h2 

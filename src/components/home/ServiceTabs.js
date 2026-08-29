@@ -58,10 +58,10 @@ export default function ServiceTabs() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full border border-amber-200 inline-block">
-            Our Doorstep Catalogue
+            Our Expertise
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Urban Company Grade Home & Appliance Services
+            Doorstep Plumbing & Appliance Services
           </h2>
           <p className="text-sm text-slate-600">
             Select your required home service in Indore for fixed upfront rates and 45-minute arrival.
