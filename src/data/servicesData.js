@@ -135,7 +135,7 @@ export const SERVICES_DATA = [
     ],
     faqs: [
       { q: 'Do carpenters bring their own power tools and drill bits?', a: 'Yes, our carpenters carry professional power drills, circular saws, and standard hardware fittings.' },
-      { q: 'Can you assemble IKEA / Urban Ladder / Pepperfry furniture?', a: 'Yes, we specialize in flat-pack furniture assembly and dismantling across all Indore locations.' }
+      { q: 'Can you assemble IKEA / Wakefit / Pepperfry furniture?', a: 'Yes, we specialize in flat-pack furniture assembly and dismantling across all Indore locations.' }
     ]
   },
   {
