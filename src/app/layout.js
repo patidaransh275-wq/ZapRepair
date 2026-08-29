@@ -4,7 +4,6 @@ import './globals.css';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MobileNav from '../components/layout/MobileNav';
-import CookieConsentBanner from '../components/layout/CookieConsentBanner';
 import BookingModal from '../components/booking/BookingModal';
 import TrackingModal from '../components/booking/TrackingModal';
 import AllServicesModal from '../components/services/AllServicesModal';
@@ -86,7 +85,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </main>
             <Footer />
             <MobileNav />
-            <CookieConsentBanner />
             <BookingModal />
             <TrackingModal />
             <AllServicesModal />
