@@ -1,9 +1,8 @@
 import { Resend } from 'resend';
 
-const BUSINESS_NOTIFICATION_EMAIL = process.env.BUSINESS_NOTIFICATION_EMAIL || 'plumberindore@gmail.com';
+export const ADMIN_NOTIFICATION_EMAIL = 'plumberindore@gmail.com';
 const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
-const RESEND_TEST_RECIPIENT = 'patidaransh275@gmail.com';
 
 /**
  * Helper to safely obtain Resend client on server-side only
@@ -13,7 +12,7 @@ function getResendClient() {
   const apiKey = process.env.plumberindore || process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.error('CRITICAL: Resend API Key is missing. Expected environment variable "plumberindore".');
+    console.error('CRITICAL: Resend API Key is missing. Expected server environment variable "plumberindore".');
     return null;
   }
 
@@ -26,7 +25,7 @@ function getResendClient() {
  * @param {string|string[]} options.to - Recipient email(s)
  * @param {string} options.subject - Email subject line
  * @param {string} options.html - HTML email content
- * @param {string} [options.from] - Custom sender address (must be @plumberindore.in or fallback)
+ * @param {string} [options.from] - Custom sender address
  * @param {string} [options.replyTo] - Reply-to email address
  * @param {string|string[]} [options.cc] - Optional CC recipients
  * @param {string|string[]} [options.bcc] - Optional BCC recipients
@@ -36,7 +35,7 @@ export async function sendEmail({
   subject, 
   html, 
   from = PRIMARY_SENDER_EMAIL,
-  replyTo = 'plumberindore@gmail.com',
+  replyTo = ADMIN_NOTIFICATION_EMAIL,
   cc,
   bcc
 }) {
@@ -49,8 +48,8 @@ export async function sendEmail({
     };
   }
 
-  // Normalize recipient list
-  const recipientList = Array.isArray(to) ? to : (to ? [to] : [BUSINESS_NOTIFICATION_EMAIL]);
+  // Normalize recipient list, defaulting to admin email plumberindore@gmail.com
+  const recipientList = Array.isArray(to) ? to : (to ? [to] : [ADMIN_NOTIFICATION_EMAIL]);
 
   try {
     // 1. Primary Attempt: Send using verified domain plumberindore.in
@@ -64,9 +63,9 @@ export async function sendEmail({
       ...(bcc && { bcc: Array.isArray(bcc) ? bcc : [bcc] })
     });
 
-    // 2. If domain is unverified, fallback to onboarding@resend.dev sender
-    if (error && (error.message?.includes('not verified') || error.message?.includes('domain is not verified'))) {
-      console.warn(`Primary sender domain (${from}) unverified. Retrying delivery via fallback sender (${FALLBACK_SENDER_EMAIL})...`);
+    // 2. If domain is not yet active/verified in DNS, gracefully fallback to onboarding@resend.dev sender
+    if (error && (error.message?.includes('not verified') || error.message?.includes('domain is not verified') || error.message?.includes('Domain not verified'))) {
+      console.warn(`Primary sender domain (${from}) not yet verified. Retrying delivery via fallback sender (${FALLBACK_SENDER_EMAIL})...`);
       
       const retryResult = await resend.emails.send({
         from: FALLBACK_SENDER_EMAIL,
@@ -78,22 +77,6 @@ export async function sendEmail({
 
       data = retryResult.data;
       error = retryResult.error;
-    }
-
-    // 3. If Resend testing restriction triggers (can only send to account owner patidaransh275@gmail.com)
-    if (error && (error.message?.includes('only send testing emails') || error.message?.includes(RESEND_TEST_RECIPIENT))) {
-      console.warn(`Resend sandbox restriction detected. Retrying delivery to verified account email (${RESEND_TEST_RECIPIENT})...`);
-      
-      const sandboxResult = await resend.emails.send({
-        from: FALLBACK_SENDER_EMAIL,
-        to: [RESEND_TEST_RECIPIENT],
-        subject: `[FORWARDED for ${recipientList.join(', ')}] ${subject}`,
-        html: html,
-        reply_to: replyTo
-      });
-
-      data = sandboxResult.data;
-      error = sandboxResult.error;
     }
 
     if (error) {
@@ -118,11 +101,11 @@ export async function sendEmail({
 }
 
 /**
- * Backward compatibility wrapper for existing routes
+ * Convenience helper for single admin notifications to plumberindore@gmail.com
  */
-export async function sendNotificationEmail({ subject, html, replyTo = 'plumberindore@gmail.com', to }) {
+export async function sendNotificationEmail({ subject, html, replyTo = ADMIN_NOTIFICATION_EMAIL, to }) {
   return sendEmail({
-    to: to || [BUSINESS_NOTIFICATION_EMAIL],
+    to: to || [ADMIN_NOTIFICATION_EMAIL],
     subject,
     html,
     replyTo
