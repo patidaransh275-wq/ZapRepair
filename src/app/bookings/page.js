@@ -51,6 +51,7 @@ export default function BookingsPage() {
         isOpen={!!activeInvoiceBooking}
         onClose={() => setActiveInvoiceBooking(null)}
         booking={activeInvoiceBooking}
+        onOpenPayment={(b) => setActivePaymentBooking(b)}
       />
 
       <OnlinePaymentModal
