@@ -115,15 +115,14 @@ export const MEGA_MENU_CATEGORIES = [
     count: '3 Services',
     startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
-    primaryLink: '/services/cleaning-pest-control',
+    primaryLink: '/services/pest-control',
     services: [
       { 
         id: 'pest-cockroach', 
         name: 'Cockroaches, Ants & General Pest Control', 
         desc: 'Odorless spray & gel bait for complete roach and ant elimination', 
         price: 599, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: CockroachSprayIcon 
       },
       { 
@@ -131,8 +130,7 @@ export const MEGA_MENU_CATEGORIES = [
         name: 'Bed Bugs Control', 
         desc: 'Advanced two-stage chemical spray for mattress, furniture & cracks', 
         price: 799, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: BedBugsIcon 
       },
       { 
@@ -140,8 +138,7 @@ export const MEGA_MENU_CATEGORIES = [
         name: 'Termite Control', 
         desc: 'Drill-and-inject anti-termite wall & wood barrier with warranty', 
         price: 999, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: TermiteKitIcon 
       }
     ]
@@ -293,11 +290,6 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                       <p className="hidden sm:block text-[11px] text-slate-500 leading-snug line-clamp-2">
                         {srv.desc}
                       </p>
-                      {srv.rating && (
-                        <div className="mt-0.5 sm:mt-1 inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded border border-amber-200/60">
-                          <span>{srv.rating}</span>
-                        </div>
-                      )}
                     </div>
                   </div>
 

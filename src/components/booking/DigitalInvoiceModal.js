@@ -200,14 +200,13 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
                   Plumber<span className="text-amber-500">Indore</span>
                 </h2>
                 <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
-                <p className="text-slate-500">GSTIN: 23AABCP1234F1Z5 • SAC: 9987</p>
                 <p className="text-slate-500">Doorstep Home Service Network, Indore, MP</p>
                 <p className="text-slate-500">Helpline: +91 91749 34135 | plumberindore@gmail.com</p>
               </div>
 
               <div className="text-right space-y-1">
                 <span className="inline-block bg-emerald-100 text-emerald-800 font-extrabold px-3 py-1 rounded-full text-xs border border-emerald-200">
-                  PAID TAX INVOICE
+                  PAID SERVICE INVOICE
                 </span>
                 <div className="text-slate-900 pt-1 font-mono font-extrabold">{invoiceNumber}</div>
                 <div className="text-slate-500">Date: {booking.date || '2026-08-30'}</div>
@@ -242,30 +241,32 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
               <thead>
                 <tr className="border-b-2 border-slate-200 text-slate-500 text-[11px] font-extrabold uppercase">
                   <th className="py-2">Description</th>
-                  <th className="py-2 text-center">SAC Code</th>
                   <th className="py-2 text-center">Qty</th>
                   <th className="py-2 text-right">Amount</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                <tr>
-                  <td className="py-3 font-semibold">
-                    <div>{booking.serviceName} - {booking.packageTitle}</div>
-                    <div className="text-[10px] text-slate-400">Includes 45-min doorstep arrival, diagnostic inspection & labor</div>
-                  </td>
-                  <td className="py-3 text-center text-slate-400 font-mono">9987</td>
-                  <td className="py-3 text-center">1</td>
-                  <td className="py-3 text-right font-bold">₹{laborCost}</td>
-                </tr>
-                <tr>
-                  <td className="py-3 font-semibold">
-                    <div>GST @ 18% (CGST 9% + SGST 9%)</div>
-                    <div className="text-[10px] text-slate-400">Doorstep technical service tax</div>
-                  </td>
-                  <td className="py-3 text-center text-slate-400 font-mono">9987</td>
-                  <td className="py-3 text-center">1</td>
-                  <td className="py-3 text-right font-bold">₹{taxCost}</td>
-                </tr>
+                {booking.services && booking.services.length > 0 ? (
+                  booking.services.map((item, idx) => (
+                    <tr key={idx}>
+                      <td className="py-3 font-semibold">
+                        <div>{item.serviceName} - {item.packageTitle}</div>
+                        <div className="text-[10px] text-slate-400">Includes 45-min doorstep arrival & verified service</div>
+                      </td>
+                      <td className="py-3 text-center">1</td>
+                      <td className="py-3 text-right font-bold">₹{item.price}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="py-3 font-semibold">
+                      <div>{booking.serviceName} - {booking.packageTitle || 'Doorstep Service'}</div>
+                      <div className="text-[10px] text-slate-400">Includes 45-min doorstep arrival, diagnostic inspection & labor</div>
+                    </td>
+                    <td className="py-3 text-center">1</td>
+                    <td className="py-3 text-right font-bold">₹{booking.price}</td>
+                  </tr>
+                )}
               </tbody>
             </table>
 
@@ -273,15 +274,11 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
             <div className="border-t border-slate-200 pt-4 flex justify-end">
               <div className="w-64 space-y-2">
                 <div className="flex justify-between text-slate-600">
-                  <span>Taxable Amount</span>
-                  <span>₹{laborCost}</span>
-                </div>
-                <div className="flex justify-between text-slate-600">
-                  <span>GST (18%)</span>
-                  <span>₹{taxCost}</span>
+                  <span>Subtotal</span>
+                  <span>₹{booking.price}</span>
                 </div>
                 <div className="flex justify-between font-extrabold text-base text-slate-900 pt-2 border-t border-slate-200">
-                  <span>Total Paid</span>
+                  <span>Total Paid Amount</span>
                   <span className="text-amber-600">₹{booking.price}</span>
                 </div>
               </div>

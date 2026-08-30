@@ -267,6 +267,7 @@ export function BookingProvider({ children }) {
       serviceId: bookingData.serviceId,
       serviceName: bookingData.serviceName,
       packageTitle: bookingData.packageTitle || 'Standard Repair & Diagnostics',
+      services: bookingData.services || [],
       price: bookingData.price,
       pincode: bookingData.pincode,
       address: bookingData.address,

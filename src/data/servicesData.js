@@ -6,7 +6,7 @@ export const SERVICES_DATA = [
     iconName: 'Wind',
     badge: 'Popular',
     startingPrice: 399,
-    bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80',
     description: 'Expert doorstep Air Conditioner repair, foam jet servicing, gas leak refill, and installation by certified HVAC technicians across Indore.',
     heroSubtitle: '45-Minute Arrival | 30-Day Warranty | Certified HVAC Pros in Indore',
     packages: [
@@ -87,30 +87,29 @@ export const SERVICES_DATA = [
     ]
   },
   {
-    id: 'cleaning-pest-control',
-    name: 'Cleaning & Pest Control',
-    slug: 'cleaning-pest-control',
-    iconName: 'Sparkles',
+    id: 'pest-control',
+    name: 'Pest Control Services',
+    slug: 'pest-control',
+    iconName: 'Shield',
     badge: 'Popular',
     startingPrice: 499,
-    bannerImage: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
-    description: 'Professional home cleaning & pest control in Indore. Deep bathroom cleaning, kitchen degreasing, sofa & carpet shampooing, full home sanitization, and odorless herbal cockroach pest control.',
+    bannerImage: 'https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?auto=format&fit=crop&w=800&q=80',
+    description: 'Certified doorstep Pest Control services in Indore. Odorless herbal cockroach control, anti-termite wood treatment, bed bugs eradication, and mosquito/ant control.',
     heroSubtitle: 'Hospital-Grade Sanitization | Odorless Pest Control | 45-Min Arrival',
     packages: [
-      { id: 'cln-bath', title: 'Bathroom Deep Cleaning & Hard Water Stain Removal', price: 499, originalPrice: 799, duration: '45 mins', description: 'Floor scrub, tile descaling, toilet bowl sanitization, tap chrome shine & mirror polishing.' },
-      { id: 'cln-kitchen', title: 'Kitchen Deep Cleaning & Degreasing', price: 799, originalPrice: 1199, duration: '60 mins', description: 'Countertop degreasing, cabinet exterior wipe, sink sanitization, exhaust fan & tile stain cleanup.' },
-      { id: 'cln-sofa', title: 'Sofa & Mattress Shampooing (Per Seat)', price: 299, originalPrice: 449, duration: '45 mins', description: 'Deep extraction vacuuming, fabric foam shampooing, and dust mite sanitization.' },
-      { id: 'cln-full-home', title: 'Full House Deep Cleaning (1BHK/2BHK/3BHK)', price: 1999, originalPrice: 2799, duration: '180 mins', description: 'Complete floor scrubbing, window track cleaning, balcony wash, kitchen & bathroom deep sanitation.' },
-      { id: 'cln-pest', title: 'Cockroach & General Pest Control', price: 599, originalPrice: 899, duration: '45 mins', description: '100% odorless gel baiting and chemical spray in kitchen, cabinets, drain holes & rooms.' }
+      { id: 'pest-cockroach', title: 'Cockroaches, Ants & General Pest Control', price: 599, originalPrice: 899, duration: '45 mins', description: '100% odorless herbal gel baiting and chemical spray in kitchen, cabinets, drain holes & rooms.' },
+      { id: 'pest-bedbugs', title: 'Bed Bugs Intensive Treatment', price: 799, originalPrice: 1199, duration: '60 mins', description: 'Two-stage deep chemical spray in mattress seams, bed frames, sofas, and wardrobe crevices.' },
+      { id: 'pest-termite', title: 'Termite & Wood Borer Control', price: 999, originalPrice: 1499, duration: '90 mins', description: 'Anti-termite chemical drilling, wall-wood boundary treatment, and persistent barrier creation.' },
+      { id: 'pest-full', title: 'Full Home Complete Pest Shield', price: 1499, originalPrice: 2199, duration: '120 mins', description: 'Comprehensive coverage against cockroaches, termites, bed bugs, ants, and drain pests with 90-day protection.' }
     ],
     issues: [
-      { title: 'Hard Water Yellow Stains on Bathroom Tiles', startingPrice: 499, cause: 'Indore hard water mineral build-up and soap scum' },
-      { title: 'Greasy Kitchen Tiles & Exhaust Fan', startingPrice: 799, cause: 'Accumulated cooking oil vapours and spice dust' },
-      { title: 'Cockroach Infestation in Cabinets', startingPrice: 599, cause: 'Hidden nests near warm appliances and kitchen sinks' }
+      { title: 'Cockroach Infestation in Kitchen Cabinets', startingPrice: 599, cause: 'Warmth behind appliances and food grease residues' },
+      { title: 'Bed Bug Bites & Mattress Infestation', startingPrice: 799, cause: 'Crevice nesting in bed frames and luggage transmission' },
+      { title: 'Termite Mud Tubes & Hollow Wood Damage', startingPrice: 999, cause: 'Subterranean moisture termites attacking wooden frames' }
     ],
     faqs: [
-      { q: 'Are the cleaning and pest control chemicals safe for kids and pets?', a: 'Yes, we use eco-friendly, non-toxic, and odorless chemicals approved for residential use.' },
-      { q: 'Do you bring your own mechanized scrubbing machines and vacuum cleaners?', a: 'Yes, our cleaning team comes fully equipped with high-pressure steamers, vacuums, and specialized cleaning tools.' }
+      { q: 'Are the pest control chemicals safe for kids and pets?', a: 'Yes, we use eco-friendly, non-toxic, and odorless herbal chemicals approved for residential use.' },
+      { q: 'Is there a warranty on pest control services?', a: 'Yes, PlumberIndore provides a 45-day warranty with free re-treatment if pests reappear.' }
     ]
   },
   {

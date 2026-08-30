@@ -289,6 +289,7 @@ export const APPLIANCE_ILLUSTRATIONS = {
   'geyser': GeyserIcon,
   'plumber': PlumberIcon,
   'electrician': ElectricianIcon,
+  'pest-control': CleaningIcon,
   'cleaning-pest-control': CleaningIcon,
   'carpenter': CarpenterIcon,
   'painting-waterproofing': PaintingIcon,

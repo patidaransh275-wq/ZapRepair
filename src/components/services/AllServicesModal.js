@@ -127,9 +127,9 @@ export const ALL_SERVICES_CATEGORIZED = [
         startingPrice: 199
       },
       {
-        id: 'cleaning-pest-control',
-        name: 'Cleaning & Pest',
-        slug: 'cleaning-pest-control',
+        id: 'pest-control',
+        name: 'Pest Control',
+        slug: 'pest-control',
         icon: CleaningIcon,
         startingPrice: 499
       },

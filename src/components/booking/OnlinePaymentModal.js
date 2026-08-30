@@ -17,18 +17,40 @@ export default function OnlinePaymentModal({ isOpen, onClose, booking, onPayment
       setLoading(false);
       setPaid(true);
 
-      // Notify backend & dispatch Resend payment receipt
+      const txnRef = `TXN-${Math.floor(10000000 + Math.random() * 90000000)}`;
+      const payMode = method === 'upi' ? 'UPI (GPay/PhonePe)' : method === 'card' ? 'Credit/Debit Card' : 'Pay After Service Fix';
+
+      // 1. Notify payment receipt
       fetch('/api/payment/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           status: 'success',
           booking: booking,
-          paymentMethod: method === 'upi' ? 'UPI (GPay/PhonePe)' : method === 'card' ? 'Credit/Debit Card' : 'Pay After Service Fix',
-          paymentRef: `TXN-${Math.floor(10000000 + Math.random() * 90000000)}`,
+          paymentMethod: payMode,
+          paymentRef: txnRef,
           amount: booking.price
         })
       }).catch(err => console.warn('Payment receipt email dispatch error:', err));
+
+      // 2. Auto-generate and dispatch official invoice immediately
+      fetch('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceNumber: `INV-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`,
+          customerName: booking.customerName || 'Customer',
+          customerEmail: booking.customerEmail || 'plumberindore@gmail.com',
+          customerPhone: booking.customerPhone || '+91 91749 34135',
+          address: booking.address,
+          serviceName: booking.serviceName,
+          packageTitle: booking.packageTitle,
+          laborCost: booking.price,
+          totalPaid: booking.price,
+          paymentMethod: payMode,
+          paymentRef: txnRef
+        })
+      }).catch(err => console.warn('Auto invoice dispatch error:', err));
 
       setTimeout(() => {
         setPaid(false);

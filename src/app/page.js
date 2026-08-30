@@ -10,7 +10,6 @@ import WhyChooseUs from '../components/home/WhyChooseUs';
 import TechnicianTrust from '../components/home/TechnicianTrust';
 import PricingSection from '../components/home/PricingSection';
 import IndoreServiceAreas from '../components/home/IndoreServiceAreas';
-import PincodeCheckerSection from '../components/home/PincodeCheckerSection';
 import FinalCTA from '../components/home/FinalCTA';
 
 export default function HomePage() {
@@ -43,10 +42,7 @@ export default function HomePage() {
       {/* 9. Service Areas in Indore */}
       <IndoreServiceAreas />
 
-      {/* 10. Service Location / Pincode Checker */}
-      <PincodeCheckerSection />
-
-      {/* 11. Final CTA */}
+      {/* 10. Final CTA */}
       <FinalCTA />
     </div>
   );

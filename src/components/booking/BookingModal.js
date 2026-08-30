@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Wrench, Calendar, MapPin, Phone, User, CheckCircle2, ArrowRight, ShieldCheck, Upload, AlertCircle, RefreshCw } from 'lucide-react';
+import { X, Wrench, Calendar, MapPin, Phone, User, CheckCircle2, ArrowRight, ShieldCheck, Upload, Plus, Trash2, Tag } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
 import { checkPincodeServiceability } from '../../data/pincodesData';
@@ -12,6 +12,8 @@ export default function BookingModal() {
   const [step, setStep] = useState(1);
   const [selectedAppliance, setSelectedAppliance] = useState('ac-repair');
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [selectedServices, setSelectedServices] = useState([]);
+  
   const [pincode, setPincode] = useState(userPincode || '452010');
   const [pincodeStatus, setPincodeStatus] = useState(null);
 
@@ -22,17 +24,44 @@ export default function BookingModal() {
   const [photoUploaded, setPhotoUploaded] = useState(false);
 
   // Date and Time slot picker
-  const [selectedDate, setSelectedDate] = useState('2026-08-25');
+  const [selectedDate, setSelectedDate] = useState('2026-08-30');
   const [selectedSlot, setSelectedSlot] = useState('2:00 PM - 4:00 PM');
 
   const [createdBooking, setCreatedBooking] = useState(null);
 
+  // Initialize selected services when modal opens
   useEffect(() => {
-    if (preselectedAppliance) {
-      setSelectedAppliance(preselectedAppliance);
-    }
-    if (preselectedPackage) {
-      setSelectedPackage(preselectedPackage);
+    if (isBookingModalOpen) {
+      const activeApplianceId = preselectedAppliance || 'ac-repair';
+      setSelectedAppliance(activeApplianceId);
+      
+      const serviceObj = SERVICES_DATA.find((s) => s.id === activeApplianceId || s.slug === activeApplianceId) || SERVICES_DATA[0];
+      const pkgObj = preselectedPackage || (serviceObj.packages && serviceObj.packages[0]);
+
+      if (pkgObj) {
+        setSelectedPackage(pkgObj);
+        setSelectedServices([
+          {
+            id: `${serviceObj.id}-${pkgObj.id || 'std'}`,
+            serviceId: serviceObj.id,
+            serviceName: serviceObj.name,
+            packageId: pkgObj.id || 'std',
+            packageTitle: pkgObj.title || 'Standard Service',
+            price: pkgObj.price || serviceObj.startingPrice
+          }
+        ]);
+      } else {
+        setSelectedServices([
+          {
+            id: `${serviceObj.id}-std`,
+            serviceId: serviceObj.id,
+            serviceName: serviceObj.name,
+            packageId: 'std',
+            packageTitle: 'Standard Doorstep Repair',
+            price: serviceObj.startingPrice
+          }
+        ]);
+      }
     }
   }, [preselectedAppliance, preselectedPackage, isBookingModalOpen]);
 
@@ -42,7 +71,7 @@ export default function BookingModal() {
 
   if (!isBookingModalOpen) return null;
 
-  const currentServiceObj = SERVICES_DATA.find((s) => s.id === selectedAppliance) || SERVICES_DATA[0];
+  const currentServiceObj = SERVICES_DATA.find((s) => s.id === selectedAppliance || s.slug === selectedAppliance) || SERVICES_DATA[0];
 
   const handlePincodeValidate = (e) => {
     e.preventDefault();
@@ -53,14 +82,50 @@ export default function BookingModal() {
     }
   };
 
+  const handleToggleService = (pkg) => {
+    const itemUniqueId = `${currentServiceObj.id}-${pkg.id}`;
+    const exists = selectedServices.some((s) => s.id === itemUniqueId);
+
+    if (exists) {
+      if (selectedServices.length > 1) {
+        setSelectedServices(selectedServices.filter((s) => s.id !== itemUniqueId));
+      }
+    } else {
+      setSelectedServices([
+        ...selectedServices,
+        {
+          id: itemUniqueId,
+          serviceId: currentServiceObj.id,
+          serviceName: currentServiceObj.name,
+          packageId: pkg.id,
+          packageTitle: pkg.title,
+          price: pkg.price
+        }
+      ]);
+    }
+  };
+
+  const handleRemoveService = (uniqueId) => {
+    if (selectedServices.length > 1) {
+      setSelectedServices(selectedServices.filter((s) => s.id !== uniqueId));
+    }
+  };
+
+  const totalPrice = selectedServices.reduce((sum, item) => sum + (item.price || 0), 0);
+
   const handleCreateBooking = () => {
-    const finalPrice = selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice;
-    
-    const newBooking = addBooking({
+    const primaryService = selectedServices[0] || {
       serviceId: currentServiceObj.id,
       serviceName: currentServiceObj.name,
-      packageTitle: selectedPackage ? selectedPackage.title : 'Standard Repair & Diagnostics',
-      price: finalPrice,
+      packageTitle: 'Standard Repair'
+    };
+
+    const newBooking = addBooking({
+      serviceId: primaryService.serviceId,
+      serviceName: selectedServices.map((s) => s.serviceName).filter((v, i, a) => a.indexOf(v) === i).join(' + '),
+      packageTitle: selectedServices.map((s) => s.packageTitle).join(' | '),
+      services: selectedServices,
+      price: totalPrice,
       pincode: pincode,
       address: address,
       date: selectedDate,
@@ -70,17 +135,20 @@ export default function BookingModal() {
       description: issueDescription
     });
 
-    setCreatedBooking(newBooking);
+    setCreatedBooking({
+      ...newBooking,
+      services: selectedServices
+    });
     setStep(5); // Confirmation screen
   };
 
   const availableDates = [
-    { date: '2026-08-25', label: 'Today', day: 'Tue' },
-    { date: '2026-08-26', label: 'Tomorrow', day: 'Wed' },
-    { date: '2026-08-27', label: '27 Aug', day: 'Thu' },
-    { date: '2026-08-28', label: '28 Aug', day: 'Fri' },
-    { date: '2026-08-29', label: '29 Aug', day: 'Sat' },
-    { date: '2026-08-30', label: '30 Aug', day: 'Sun' }
+    { date: '2026-08-30', label: 'Today', day: 'Sun' },
+    { date: '2026-08-31', label: 'Tomorrow', day: 'Mon' },
+    { date: '2026-09-01', label: '01 Sep', day: 'Tue' },
+    { date: '2026-09-02', label: '02 Sep', day: 'Wed' },
+    { date: '2026-09-03', label: '03 Sep', day: 'Thu' },
+    { date: '2026-09-04', label: '04 Sep', day: 'Fri' }
   ];
 
   const timeSlots = [
@@ -103,7 +171,7 @@ export default function BookingModal() {
             </div>
             <div>
               <h3 className="font-bold text-base font-heading">Book Doorstep Technician</h3>
-              <p className="text-[10px] text-slate-400">45-Minute Arrival • 30-Day Warranty</p>
+              <p className="text-[10px] text-slate-400">Multi-Service Booking • 45-Min Arrival • 30-Day Warranty</p>
             </div>
           </div>
 
@@ -117,11 +185,11 @@ export default function BookingModal() {
           <div className="bg-slate-100 px-6 py-2 border-b border-slate-200 flex items-center justify-between text-[11px] font-bold text-slate-500">
             <span className={step >= 1 ? 'text-amber-600 font-extrabold' : ''}>1. Pincode</span>
             <span>→</span>
-            <span className={step >= 2 ? 'text-amber-600 font-extrabold' : ''}>2. Appliance</span>
+            <span className={step >= 2 ? 'text-amber-600 font-extrabold' : ''}>2. Services ({selectedServices.length})</span>
             <span>→</span>
-            <span className={step >= 3 ? 'text-amber-600 font-extrabold' : ''}>3. Issue & Photos</span>
+            <span className={step >= 3 ? 'text-amber-600 font-extrabold' : ''}>3. Address</span>
             <span>→</span>
-            <span className={step >= 4 ? 'text-amber-600 font-extrabold' : ''}>4. Date & Slot</span>
+            <span className={step >= 4 ? 'text-amber-600 font-extrabold' : ''}>4. Slot & Summary</span>
           </div>
         )}
 
@@ -172,21 +240,61 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 2: Appliance & Package Selection */}
+          {/* STEP 2: Multi-Service Selection & Cart */}
           {step === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="text-center space-y-1">
-                <h4 className="text-lg font-bold text-slate-900 font-heading">Select Appliance & Package</h4>
-                <p className="text-xs text-slate-500">Service available in Pincode {pincode}</p>
+                <h4 className="text-lg font-bold text-slate-900 font-heading">Select Services for Single Checkout</h4>
+                <p className="text-xs text-slate-500">Add one or more services. All will be handled in a single doorstep visit.</p>
               </div>
 
+              {/* Selected Services Cart Pills */}
+              {selectedServices.length > 0 && (
+                <div className="bg-amber-50/70 border border-amber-200 p-3.5 rounded-2xl space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-extrabold text-amber-950 flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Selected Services ({selectedServices.length}):</span>
+                    </span>
+                    <span className="font-extrabold text-amber-700 text-sm">₹{totalPrice}</span>
+                  </div>
+
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                    {selectedServices.map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-white p-2.5 rounded-xl border border-amber-200/80 flex items-center justify-between text-xs shadow-2xs"
+                      >
+                        <div className="min-w-0 pr-2">
+                          <div className="font-bold text-slate-900 truncate">{item.serviceName}</div>
+                          <div className="text-[11px] text-slate-500 truncate">{item.packageTitle}</div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="font-extrabold text-slate-900">₹{item.price}</span>
+                          {selectedServices.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveService(item.id)}
+                              className="text-slate-400 hover:text-red-600 p-1 rounded transition-colors"
+                              title="Remove service"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Choose Category */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Choose Service Category</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Add Another Service Category</label>
                 <select
                   value={selectedAppliance}
                   onChange={(e) => {
                     setSelectedAppliance(e.target.value);
-                    setSelectedPackage(null);
                   }}
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-amber-500"
                 >
@@ -198,30 +306,39 @@ export default function BookingModal() {
 
               {/* Service Packages Options */}
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-700">Select Service Package</label>
-                {currentServiceObj.packages.map((pkg) => {
-                  const isSelected = selectedPackage?.id === pkg.id;
-                  return (
-                    <div
-                      key={pkg.id}
-                      onClick={() => setSelectedPackage(pkg)}
-                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between text-xs ${
-                        isSelected
-                          ? 'border-amber-500 bg-amber-50/50 shadow-sm'
-                          : 'border-slate-200 bg-white hover:bg-slate-50'
-                      }`}
-                    >
-                      <div>
-                        <div className="font-bold text-slate-900">{pkg.title}</div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">{pkg.description}</div>
+                <label className="block text-xs font-bold text-slate-700">Click to Select / Add {currentServiceObj.name} Packages</label>
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  {currentServiceObj.packages.map((pkg) => {
+                    const itemUniqueId = `${currentServiceObj.id}-${pkg.id}`;
+                    const isSelected = selectedServices.some((s) => s.id === itemUniqueId);
+
+                    return (
+                      <div
+                        key={pkg.id}
+                        onClick={() => handleToggleService(pkg)}
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between text-xs ${
+                          isSelected
+                            ? 'border-amber-500 bg-amber-50/60 ring-2 ring-amber-400/30 shadow-sm'
+                            : 'border-slate-200 bg-white hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="pr-2">
+                          <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                            <span className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${isSelected ? 'bg-amber-500 text-slate-950 font-extrabold' : 'border border-slate-300'}`}>
+                              {isSelected ? '✓' : '+'}
+                            </span>
+                            <span>{pkg.title}</span>
+                          </div>
+                          <div className="text-[11px] text-slate-500 mt-0.5 ml-5">{pkg.description}</div>
+                        </div>
+                        <div className="text-right shrink-0 ml-2">
+                          <div className="font-extrabold text-amber-600 text-sm">₹{pkg.price}</div>
+                          <div className="text-[10px] text-slate-400">{pkg.duration}</div>
+                        </div>
                       </div>
-                      <div className="text-right shrink-0 ml-3">
-                        <div className="font-extrabold text-amber-600 text-sm">₹{pkg.price}</div>
-                        <div className="text-[10px] text-slate-400">{pkg.duration}</div>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="flex gap-2 pt-2">
@@ -235,15 +352,16 @@ export default function BookingModal() {
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs shadow-md"
+                  disabled={selectedServices.length === 0}
+                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs shadow-md disabled:opacity-50"
                 >
-                  Continue to Address & Details
+                  Continue with {selectedServices.length} {selectedServices.length === 1 ? 'Service' : 'Services'} (₹{totalPrice})
                 </button>
               </div>
             </div>
           )}
 
-          {/* STEP 3: Address, Issue Description & Photo Upload */}
+          {/* STEP 3: Address, Problem Details & Photo Upload */}
           {step === 3 && (
             <div className="space-y-4 text-xs">
               <div className="text-center space-y-1">
@@ -287,12 +405,12 @@ export default function BookingModal() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Describe Appliance Issue (Optional)</label>
+                <label className="block font-bold text-slate-700 mb-1">Describe Appliance/Repair Issue (Optional)</label>
                 <input
                   type="text"
                   value={issueDescription}
                   onChange={(e) => setIssueDescription(e.target.value)}
-                  placeholder="e.g. AC water leaking indoors, fridge not cooling..."
+                  placeholder="e.g. AC water leaking, dripping washbasin tap, switch spark..."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-semibold text-slate-900"
                 />
               </div>
@@ -308,7 +426,7 @@ export default function BookingModal() {
                 >
                   <Upload className="w-5 h-5 mx-auto text-slate-400 mb-1" />
                   <span className="font-bold">
-                    {photoUploaded ? '✓ Photo Uploaded (ac_leakage.jpg)' : 'Click to attach photo/video of appliance error code'}
+                    {photoUploaded ? '✓ Photo Uploaded (repair_issue.jpg)' : 'Click to attach photo/video of appliance error code'}
                   </span>
                 </div>
               </div>
@@ -332,15 +450,15 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 4: Interactive Calendar & Time Slot Picker */}
+          {/* STEP 4: Date & Slot Picker with Multi-Service Summary */}
           {step === 4 && (
             <div className="space-y-5 text-xs">
               <div className="text-center space-y-1">
                 <h4 className="text-lg font-bold text-slate-900 font-heading">Choose Service Appointment Date & Time</h4>
-                <p className="text-xs text-slate-500">Select visual date grid and time slot for technician arrival.</p>
+                <p className="text-xs text-slate-500">Select date and time window for technician arrival.</p>
               </div>
 
-              {/* 14-Day Visual Date Picker Grid */}
+              {/* Date Picker Grid */}
               <div className="space-y-2">
                 <label className="block font-bold text-slate-700">Select Date</label>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -389,15 +507,29 @@ export default function BookingModal() {
                 </div>
               </div>
 
-              {/* Summary Card */}
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
-                <div className="flex justify-between font-bold text-slate-900">
-                  <span>Total Amount Payable:</span>
-                  <span className="text-amber-600 text-sm font-extrabold">
-                    ₹{selectedPackage ? selectedPackage.price : currentServiceObj.startingPrice}
-                  </span>
+              {/* Itemized Multi-Service Checkout Summary Card */}
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                <div className="font-extrabold text-slate-900 text-xs border-b border-slate-200 pb-2">
+                  Itemized Order Checkout ({selectedServices.length} {selectedServices.length === 1 ? 'Service' : 'Services'})
                 </div>
-                <p className="text-[10px] text-slate-500">Pay via UPI QR / Card online or cash to technician after repair completion.</p>
+
+                <div className="space-y-1.5 divide-y divide-slate-100 max-h-32 overflow-y-auto">
+                  {selectedServices.map((srv, idx) => (
+                    <div key={idx} className="flex justify-between items-center pt-1.5 first:pt-0">
+                      <div>
+                        <span className="font-bold text-slate-900">{srv.serviceName}</span>
+                        <span className="text-[10px] text-slate-500 block">{srv.packageTitle}</span>
+                      </div>
+                      <span className="font-extrabold text-slate-900">₹{srv.price}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-between font-extrabold text-base text-slate-900 pt-2 border-t border-slate-200">
+                  <span>Total Amount Payable:</span>
+                  <span className="text-amber-600">₹{totalPrice}</span>
+                </div>
+                <p className="text-[10px] text-slate-500">Pay online via UPI/Card or cash after doorstep service completion.</p>
               </div>
 
               <div className="flex gap-2 pt-2">
@@ -419,7 +551,7 @@ export default function BookingModal() {
             </div>
           )}
 
-          {/* STEP 5: Booking Confirmed Screen */}
+          {/* STEP 5: Booking Confirmed Screen with Itemized Multi-Service List */}
           {step === 5 && createdBooking && (
             <div className="text-center space-y-5 py-4">
               <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
@@ -428,7 +560,7 @@ export default function BookingModal() {
 
               <div className="space-y-1">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
-                  Booking Confirmed (# {createdBooking.id})
+                  Booking Confirmed (#{createdBooking.id})
                 </span>
                 <h4 className="text-xl font-extrabold text-slate-900 font-heading pt-2">
                   Doorstep Technician Assigned!
@@ -438,18 +570,46 @@ export default function BookingModal() {
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-xs space-y-2 max-w-md mx-auto">
-                <div className="flex justify-between border-b border-slate-200 pb-2">
-                  <span className="text-slate-500">Service:</span>
-                  <span className="font-bold text-slate-900">{createdBooking.serviceName}</span>
+              {/* Itemized Services Confirmation List */}
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-xs space-y-3 max-w-md mx-auto">
+                <div className="border-b border-slate-200 pb-2">
+                  <span className="text-[10px] font-extrabold uppercase text-slate-400 block mb-1">
+                    Booked Services ({createdBooking.services?.length || 1})
+                  </span>
+                  
+                  <div className="space-y-2 divide-y divide-slate-200/60">
+                    {createdBooking.services && createdBooking.services.length > 0 ? (
+                      createdBooking.services.map((srv, idx) => (
+                        <div key={idx} className="flex justify-between items-center pt-1.5 first:pt-0">
+                          <div>
+                            <div className="font-bold text-slate-900">{srv.serviceName}</div>
+                            <div className="text-[11px] text-slate-500">{srv.packageTitle}</div>
+                          </div>
+                          <div className="font-extrabold text-amber-600">₹{srv.price}</div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex justify-between items-center">
+                        <div className="font-bold text-slate-900">{createdBooking.serviceName}</div>
+                        <div className="font-extrabold text-amber-600">₹{createdBooking.price}</div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+
                 <div className="flex justify-between border-b border-slate-200 pb-2">
                   <span className="text-slate-500">Scheduled:</span>
                   <span className="font-bold text-slate-900">{createdBooking.date}, {createdBooking.timeSlot}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Pincode:</span>
-                  <span className="font-bold text-emerald-700">{createdBooking.pincode} (Indore)</span>
+                
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Doorstep Location:</span>
+                  <span className="font-bold text-slate-900 text-right">{createdBooking.address} ({createdBooking.pincode})</span>
+                </div>
+
+                <div className="flex justify-between font-extrabold text-sm text-slate-900 pt-1">
+                  <span>Total Amount Payable:</span>
+                  <span className="text-emerald-700">₹{createdBooking.price}</span>
                 </div>
               </div>
 

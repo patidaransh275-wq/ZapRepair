@@ -48,7 +48,11 @@ export default function PopularRepairs() {
                   />
                 </div>
 
-                <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight">{srv.name}</h3>
+                <Link href={`/services/${srv.slug}`} className="block hover:text-amber-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight hover:text-amber-600 transition-colors">
+                    {srv.name}
+                  </h3>
+                </Link>
                 <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
               </div>
 

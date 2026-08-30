@@ -72,6 +72,8 @@ function ServicesContent() {
             <option value="ro-purifier">RO Water Purifier</option>
             <option value="plumber">Plumber</option>
             <option value="electrician">Electrician</option>
+            <option value="pest-control">Pest Control</option>
+            <option value="carpenter">Carpenter</option>
           </select>
         </div>
       </div>

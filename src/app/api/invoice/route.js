@@ -39,12 +39,11 @@ export async function POST(request) {
           <div>
             <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: #0f172a;">Plumber<span style="color: #f59e0b;">Indore</span></h1>
             <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">PlumberIndore Tech Services Private Limited</p>
-            <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">GSTIN: 23AABCP1234F1Z5 • SAC Code: 9987</p>
             <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Indore, Madhya Pradesh • Helpline: +91 91749 34135</p>
           </div>
           <div style="text-align: right;">
             <span style="background-color: #ecfdf5; color: #047857; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 9999px; border: 1px solid #a7f3d0; text-transform: uppercase;">
-              PAID TAX INVOICE
+              PAID SERVICE INVOICE
             </span>
             <p style="font-size: 14px; font-weight: 700; font-family: monospace; color: #0f172a; margin: 8px 0 0 0;">${invoiceNumber}</p>
             <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Date: ${issueDate}</p>
@@ -82,10 +81,10 @@ export async function POST(request) {
             <tr style="border-bottom: 1px solid #f1f5f9;">
               <td style="padding: 12px 8px;">
                 <div style="font-weight: 700; color: #0f172a;">${serviceName} - ${packageTitle}</div>
-                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">45-min doorstep visit, diagnostic check & labor work</div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">45-min doorstep visit, diagnostic check & verified labor work</div>
               </td>
               <td style="padding: 12px 8px; text-align: center;">1</td>
-              <td style="padding: 12px 8px; text-align: right; font-weight: 600;">₹${laborCost}</td>
+              <td style="padding: 12px 8px; text-align: right; font-weight: 600;">₹${totalPaid}</td>
             </tr>
             ${partsCost > 0 ? `
             <tr style="border-bottom: 1px solid #f1f5f9;">
@@ -96,14 +95,6 @@ export async function POST(request) {
               <td style="padding: 12px 8px; text-align: center;">1</td>
               <td style="padding: 12px 8px; text-align: right; font-weight: 600;">₹${partsCost}</td>
             </tr>` : ''}
-            <tr style="border-bottom: 1px solid #f1f5f9;">
-              <td style="padding: 12px 8px;">
-                <div style="font-weight: 700; color: #0f172a;">GST @ 18% (CGST 9% + SGST 9%)</div>
-                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Applicable doorstep technical service tax</div>
-              </td>
-              <td style="padding: 12px 8px; text-align: center;">1</td>
-              <td style="padding: 12px 8px; text-align: right; font-weight: 600;">₹${taxCost}</td>
-            </tr>
             ${discountCost > 0 ? `
             <tr style="border-bottom: 1px solid #f1f5f9;">
               <td style="padding: 12px 8px; color: #059669;">

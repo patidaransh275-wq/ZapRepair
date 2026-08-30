@@ -3,9 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Phone, Menu, X, Search, ChevronDown } from 'lucide-react';
+import { Menu, X, Search, ChevronDown, MapPin, Wrench, ArrowRight } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { SERVICES_DATA } from '../../data/servicesData';
+import { INDORE_AREAS_DATA } from '../../data/indoreAreasData';
 import ServicesMegaMenu from './ServicesMegaMenu';
 
 export default function Header() {
@@ -15,12 +17,35 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   
   const timeoutRef = useRef(null);
   const megaMenuContainerRef = useRef(null);
+  const searchContainerRef = useRef(null);
 
   const { openBookingModal } = useBooking();
   const { t } = useLanguage();
+
+  // Filter matching services and Indore areas starting from first typed letter
+  const trimmedQuery = searchQuery.trim().toLowerCase();
+  const matchingServices = trimmedQuery.length >= 1 
+    ? SERVICES_DATA.filter((s) => 
+        s.name.toLowerCase().includes(trimmedQuery) || 
+        s.slug.toLowerCase().includes(trimmedQuery) ||
+        (s.description && s.description.toLowerCase().includes(trimmedQuery))
+      ).slice(0, 4)
+    : [];
+
+  const matchingAreas = trimmedQuery.length >= 1
+    ? INDORE_AREAS_DATA.filter((a) =>
+        a.name.toLowerCase().includes(trimmedQuery) ||
+        a.landmark.toLowerCase().includes(trimmedQuery) ||
+        a.pincode.includes(trimmedQuery) ||
+        a.slug.toLowerCase().includes(trimmedQuery)
+      ).slice(0, 4)
+    : [];
+
+  const showSuggestions = isSearchFocused && trimmedQuery.length >= 1 && (matchingServices.length > 0 || matchingAreas.length > 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,11 +59,14 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle click outside to close mega menu
+  // Handle click outside to close mega menu and search dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (megaMenuContainerRef.current && !megaMenuContainerRef.current.contains(event.target)) {
         setIsMegaMenuOpen(false);
+      }
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -47,9 +75,22 @@ export default function Header() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/services?query=${encodeURIComponent(searchQuery.trim())}`);
+    if (trimmedQuery) {
+      setIsSearchFocused(false);
+      router.push(`/services?query=${encodeURIComponent(trimmedQuery)}`);
     }
+  };
+
+  const handleSelectService = (slug) => {
+    setIsSearchFocused(false);
+    setSearchQuery('');
+    router.push(`/services/${slug}`);
+  };
+
+  const handleSelectArea = (slug) => {
+    setIsSearchFocused(false);
+    setSearchQuery('');
+    router.push(`/${slug}`);
   };
 
   const handleMouseEnterServices = () => {
@@ -89,17 +130,86 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Global Search Bar (Desktop) */}
-          <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center flex-1 max-w-xs relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t.searchPlaceholder}
-              className="w-full pl-9 pr-4 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
-            />
-          </form>
+          {/* Global Search Bar with Instant Auto-Suggest Dropdown */}
+          <div className="hidden lg:block flex-1 max-w-sm relative" ref={searchContainerRef}>
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onFocus={() => setIsSearchFocused(true)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchFocused(true);
+                }}
+                placeholder={t.searchPlaceholder}
+                className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 transition-colors"
+              />
+            </form>
+
+            {/* Instant Auto-suggest Dropdown */}
+            {showSuggestions && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-50 divide-y divide-slate-800 animate-in fade-in slide-in-from-top-1 duration-150">
+                {matchingServices.length > 0 && (
+                  <div className="p-2 space-y-1">
+                    <div className="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-400">
+                      Services & Repairs
+                    </div>
+                    {matchingServices.map((srv) => (
+                      <button
+                        key={srv.id}
+                        type="button"
+                        onClick={() => handleSelectService(srv.slug)}
+                        className="w-full text-left px-2.5 py-2 hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+                            <Wrench className="w-3.5 h-3.5" />
+                          </div>
+                          <div>
+                            <span className="text-xs font-bold text-white group-hover:text-amber-400 block transition-colors">
+                              {srv.name}
+                            </span>
+                            <span className="text-[10px] text-slate-400">Starts from ₹{srv.startingPrice}</span>
+                          </div>
+                        </div>
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {matchingAreas.length > 0 && (
+                  <div className="p-2 space-y-1">
+                    <div className="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">
+                      Indore Hubs & Localities
+                    </div>
+                    {matchingAreas.map((area) => (
+                      <button
+                        key={area.slug}
+                        type="button"
+                        onClick={() => handleSelectArea(area.slug)}
+                        className="w-full text-left px-2.5 py-2 hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                            <MapPin className="w-3.5 h-3.5" />
+                          </div>
+                          <div>
+                            <span className="text-xs font-bold text-white group-hover:text-emerald-400 block transition-colors">
+                              {area.name} (Pincode {area.pincode})
+                            </span>
+                            <span className="text-[10px] text-slate-400">Doorstep ETA: {area.eta}</span>
+                          </div>
+                        </div>
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
@@ -142,16 +252,8 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Right Action CTA Buttons */}
+          {/* Right Action CTA Button (Book Now) */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="tel:+919174934135"
-              className="flex items-center gap-2 text-xs font-bold text-slate-200 hover:text-amber-400 px-3.5 py-2 rounded-xl transition-colors border border-slate-800 hover:border-amber-400/30 bg-slate-950/50"
-            >
-              <Phone className="w-3.5 h-3.5 text-amber-400" />
-              <span>+91 91749 34135</span>
-            </a>
-
             <button
               type="button"
               onClick={() => openBookingModal('ac-repair')}
@@ -186,6 +288,48 @@ export default function Header() {
       {/* Mobile Slide-down Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3">
+          {/* Mobile Search Input */}
+          <div className="relative mb-3">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search AC, Plumber, Area..."
+              className="w-full pl-9 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+            />
+            {trimmedQuery.length >= 1 && (
+              <div className="mt-2 bg-slate-950 border border-slate-800 rounded-xl p-2 space-y-2 max-h-56 overflow-y-auto">
+                {matchingServices.map((srv) => (
+                  <button
+                    key={srv.id}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleSelectService(srv.slug);
+                    }}
+                    className="w-full text-left p-2 rounded-lg bg-slate-900 hover:bg-slate-800 flex items-center justify-between text-xs text-white"
+                  >
+                    <span className="font-bold">{srv.name}</span>
+                    <span className="text-amber-400 font-extrabold">₹{srv.startingPrice}</span>
+                  </button>
+                ))}
+                {matchingAreas.map((area) => (
+                  <button
+                    key={area.slug}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleSelectArea(area.slug);
+                    }}
+                    className="w-full text-left p-2 rounded-lg bg-slate-900 hover:bg-slate-800 flex items-center justify-between text-xs text-white"
+                  >
+                    <span className="font-bold">{area.name}</span>
+                    <span className="text-emerald-400">{area.eta}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <Link
             href="/"
             onClick={() => setIsMobileMenuOpen(false)}

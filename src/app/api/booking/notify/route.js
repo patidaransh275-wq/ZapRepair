@@ -48,8 +48,12 @@ export async function POST(request) {
 
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: #f8fafc; border-radius: 12px; font-size: 13px;">
               <tr>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b; width: 35%;">Service Booked:</td>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #0f172a;">${booking.serviceName} (${booking.packageTitle || 'Standard Repair'})</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b; width: 35%;">Service(s) Booked:</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #0f172a;">
+                  ${booking.services && booking.services.length > 0
+                    ? booking.services.map(s => `<div>• ${s.serviceName} - <em>${s.packageTitle}</em> (₹${s.price})</div>`).join('')
+                    : `${booking.serviceName} (${booking.packageTitle || 'Standard Repair'})`}
+                </td>
               </tr>
               <tr>
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Scheduled Slot:</td>
@@ -60,7 +64,7 @@ export async function POST(request) {
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #334155;">${booking.address} (Pincode: ${booking.pincode})</td>
               </tr>
               <tr>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Amount Payable:</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Total Payable:</td>
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: 800; font-size: 15px; color: #059669;">₹${booking.price}</td>
               </tr>
               <tr>

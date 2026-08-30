@@ -592,14 +592,13 @@ export default function AdminInvoicesDashboard() {
                     Plumber<span className="text-amber-500">Indore</span>
                   </h2>
                   <p className="text-slate-500 font-medium">PlumberIndore Tech Services Private Limited</p>
-                  <p className="text-slate-500">GSTIN: 23AABCP1234F1Z5 • SAC: 9987</p>
                   <p className="text-slate-500">Doorstep Home Service Network, Indore, MP</p>
                   <p className="text-slate-500">Helpline: +91 91749 34135 | plumberindore@gmail.com</p>
                 </div>
 
                 <div className="text-right space-y-1">
                   <span className="inline-block bg-emerald-100 text-emerald-800 font-extrabold px-3 py-1 rounded-full text-xs border border-emerald-200">
-                    PAID TAX INVOICE
+                    PAID SERVICE INVOICE
                   </span>
                   <div className="text-slate-700 pt-1 font-mono font-bold">{selectedInvoice.invoiceNumber}</div>
                   <div className="text-slate-500">Date: {selectedInvoice.date}</div>
@@ -634,7 +633,6 @@ export default function AdminInvoicesDashboard() {
                 <thead>
                   <tr className="border-b-2 border-slate-200 text-slate-500 text-[11px] font-extrabold uppercase">
                     <th className="py-2">Description</th>
-                    <th className="py-2 text-center">SAC Code</th>
                     <th className="py-2 text-center">Qty</th>
                     <th className="py-2 text-right">Amount</th>
                   </tr>
@@ -645,7 +643,6 @@ export default function AdminInvoicesDashboard() {
                       <div>{selectedInvoice.serviceName} - {selectedInvoice.packageTitle}</div>
                       <div className="text-[10px] text-slate-400">Doorstep inspection, diagnostic analysis & professional labor</div>
                     </td>
-                    <td className="py-3 text-center text-slate-400 font-mono">9987</td>
                     <td className="py-3 text-center">1</td>
                     <td className="py-3 text-right font-bold">₹{selectedInvoice.laborCost}</td>
                   </tr>
@@ -656,21 +653,10 @@ export default function AdminInvoicesDashboard() {
                         <div>Original Spare Parts & Consumables</div>
                         <div className="text-[10px] text-slate-400">OEM genuine components with manufacturer warranty</div>
                       </td>
-                      <td className="py-3 text-center text-slate-400 font-mono">9987</td>
                       <td className="py-3 text-center">1</td>
                       <td className="py-3 text-right font-bold">₹{selectedInvoice.partsCost}</td>
                     </tr>
                   )}
-
-                  <tr>
-                    <td className="py-3 font-semibold">
-                      <div>GST @ 18% (CGST 9% + SGST 9%)</div>
-                      <div className="text-[10px] text-slate-400">Applicable technical service tax</div>
-                    </td>
-                    <td className="py-3 text-center text-slate-400 font-mono">9987</td>
-                    <td className="py-3 text-center">1</td>
-                    <td className="py-3 text-right font-bold">₹{selectedInvoice.taxCost}</td>
-                  </tr>
                 </tbody>
               </table>
 
@@ -684,12 +670,8 @@ export default function AdminInvoicesDashboard() {
 
                 <div className="w-full sm:w-64 bg-slate-900 text-white p-4 rounded-2xl space-y-1">
                   <div className="flex justify-between text-xs text-slate-400">
-                    <span>Taxable Value:</span>
-                    <span>₹{selectedInvoice.laborCost + selectedInvoice.partsCost}</span>
-                  </div>
-                  <div className="flex justify-between text-xs text-slate-400">
-                    <span>GST (18%):</span>
-                    <span>₹{selectedInvoice.taxCost}</span>
+                    <span>Subtotal:</span>
+                    <span>₹{selectedInvoice.totalPaid}</span>
                   </div>
                   <div className="flex justify-between font-extrabold text-base text-white pt-2 border-t border-slate-800">
                     <span>Total Paid:</span>

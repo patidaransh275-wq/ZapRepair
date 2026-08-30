@@ -113,30 +113,27 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '3 Services',
     startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
-    primaryLink: '/services/cleaning-pest-control',
+    primaryLink: '/services/pest-control',
     services: [
       { 
         id: 'pest-cockroach', 
         name: 'Cockroaches, Ants & General Pest Control', 
         price: 599, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: CockroachSprayIcon 
       },
       { 
         id: 'pest-bedbugs', 
         name: 'Bed Bugs Control', 
         price: 799, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: BedBugsIcon 
       },
       { 
         id: 'pest-termite', 
         name: 'Termite Control', 
         price: 999, 
-        slug: 'cleaning-pest-control', 
-        rating: '★ 2.00 (6K bookings)',
+        slug: 'pest-control', 
         Icon: TermiteKitIcon 
       }
     ]
@@ -280,18 +277,14 @@ export default function ServiceTabs() {
                     <ServiceIconComp className="w-8 h-8 sm:w-12 sm:h-12 drop-shadow-sm" />
                   </div>
 
-                  {/* Title, Rating & Price */}
+                  {/* Title & Price */}
                   <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
-                    <h4 className="text-[11px] sm:text-sm font-bold text-slate-900 font-heading group-hover:text-amber-600 transition-colors line-clamp-2 leading-tight">
+                    <Link
+                      href={`/services/${srv.slug}`}
+                      className="text-[11px] sm:text-sm font-bold text-slate-900 font-heading hover:text-amber-600 transition-colors line-clamp-2 leading-tight block"
+                    >
                       {srv.name}
-                    </h4>
-
-                    {/* Star Rating & Booking count */}
-                    {srv.rating && (
-                      <div className="mt-1 inline-flex items-center justify-center gap-1 text-[9px] sm:text-[11px] font-bold text-amber-800 bg-amber-100/80 px-1.5 sm:px-2 py-0.5 rounded-md border border-amber-200/60 self-center">
-                        <span>{srv.rating}</span>
-                      </div>
-                    )}
+                    </Link>
 
                     <div className="pt-1.5 sm:pt-2 border-t border-slate-200/60 flex items-center justify-between w-full mt-1.5 sm:mt-2">
                       <span className="text-[9px] sm:text-[11px] font-bold text-slate-500">Starts</span>
@@ -302,21 +295,14 @@ export default function ServiceTabs() {
                   </div>
 
                   {/* Actions */}
-                  <div className="pt-2 sm:pt-3 flex items-center gap-1 sm:gap-1.5 w-full mt-1.5 sm:mt-2">
+                  <div className="pt-2 sm:pt-3 w-full mt-1.5 sm:mt-2">
                     <button
                       onClick={() => openBookingModal(srv.slug, { title: srv.name, price: srv.price })}
-                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-xs py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg sm:rounded-xl shadow-sm transition-all flex items-center justify-center gap-0.5 sm:gap-1 cursor-pointer"
+                      className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] sm:text-xs py-1.5 sm:py-2 px-2 rounded-lg sm:rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
-                      <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                       <span>Book</span>
                     </button>
-                    <Link
-                      href={`/services/${srv.slug}`}
-                      className="p-1.5 sm:p-2 bg-white hover:bg-slate-200 text-slate-700 rounded-lg sm:rounded-xl text-[10px] sm:text-xs border border-slate-200 shrink-0"
-                      title="View Details"
-                    >
-                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    </Link>
                   </div>
 
                 </div>
