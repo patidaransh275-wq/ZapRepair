@@ -266,35 +266,35 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
             </Link>
           </div>
 
-          {/* Service Cards with Matching Studio Icons, Working Links & Book Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+          {/* Service Cards with Matching Studio Icons, Working Links & Book Buttons - 2 Columns on Mobile */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
             {currentFolder.services.map((srv) => {
               const ServiceIconComp = srv.Icon;
               return (
                 <div
                   key={srv.id}
-                  className="p-3.5 rounded-2xl bg-white hover:bg-amber-50/40 border border-slate-200/80 hover:border-amber-400 transition-all duration-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md group"
+                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white hover:bg-amber-50/40 border border-slate-200/80 hover:border-amber-400 transition-all duration-200 flex flex-col justify-between gap-2 sm:gap-3 shadow-sm hover:shadow-md group"
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 text-center sm:text-left">
                     {/* Clean Studio-lit Icon */}
-                    <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200/70 group-hover:bg-white flex items-center justify-center p-2 shrink-0 transition-transform group-hover:scale-105 shadow-inner">
-                      <ServiceIconComp className="w-10 h-10 drop-shadow-sm" />
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200/70 group-hover:bg-white flex items-center justify-center p-1.5 sm:p-2 shrink-0 transition-transform group-hover:scale-105 shadow-inner">
+                      <ServiceIconComp className="w-8 h-8 sm:w-10 sm:h-10 drop-shadow-sm" />
                     </div>
 
                     {/* Service Name & Description */}
-                    <div className="min-w-0 flex-1 space-y-1">
+                    <div className="min-w-0 flex-1 space-y-0.5 sm:space-y-1">
                       <Link
                         href={`/services/${srv.slug}`}
                         onClick={onClose}
-                        className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-amber-700 font-heading block transition-colors leading-tight hover:underline"
+                        className="text-[11px] sm:text-sm font-bold text-slate-900 group-hover:text-amber-700 font-heading block transition-colors leading-tight hover:underline line-clamp-2"
                       >
                         {srv.name}
                       </Link>
-                      <p className="text-[11px] text-slate-500 leading-snug line-clamp-2">
+                      <p className="hidden sm:block text-[11px] text-slate-500 leading-snug line-clamp-2">
                         {srv.desc}
                       </p>
                       {srv.rating && (
-                        <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded border border-amber-200/60">
+                        <div className="mt-0.5 sm:mt-1 inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded border border-amber-200/60">
                           <span>{srv.rating}</span>
                         </div>
                       )}
@@ -302,28 +302,21 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                   </div>
 
                   {/* Pricing and Action Links */}
-                  <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                  <div className="pt-2 sm:pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-[10px] text-slate-400 font-semibold">Starts</span>
-                      <span className="text-sm font-extrabold text-slate-900 font-heading">
+                      <span className="text-[9px] sm:text-[10px] text-slate-400 font-semibold">Starts</span>
+                      <span className="text-xs sm:text-sm font-extrabold text-slate-900 font-heading">
                         ₹{srv.price}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5">
-                      <Link
-                        href={`/services/${srv.slug}`}
-                        onClick={onClose}
-                        className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors"
-                      >
-                        Details
-                      </Link>
+                    <div className="flex items-center gap-1 sm:gap-1.5">
                       <button
                         type="button"
                         onClick={() => handleBookingClick(srv.slug, srv.name, srv.price)}
-                        className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-3.5 py-1 rounded-lg shadow-sm transition-all flex items-center gap-1"
+                        className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-xs px-2 sm:px-3.5 py-1 rounded-md sm:rounded-lg shadow-sm transition-all flex items-center gap-0.5 sm:gap-1"
                       >
-                        <Plus className="w-3 h-3 stroke-[3]" />
+                        <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                         <span>Book</span>
                       </button>
                     </div>

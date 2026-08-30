@@ -76,47 +76,47 @@ function ServicesContent() {
         </div>
       </div>
 
-      {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Services Grid - 2 Columns on Mobile */}
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
         {filteredServices.map((srv) => (
           <div
             key={srv.id}
-            className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-soft-sm hover:shadow-soft-md transition-all duration-300 flex flex-col justify-between group"
+            className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 shadow-soft-sm hover:shadow-soft-md transition-all duration-300 flex flex-col justify-between group"
           >
             <div>
-              <div className="relative h-48 overflow-hidden bg-slate-900">
+              <div className="relative h-28 sm:h-48 overflow-hidden bg-slate-900">
                 <img
                   src={srv.bannerImage}
                   alt={srv.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
                 />
-                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-emerald-400 text-[11px] font-extrabold px-3 py-1 rounded-full border border-slate-700 flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-slate-950/80 backdrop-blur-md text-emerald-400 text-[9px] sm:text-[11px] font-extrabold px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-slate-700 flex items-center gap-0.5 sm:gap-1">
+                  <ShieldCheck className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-emerald-400" />
                   <span>30-Day Warranty</span>
                 </div>
               </div>
 
-              <div className="p-6 space-y-3">
-                <h3 className="text-xl font-bold text-slate-900 font-heading">{srv.name}</h3>
+              <div className="p-3 sm:p-6 space-y-1.5 sm:space-y-3">
+                <h3 className="text-xs sm:text-xl font-bold text-slate-900 font-heading line-clamp-1 leading-tight">{srv.name}</h3>
                 
-                <div className="pt-2 flex items-center justify-between text-xs border-t border-slate-100">
-                  <span className="text-slate-500 font-medium">Starts from</span>
-                  <span className="text-lg font-extrabold text-amber-600 font-heading">₹{srv.startingPrice}</span>
+                <div className="pt-1.5 sm:pt-2 flex items-center justify-between text-[10px] sm:text-xs border-t border-slate-100">
+                  <span className="text-slate-500 font-medium">Starts</span>
+                  <span className="text-xs sm:text-lg font-extrabold text-amber-600 font-heading">₹{srv.startingPrice}</span>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 pt-0 flex gap-2">
+            <div className="p-3 sm:p-6 pt-0 flex flex-col sm:flex-row gap-1 sm:gap-2">
               <Link
                 href={`/services/${srv.slug}`}
-                className="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-2.5 rounded-xl text-xs transition-colors"
+                className="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-colors"
               >
                 View Details
               </Link>
 
               <button
                 onClick={() => openBookingModal(srv.id)}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition-all"
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs shadow-sm transition-all"
               >
                 Book Now
               </button>

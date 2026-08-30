@@ -266,56 +266,56 @@ export default function ServiceTabs() {
             </Link>
           </div>
 
-          {/* Nested Photorealistic Service Icons Grid */}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentFolder.services.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-5'} gap-4`}>
+          {/* Nested Photorealistic Service Icons Grid - 2 Columns on Mobile */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
             {currentFolder.services.map((srv) => {
               const ServiceIconComp = srv.Icon;
               return (
                 <div
                   key={srv.id}
-                  className="bg-slate-50/70 hover:bg-white rounded-2xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-soft-md transition-all duration-300 flex flex-col justify-between items-center text-center group"
+                  className="bg-slate-50/70 hover:bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-slate-200 hover:border-amber-400 hover:shadow-soft-md transition-all duration-300 flex flex-col justify-between items-center text-center group"
                 >
                   {/* Clean Studio-lit Icon Box */}
-                  <div className="w-16 h-16 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center p-2 mb-3 group-hover:scale-105 transition-transform duration-300">
-                    <ServiceIconComp className="w-12 h-12 drop-shadow-sm" />
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center p-1.5 sm:p-2 mb-2 sm:mb-3 group-hover:scale-105 transition-transform duration-300">
+                    <ServiceIconComp className="w-8 h-8 sm:w-12 sm:h-12 drop-shadow-sm" />
                   </div>
 
                   {/* Title, Rating & Price */}
                   <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 font-heading group-hover:text-amber-600 transition-colors line-clamp-2">
+                    <h4 className="text-[11px] sm:text-sm font-bold text-slate-900 font-heading group-hover:text-amber-600 transition-colors line-clamp-2 leading-tight">
                       {srv.name}
                     </h4>
 
                     {/* Star Rating & Booking count */}
                     {srv.rating && (
-                      <div className="mt-1 inline-flex items-center justify-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md border border-amber-200/60">
+                      <div className="mt-1 inline-flex items-center justify-center gap-1 text-[9px] sm:text-[11px] font-bold text-amber-800 bg-amber-100/80 px-1.5 sm:px-2 py-0.5 rounded-md border border-amber-200/60 self-center">
                         <span>{srv.rating}</span>
                       </div>
                     )}
 
-                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between w-full mt-2">
-                      <span className="text-[11px] font-bold text-slate-500">Starts</span>
-                      <span className="text-sm font-extrabold text-slate-900 font-heading">
+                    <div className="pt-1.5 sm:pt-2 border-t border-slate-200/60 flex items-center justify-between w-full mt-1.5 sm:mt-2">
+                      <span className="text-[9px] sm:text-[11px] font-bold text-slate-500">Starts</span>
+                      <span className="text-xs sm:text-sm font-extrabold text-slate-900 font-heading">
                         ₹{srv.price}
                       </span>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="pt-3 flex items-center gap-1.5 w-full mt-2">
+                  <div className="pt-2 sm:pt-3 flex items-center gap-1 sm:gap-1.5 w-full mt-1.5 sm:mt-2">
                     <button
                       onClick={() => openBookingModal(srv.slug, { title: srv.name, price: srv.price })}
-                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs py-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 cursor-pointer"
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-xs py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg sm:rounded-xl shadow-sm transition-all flex items-center justify-center gap-0.5 sm:gap-1 cursor-pointer"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       <span>Book</span>
                     </button>
                     <Link
                       href={`/services/${srv.slug}`}
-                      className="p-2 bg-white hover:bg-slate-200 text-slate-700 rounded-xl text-xs border border-slate-200"
+                      className="p-1.5 sm:p-2 bg-white hover:bg-slate-200 text-slate-700 rounded-lg sm:rounded-xl text-[10px] sm:text-xs border border-slate-200 shrink-0"
                       title="View Details"
                     >
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </Link>
                   </div>
 

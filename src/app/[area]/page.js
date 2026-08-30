@@ -83,24 +83,18 @@ export default function AreaLandingPage({ params }) {
             Popular Services Available in {areaInfo.name}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-6">
             {SERVICES_DATA.map((srv) => (
-              <div key={srv.id} className="p-5 rounded-2xl border border-slate-200 hover:border-amber-400 transition-all flex flex-col justify-between space-y-4">
+              <div key={srv.id} className="p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 hover:border-amber-400 transition-all flex flex-col justify-between space-y-2 sm:space-y-4">
                 <div>
-                  <h3 className="font-bold text-slate-900 text-base font-heading">{srv.name}</h3>
+                  <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight">{srv.name}</h3>
                 </div>
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                  <span className="text-xs font-extrabold text-amber-600">From ₹{srv.startingPrice}</span>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/services/${srv.slug}`}
-                      className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold"
-                    >
-                      Details
-                    </Link>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0 pt-2 sm:pt-3 border-t border-slate-100">
+                  <span className="text-[10px] sm:text-xs font-extrabold text-amber-600">From ₹{srv.startingPrice}</span>
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <button
                       onClick={() => openBookingModal(srv.id)}
-                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm"
+                      className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-[10px] sm:text-xs px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg shadow-sm text-center"
                     >
                       Book
                     </button>

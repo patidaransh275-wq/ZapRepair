@@ -264,14 +264,14 @@ export default function ServiceDetailPage({ params }) {
               Common {service.name} Problems Solved in Indore
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-4">
               {service.issues.map((iss, i) => (
-                <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span className="text-xs font-semibold text-slate-900">{iss.title}</span>
+                <div key={i} className="p-2.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span className="text-[11px] sm:text-xs font-semibold text-slate-900 line-clamp-2 leading-tight">{iss.title}</span>
                   </div>
-                  <span className="text-xs font-bold text-amber-600 shrink-0">From ₹{iss.startingPrice}</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-amber-600 shrink-0">From ₹{iss.startingPrice}</span>
                 </div>
               ))}
             </div>

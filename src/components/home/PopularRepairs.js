@@ -33,14 +33,14 @@ export default function PopularRepairs() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {topServices.map((srv) => (
             <div
               key={srv.id}
-              className="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 hover:border-amber-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+              className="bg-slate-50 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 border border-slate-200/80 hover:border-amber-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="space-y-3">
-                <div className="h-40 rounded-xl overflow-hidden bg-slate-900 relative">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="h-24 sm:h-40 rounded-lg sm:rounded-xl overflow-hidden bg-slate-900 relative">
                   <img
                     src={srv.bannerImage}
                     alt={srv.name}
@@ -48,19 +48,19 @@ export default function PopularRepairs() {
                   />
                 </div>
 
-                <h3 className="font-bold text-slate-900 text-base font-heading">{srv.name}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
+                <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight">{srv.name}</h3>
+                <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
               </div>
 
-              <div className="pt-4 mt-3 border-t border-slate-200/60 flex items-center justify-between">
+              <div className="pt-2 sm:pt-4 mt-2 sm:mt-3 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0">
                 <div>
-                  <span className="text-[10px] text-slate-400 font-bold block uppercase">Fixed Rate</span>
-                  <span className="text-base font-extrabold text-slate-900 font-heading">₹{srv.startingPrice}</span>
+                  <span className="text-[8px] sm:text-[10px] text-slate-400 font-bold block uppercase">Fixed Rate</span>
+                  <span className="text-xs sm:text-base font-extrabold text-slate-900 font-heading">₹{srv.startingPrice}</span>
                 </div>
 
                 <button
                   onClick={() => openBookingModal(srv.id)}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl"
+                  className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-sm"
                 >
                   Book Now
                 </button>
