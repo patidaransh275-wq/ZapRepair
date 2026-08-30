@@ -15,7 +15,8 @@ export default function TechnicianTrust() {
       exp: '8+ Yrs Experience',
       repairs: '500+ Indore Repairs',
       specialty: 'Daikin, Voltas, LG Inverter AC Specialists',
-      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80'
+      image: '/images/technicians/ramesh_verma.jpg',
+      imagePosition: 'object-top'
     },
     {
       name: 'Suresh Sharma',
@@ -24,7 +25,8 @@ export default function TechnicianTrust() {
       exp: '10+ Yrs Experience',
       repairs: '650+ Indore Repairs',
       specialty: 'Sanitary Fittings & Concealed Leakage Detection',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=400&q=80'
+      image: '/images/technicians/suresh_sharma.jpg',
+      imagePosition: 'object-top'
     },
     {
       name: 'Rajesh Patel',
@@ -33,7 +35,8 @@ export default function TechnicianTrust() {
       exp: '7+ Yrs Experience',
       repairs: '420+ Indore Repairs',
       specialty: '3-Phase Wiring, MCB & Short Circuit Fixes',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80'
+      image: '/images/technicians/rajesh_patel.jpg',
+      imagePosition: 'object-top'
     }
   ];
 
@@ -42,11 +45,11 @@ export default function TechnicianTrust() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3.5 py-1 rounded-full border border-amber-200 inline-block">
-            Verified Indian Experts
+          <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3.5 py-1 rounded-full border border-amber-200 inline-block font-heading">
+            VERIFIED EXPERTS
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Indian Technicians
+            Technicians
           </h2>
           <p className="text-sm text-slate-600">
             Our engineers carry digital ID badges, uniformed work wear, and diagnostic tools to deliver 100% safe doorstep repairs in Indore.
@@ -57,8 +60,12 @@ export default function TechnicianTrust() {
           {techs.map((tc, idx) => (
             <div key={idx} className="bg-slate-50 rounded-3xl p-6 border border-slate-200 hover:border-amber-400 transition-all flex flex-col justify-between space-y-4">
               <div className="space-y-4">
-                <div className="relative w-24 h-24 rounded-2xl overflow-hidden mx-auto border-2 border-amber-400 shadow-md">
-                  <img src={tc.image} alt={tc.name} className="w-full h-full object-cover" />
+                <div className="relative w-28 h-28 rounded-2xl overflow-hidden mx-auto border-2 border-amber-400 shadow-md bg-slate-200">
+                  <img 
+                    src={tc.image} 
+                    alt={tc.name} 
+                    className={`w-full h-full object-cover ${tc.imagePosition || 'object-center'}`} 
+                  />
                 </div>
 
                 <div className="text-center space-y-1">

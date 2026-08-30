@@ -545,6 +545,23 @@ export function CockroachSprayIcon({ className = "w-12 h-12" }) {
   );
 }
 
+export function BedBugsIcon({ className = "w-12 h-12" }) {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      {/* Mattress / Pillow with Protection Barrier */}
+      <rect x="20" y="22" width="40" height="38" rx="8" fill="#F8FAFC" stroke="#64748B" strokeWidth="2" />
+      <path d="M26 30H54M26 40H54M26 50H54" stroke="#CBD5E1" strokeWidth="1.5" strokeDasharray="3 3" />
+      {/* Bug Shield Silhouette */}
+      <circle cx="40" cy="40" r="10" fill="#FEF2F2" stroke="#DC2626" strokeWidth="1.5" />
+      <ellipse cx="40" cy="40" rx="5" ry="6" fill="#991B1B" />
+      <circle cx="40" cy="32" r="3" fill="#7F1D1D" />
+      <line x1="33" y1="36" x2="47" y2="36" stroke="#991B1B" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="32" y1="42" x2="48" y2="42" stroke="#991B1B" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="34" y1="48" x2="46" y2="48" stroke="#991B1B" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function TermiteKitIcon({ className = "w-12 h-12" }) {
   return (
     <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>

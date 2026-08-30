@@ -56,10 +56,6 @@ export default function Hero() {
             {/* Feature Pills */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-medium text-slate-300 pt-1">
               <div className="flex items-center gap-1.5 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>30-Day Post Service Warranty</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Award className="w-4 h-4 text-amber-400" />
                 <span>Transparent Rate Card</span>
               </div>

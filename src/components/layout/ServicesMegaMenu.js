@@ -39,11 +39,9 @@ import {
   MCBBoxIcon,
   WiringIcon,
 
-  // Cleaning & Pest Icons (5)
-  VacuumCleanerIcon,
-  SofaBrushIcon,
-  BathroomKitIcon,
+  // Pest Control Icons (3)
   CockroachSprayIcon,
+  BedBugsIcon,
   TermiteKitIcon,
 
   // Carpenter & Paint Icons (5)
@@ -111,20 +109,41 @@ export const MEGA_MENU_CATEGORIES = [
     ]
   },
   {
-    id: 'cleaning',
-    title: 'Cleaning & Pest',
-    subtitle: 'Vacuum, Sofa brush, Bath kit, Pest spray & Termite',
-    count: '6 Key Services',
-    startingPrice: 299,
+    id: 'pest',
+    title: 'Pest Control',
+    subtitle: 'Cockroaches, Ants, Bed Bugs & Termite Treatment',
+    count: '3 Services',
+    startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
     primaryLink: '/services/cleaning-pest-control',
     services: [
-      { id: 'cln-main', name: 'Cleaning & Pest Control Package', desc: 'Hospital-grade sanitization & doorstep care', price: 499, slug: 'cleaning-pest-control', Icon: SprayBottleFolderIcon },
-      { id: 'cln-vacuum', name: 'Vacuum Cleaner Full House', desc: 'Deep extraction floor, window & corner vacuuming', price: 1999, slug: 'cleaning-pest-control', Icon: VacuumCleanerIcon },
-      { id: 'cln-sofa', name: 'Sofa Cleaning Brush & Foam', desc: 'Mechanized fabric shampooing & dust mite removal', price: 299, slug: 'cleaning-pest-control', Icon: SofaBrushIcon },
-      { id: 'cln-bath', name: 'Bathroom Cleaning Kit Descale', desc: 'Hard water tile descaling, commode & chrome shine', price: 499, slug: 'cleaning-pest-control', Icon: BathroomKitIcon },
-      { id: 'cln-roach', name: 'Cockroach Spray & Gel Bait', desc: '100% odorless herbal kitchen cabinet treatment', price: 599, slug: 'cleaning-pest-control', Icon: CockroachSprayIcon },
-      { id: 'cln-termite', name: 'Termite Control Kit Treatment', desc: 'Drill-and-inject wood & wall termite barrier', price: 999, slug: 'cleaning-pest-control', Icon: TermiteKitIcon }
+      { 
+        id: 'pest-cockroach', 
+        name: 'Cockroaches, Ants & General Pest Control', 
+        desc: 'Odorless spray & gel bait for complete roach and ant elimination', 
+        price: 599, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: CockroachSprayIcon 
+      },
+      { 
+        id: 'pest-bedbugs', 
+        name: 'Bed Bugs Control', 
+        desc: 'Advanced two-stage chemical spray for mattress, furniture & cracks', 
+        price: 799, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: BedBugsIcon 
+      },
+      { 
+        id: 'pest-termite', 
+        name: 'Termite Control', 
+        desc: 'Drill-and-inject anti-termite wall & wood barrier with warranty', 
+        price: 999, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: TermiteKitIcon 
+      }
     ]
   },
   {
@@ -274,6 +293,11 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                       <p className="text-[11px] text-slate-500 leading-snug line-clamp-2">
                         {srv.desc}
                       </p>
+                      {srv.rating && (
+                        <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded border border-amber-200/60">
+                          <span>{srv.rating}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 

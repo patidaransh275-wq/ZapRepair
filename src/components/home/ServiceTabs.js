@@ -39,11 +39,9 @@ import {
   MCBBoxIcon,
   WiringIcon,
 
-  // Cleaning & Pest Icons (5)
-  VacuumCleanerIcon,
-  SofaBrushIcon,
-  BathroomKitIcon,
+  // Pest Control Icons (3)
   CockroachSprayIcon,
+  BedBugsIcon,
   TermiteKitIcon,
 
   // Carpenter & Paint Icons (5)
@@ -109,19 +107,38 @@ export const CATEGORY_FOLDERS_DATA = [
     ]
   },
   {
-    id: 'cleaning',
-    title: 'Cleaning & Pest',
-    subtitle: 'Vacuum, Sofa brush, Bath kit, Pest spray & Termite',
-    count: '5 Key Services',
-    startingPrice: 299,
+    id: 'pest',
+    title: 'Pest Control',
+    subtitle: 'Cockroaches, Ants, Bed Bugs & Termite Treatment',
+    count: '3 Services',
+    startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
     primaryLink: '/services/cleaning-pest-control',
     services: [
-      { id: 'cln-vacuum', name: 'Vacuum Cleaner Full House', price: 1999, slug: 'cleaning-pest-control', Icon: VacuumCleanerIcon },
-      { id: 'cln-sofa', name: 'Sofa Cleaning Brush & Foam', price: 299, slug: 'cleaning-pest-control', Icon: SofaBrushIcon },
-      { id: 'cln-bath', name: 'Bathroom Cleaning Kit Descale', price: 499, slug: 'cleaning-pest-control', Icon: BathroomKitIcon },
-      { id: 'cln-roach', name: 'Cockroach Spray & Gel Bait', price: 599, slug: 'cleaning-pest-control', Icon: CockroachSprayIcon },
-      { id: 'cln-termite', name: 'Termite Control Kit Treatment', price: 999, slug: 'cleaning-pest-control', Icon: TermiteKitIcon }
+      { 
+        id: 'pest-cockroach', 
+        name: 'Cockroaches, Ants & General Pest Control', 
+        price: 599, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: CockroachSprayIcon 
+      },
+      { 
+        id: 'pest-bedbugs', 
+        name: 'Bed Bugs Control', 
+        price: 799, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: BedBugsIcon 
+      },
+      { 
+        id: 'pest-termite', 
+        name: 'Termite Control', 
+        price: 999, 
+        slug: 'cleaning-pest-control', 
+        rating: '★ 2.00 (6K bookings)',
+        Icon: TermiteKitIcon 
+      }
     ]
   },
   {
@@ -172,10 +189,10 @@ export default function ServiceTabs() {
             const FolderIconComponent = folder.FolderIcon;
 
             return (
-              <button
+              <div
                 key={folder.id}
                 onClick={() => setActiveFolderId(folder.id)}
-                className={`relative rounded-3xl p-4 sm:p-5 text-center transition-all duration-300 flex flex-col items-center justify-between border bg-white ${
+                className={`relative rounded-3xl p-4 sm:p-5 text-center transition-all duration-300 flex flex-col items-center justify-between border bg-white cursor-pointer ${
                   isSelected
                     ? 'border-amber-500 ring-4 ring-amber-400/30 shadow-soft-md scale-[1.03] z-10'
                     : 'border-slate-200 hover:border-amber-300 hover:shadow-soft-sm group'
@@ -200,14 +217,25 @@ export default function ServiceTabs() {
                   </div>
                 </div>
 
-                {/* Active Indicator Pin */}
-                {isSelected && (
-                  <span className="mt-2 text-[10px] font-extrabold uppercase tracking-wide bg-slate-900 text-amber-400 px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-                    <FolderOpen className="w-3 h-3" />
-                    <span>Open</span>
-                  </span>
-                )}
-              </button>
+                {/* Book Now Button on Folder Card */}
+                <div className="mt-3 w-full">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openBookingModal(folder.primaryLink.replace('/services/', ''));
+                    }}
+                    className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1 cursor-pointer ${
+                      isSelected
+                        ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/20'
+                        : 'bg-slate-900 hover:bg-slate-800 text-white'
+                    }`}
+                  >
+                    <span>Book Now</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -225,7 +253,7 @@ export default function ServiceTabs() {
                 </h3>
               </div>
               <p className="text-xs text-slate-500 mt-1">
-                {currentFolder.subtitle} • 30-Day Warranty Included
+                {currentFolder.subtitle}
               </p>
             </div>
 
@@ -239,7 +267,7 @@ export default function ServiceTabs() {
           </div>
 
           {/* Nested Photorealistic Service Icons Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentFolder.services.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-5'} gap-4`}>
             {currentFolder.services.map((srv) => {
               const ServiceIconComp = srv.Icon;
               return (
@@ -252,11 +280,18 @@ export default function ServiceTabs() {
                     <ServiceIconComp className="w-12 h-12 drop-shadow-sm" />
                   </div>
 
-                  {/* Title & Price */}
+                  {/* Title, Rating & Price */}
                   <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
                     <h4 className="text-xs sm:text-sm font-bold text-slate-900 font-heading group-hover:text-amber-600 transition-colors line-clamp-2">
                       {srv.name}
                     </h4>
+
+                    {/* Star Rating & Booking count */}
+                    {srv.rating && (
+                      <div className="mt-1 inline-flex items-center justify-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md border border-amber-200/60">
+                        <span>{srv.rating}</span>
+                      </div>
+                    )}
 
                     <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between w-full mt-2">
                       <span className="text-[11px] font-bold text-slate-500">Starts</span>
@@ -270,7 +305,7 @@ export default function ServiceTabs() {
                   <div className="pt-3 flex items-center gap-1.5 w-full mt-2">
                     <button
                       onClick={() => openBookingModal(srv.slug, { title: srv.name, price: srv.price })}
-                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs py-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1"
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs py-2 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Book</span>

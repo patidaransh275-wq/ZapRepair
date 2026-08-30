@@ -49,11 +49,6 @@ export default function AreaLandingPage({ params }) {
             </p>
 
             <div className="flex items-center gap-4 text-xs pt-2">
-              <span className="text-emerald-400 font-bold flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                30-Day Warranty
-              </span>
-              <span className="text-slate-400">•</span>
               <span className="text-emerald-400 font-bold">{areaInfo.activeTechs} On-Duty Technicians</span>
               <span className="text-slate-400">•</span>
               <span className="text-slate-300 font-semibold">Fixed Rate Card</span>
