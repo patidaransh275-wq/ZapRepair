@@ -3,7 +3,6 @@ import { Resend } from 'resend';
 export const ADMIN_NOTIFICATION_EMAIL = 'plumberindore@gmail.com';
 const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
-const RESEND_TEST_ACCOUNT_OWNER = 'patidaransh275@gmail.com';
 
 /**
  * Helper to safely obtain Resend client on server-side only
@@ -49,7 +48,7 @@ export async function sendEmail({
     };
   }
 
-  // Normalize recipient list, defaulting to admin email plumberindore@gmail.com
+  // Normalize recipient list, defaulting strictly to plumberindore@gmail.com
   const recipientList = Array.isArray(to) ? to : (to ? [to] : [ADMIN_NOTIFICATION_EMAIL]);
 
   try {
@@ -71,7 +70,7 @@ export async function sendEmail({
       error.message?.includes('Domain not verified') ||
       error.message?.includes('from address')
     )) {
-      console.warn(`Primary domain (${from}) not yet verified. Retrying via fallback sender (${FALLBACK_SENDER_EMAIL})...`);
+      console.warn(`Primary domain (${from}) not yet active. Retrying via fallback sender (${FALLBACK_SENDER_EMAIL}) to ${recipientList.join(', ')}...`);
       
       const retryResult = await resend.emails.send({
         from: FALLBACK_SENDER_EMAIL,
@@ -83,34 +82,6 @@ export async function sendEmail({
 
       data = retryResult.data;
       error = retryResult.error;
-    }
-
-    // 3. If Resend test account sandbox limitation triggers (can only send to account owner email)
-    if (error && (
-      error.message?.includes('only send testing emails to your own email address') || 
-      error.message?.includes(RESEND_TEST_ACCOUNT_OWNER) ||
-      error.message?.includes('testing emails')
-    )) {
-      console.warn(`Resend sandbox mode detected. Delivering safely to verified account owner (${RESEND_TEST_ACCOUNT_OWNER})...`);
-      
-      const sandboxBanner = `
-        <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
-          <strong>[PlumberIndore Resend Sandbox Notice]</strong><br/>
-          Original Intended Recipient(s): <strong>${recipientList.join(', ')}</strong><br/>
-          <em>Delivered to verified Resend account owner email. Once plumberindore.in domain verification is active at resend.com/domains, emails will deliver directly to customer & plumberindore@gmail.com.</em>
-        </div>
-      `;
-
-      const sandboxResult = await resend.emails.send({
-        from: FALLBACK_SENDER_EMAIL,
-        to: [RESEND_TEST_ACCOUNT_OWNER],
-        subject: `[PlumberIndore Alert] ${subject}`,
-        html: sandboxBanner + html,
-        reply_to: replyTo
-      });
-
-      data = sandboxResult.data;
-      error = sandboxResult.error;
     }
 
     if (error) {
