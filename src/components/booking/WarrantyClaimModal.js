@@ -16,6 +16,18 @@ export default function WarrantyClaimModal({ isOpen, onClose, booking }) {
     const cid = `WRN-${Math.floor(10000 + Math.random() * 90000)}`;
     setClaimId(cid);
     setSubmitted(true);
+
+    // Notify backend via Resend
+    fetch('/api/booking/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'claim',
+        booking,
+        claimReason,
+        claimDescription: description
+      })
+    }).catch(err => console.warn('Warranty claim email dispatch error:', err));
   };
 
   return (

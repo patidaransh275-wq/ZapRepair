@@ -38,15 +38,45 @@ export async function POST(request) {
       authenticatedAt: new Date().toISOString()
     };
 
-    // Set httpOnly session cookie
-    const cookieStore = cookies();
-    cookieStore.set('plumberindore_session', JSON.stringify(userSession), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      path: '/'
-    });
+    // Send Welcome Email via Resend
+    try {
+      const { sendEmail } = await import('../../../../utils/resend');
+      await sendEmail({
+        to: [email.toLowerCase().trim(), 'plumberindore@gmail.com'],
+        subject: `[PlumberIndore] Welcome to Indore's #1 Doorstep Service Network, ${name}!`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #0f172a;">
+            <div style="background-color: #0f172a; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
+              <h1 style="color: #fbbf24; margin: 0; font-size: 22px; font-weight: 800;">Plumber<span style="color: #ffffff;">Indore</span></h1>
+            </div>
+            <div style="padding: 24px 16px;">
+              <h2 style="font-size: 20px; font-weight: 800; color: #0f172a;">Welcome to PlumberIndore, ${name}!</h2>
+              <p style="font-size: 13px; color: #475569; line-height: 1.6;">
+                Your account has been registered with <strong>${email}</strong> and mobile <strong>+91 ${cleanPhone}</strong>.
+              </p>
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 16px 0; font-size: 13px;">
+                <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">Your PlumberIndore Benefits:</div>
+                <div>✓ 45-Minute Doorstep Technician Arrival</div>
+                <div>✓ Transparent Fixed Rate Cards (No hidden charges)</div>
+                <div>✓ 30-Day Post Service Warranty on all repairs</div>
+                <div>✓ Verified Background-Checked Indore Technicians</div>
+              </div>
+              <div style="text-align: center; margin-top: 20px;">
+                <a href="https://www.plumberindore.in" style="background-color: #f59e0b; color: #0f172a; text-decoration: none; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 10px; display: inline-block;">
+                  Book Doorstep Service Now →
+                </a>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; text-align: center; font-size: 11px; color: #94a3b8;">
+              PlumberIndore Helpline: +91 91749 34135 • plumberindore@gmail.com
+            </div>
+          </div>
+        `,
+        replyTo: 'plumberindore@gmail.com'
+      });
+    } catch (emailErr) {
+      console.warn('Welcome email non-critical error:', emailErr);
+    }
 
     return NextResponse.json({
       success: true,

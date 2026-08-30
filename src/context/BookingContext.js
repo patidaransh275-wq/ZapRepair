@@ -298,19 +298,28 @@ export function BookingProvider({ children }) {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
 
+    // Send confirmation email via Resend
+    fetch('/api/booking/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'create', booking: newBooking })
+    }).catch(err => console.warn('Booking create email dispatch error:', err));
+
     return newBooking;
   };
 
   const rescheduleBooking = (bookingId, newDate, newTimeSlot) => {
+    let targetBooking = null;
     const updated = userBookings.map(b => {
       if (b.id === bookingId) {
-        return {
+        targetBooking = {
           ...b,
           date: newDate,
           timeSlot: newTimeSlot,
           status: 'Rescheduled',
           confirmationSent: { sms: true, email: true }
         };
+        return targetBooking;
       }
       return b;
     });
@@ -318,12 +327,27 @@ export function BookingProvider({ children }) {
     try {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
+
+    if (targetBooking) {
+      fetch('/api/booking/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'reschedule',
+          booking: targetBooking,
+          newDate,
+          newTimeSlot
+        })
+      }).catch(err => console.warn('Booking reschedule email dispatch error:', err));
+    }
   };
 
   const cancelBooking = (bookingId) => {
+    let targetBooking = null;
     const updated = userBookings.map(b => {
       if (b.id === bookingId) {
-        return { ...b, status: 'Cancelled', statusStep: 0 };
+        targetBooking = { ...b, status: 'Cancelled', statusStep: 0 };
+        return targetBooking;
       }
       return b;
     });
@@ -331,6 +355,14 @@ export function BookingProvider({ children }) {
     try {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
+
+    if (targetBooking) {
+      fetch('/api/booking/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'cancel', booking: targetBooking })
+      }).catch(err => console.warn('Booking cancel email dispatch error:', err));
+    }
   };
 
   return (

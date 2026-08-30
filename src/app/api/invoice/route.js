@@ -139,7 +139,9 @@ export async function POST(request) {
 
     const recipient = customerEmail || 'plumberindore@gmail.com';
 
-    const result = await sendNotificationEmail({
+    const { sendEmail } = await import('../../../utils/resend');
+    const result = await sendEmail({
+      to: [recipient, 'plumberindore@gmail.com'],
       subject: `[PlumberIndore Tax Invoice] ${invoiceNumber} - ₹${totalPaid} (${serviceName})`,
       html: htmlContent,
       replyTo: 'plumberindore@gmail.com'

@@ -16,9 +16,23 @@ export default function OnlinePaymentModal({ isOpen, onClose, booking, onPayment
     setTimeout(() => {
       setLoading(false);
       setPaid(true);
+
+      // Notify backend & dispatch Resend payment receipt
+      fetch('/api/payment/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'success',
+          booking: booking,
+          paymentMethod: method === 'upi' ? 'UPI (GPay/PhonePe)' : method === 'card' ? 'Credit/Debit Card' : 'Pay After Service Fix',
+          paymentRef: `TXN-${Math.floor(10000000 + Math.random() * 90000000)}`,
+          amount: booking.price
+        })
+      }).catch(err => console.warn('Payment receipt email dispatch error:', err));
+
       setTimeout(() => {
         setPaid(false);
-        onPaymentSuccess();
+        if (onPaymentSuccess) onPaymentSuccess();
         onClose();
       }, 1800);
     }, 1500);

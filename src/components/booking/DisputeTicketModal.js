@@ -16,6 +16,18 @@ export default function DisputeTicketModal({ isOpen, onClose, booking }) {
     const tid = `TKT-${Math.floor(10000 + Math.random() * 90000)}`;
     setTicketId(tid);
     setSubmitted(true);
+
+    // Notify backend via Resend
+    fetch('/api/booking/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'claim',
+        booking,
+        claimReason: `Dispute / Ticket: ${issueType}`,
+        claimDescription: details
+      })
+    }).catch(err => console.warn('Dispute ticket email dispatch error:', err));
   };
 
   return (
