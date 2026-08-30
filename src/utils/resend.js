@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 export const ADMIN_NOTIFICATION_EMAIL = 'plumberindore@gmail.com';
 const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
+const RESEND_TEST_ACCOUNT_OWNER = 'patidaransh275@gmail.com';
 
 /**
  * Helper to safely obtain Resend client on server-side only
@@ -48,11 +49,11 @@ export async function sendEmail({
     };
   }
 
-  // Normalize recipient list, defaulting strictly to plumberindore@gmail.com
+  // Normalize recipient list, targeting plumberindore@gmail.com by default
   const recipientList = Array.isArray(to) ? to : (to ? [to] : [ADMIN_NOTIFICATION_EMAIL]);
 
   try {
-    // 1. Primary Attempt: Send using verified domain plumberindore.in
+    // 1. Primary Attempt: Send to intended recipients using custom domain
     let { data, error } = await resend.emails.send({
       from: from || PRIMARY_SENDER_EMAIL,
       to: recipientList,
@@ -70,7 +71,7 @@ export async function sendEmail({
       error.message?.includes('Domain not verified') ||
       error.message?.includes('from address')
     )) {
-      console.warn(`Primary domain (${from}) not yet active. Retrying via fallback sender (${FALLBACK_SENDER_EMAIL}) to ${recipientList.join(', ')}...`);
+      console.warn(`Primary domain (${from}) unverified. Retrying via fallback sender (${FALLBACK_SENDER_EMAIL}) to ${recipientList.join(', ')}...`);
       
       const retryResult = await resend.emails.send({
         from: FALLBACK_SENDER_EMAIL,
@@ -84,6 +85,44 @@ export async function sendEmail({
       error = retryResult.error;
     }
 
+    // 3. Safety Fallback: If Resend blocks plumberindore@gmail.com because domain verification is pending
+    if (error && (
+      error.message?.includes('only send testing emails to your own email address') || 
+      error.message?.includes(RESEND_TEST_ACCOUNT_OWNER) ||
+      error.message?.includes('testing emails')
+    )) {
+      console.warn(`Resend sandbox policy active. Forwarding alert to verified account owner (${RESEND_TEST_ACCOUNT_OWNER}) to prevent lead loss...`);
+      
+      const sandboxBanner = `
+        <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
+          <strong>[PlumberIndore System Alert]</strong><br/>
+          Intended Recipient: <strong>${recipientList.join(', ')}</strong><br/>
+          <em>Notice: Delivered to verified Resend account owner. To send directly to plumberindore@gmail.com and customers without forwarding, verify plumberindore.in at resend.com/domains.</em>
+        </div>
+      `;
+
+      const sandboxResult = await resend.emails.send({
+        from: FALLBACK_SENDER_EMAIL,
+        to: [RESEND_TEST_ACCOUNT_OWNER],
+        subject: `[PlumberIndore Alert] ${subject}`,
+        html: sandboxBanner + html,
+        reply_to: replyTo
+      });
+
+      if (!sandboxResult.error) {
+        return {
+          success: true,
+          data: sandboxResult.data,
+          deliveredTo: RESEND_TEST_ACCOUNT_OWNER,
+          intendedRecipients: recipientList,
+          sandboxNotice: 'Domain verification pending at resend.com/domains. Email safely delivered to verified account owner.'
+        };
+      }
+
+      data = sandboxResult.data;
+      error = sandboxResult.error;
+    }
+
     if (error) {
       console.error('Resend API delivery error:', error);
       return {
@@ -94,7 +133,8 @@ export async function sendEmail({
 
     return {
       success: true,
-      data
+      data,
+      deliveredTo: recipientList.join(', ')
     };
   } catch (err) {
     console.error('Unexpected error while calling Resend:', err);
