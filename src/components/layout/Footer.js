@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Phone, Mail, MapPin, ShieldCheck, ExternalLink, Instagram, Linkedin, Facebook } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
+import { getLegacyServiceRedirect } from '../../data/categoriesData';
 
 export default function Footer() {
   const currentYear = 2026;
@@ -116,7 +117,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               {SERVICES_DATA.slice(0, 6).map((srv) => (
                 <li key={srv.id}>
-                  <Link href={`/services/${srv.slug}`} className="hover:text-amber-400 transition-colors">
+                  <Link href={getLegacyServiceRedirect(srv.slug)} className="hover:text-amber-400 transition-colors">
                     {srv.name}
                   </Link>
                 </li>

@@ -60,18 +60,18 @@ export const MEGA_MENU_CATEGORIES = [
     count: '10 Services',
     startingPrice: 199,
     FolderIcon: ToolboxFolderIcon,
-    primaryLink: '/services/ac-repair',
+    primaryLink: '/appliance',
     services: [
-      { id: 'ac-repair', name: 'AC Unit Repair & Service', desc: 'Power jet wash, gas leak fix & cooling check', price: 399, slug: 'ac-repair', Icon: ACUnitIcon },
-      { id: 'refrigerator', name: 'Refrigerator Repair', desc: 'Gas charging, defrost thermostat & inverter PCB', price: 299, slug: 'refrigerator', Icon: RefrigeratorUnitIcon },
-      { id: 'washing-machine', name: 'Washing Machine Service', desc: 'Drum descaling, drain pump & motor belt fix', price: 299, slug: 'washing-machine', Icon: WashingMachineUnitIcon },
-      { id: 'ro-purifier', name: 'RO Purifier Filter Change', desc: 'Sediment, carbon filters & membrane renewal', price: 199, slug: 'ro-purifier', Icon: ROPurifierIcon },
-      { id: 'geyser', name: 'Geyser & Water Heater Fix', desc: 'Copper heating element, thermostat & mounting', price: 249, slug: 'geyser', Icon: GeyserIcon },
-      { id: 'microwave', name: 'Microwave Oven Repair', desc: 'Magnetron heating, diode, touchpad & PCB', price: 249, slug: 'microwave', Icon: MicrowaveUnitIcon },
-      { id: 'air-cooler', name: 'Air Cooler Servicing', desc: 'Honeycomb pad change, pump & motor overhaul', price: 199, slug: 'air-cooler', Icon: AirCoolerIcon },
-      { id: 'kitchen-chimney', name: 'Kitchen Chimney Deep Clean', desc: 'Degreasing, baffle filter scrub & motor suction', price: 499, slug: 'kitchen-chimney', Icon: KitchenChimneyIcon },
-      { id: 'inverter', name: 'Inverter Battery Checkup', desc: 'Charging circuit, battery gravity & acid top-up', price: 249, slug: 'inverter', Icon: InverterBatteryIcon },
-      { id: 'atta-chakki', name: 'Atta Chakki Motor Repair', desc: 'Cutter sharpening, stone alignment & motor check', price: 249, slug: 'atta-chakki', Icon: AttaChakkiIcon }
+      { id: 'ac-repair', name: 'AC Unit Repair & Service', desc: 'Power jet wash, gas leak fix & cooling check', price: 399, link: '/appliance/ac-repair', bookingService: 'ac-repair', Icon: ACUnitIcon },
+      { id: 'refrigerator', name: 'Refrigerator Repair', desc: 'Gas charging, defrost thermostat & inverter PCB', price: 299, link: '/appliance/refrigerator', bookingService: 'refrigerator', Icon: RefrigeratorUnitIcon },
+      { id: 'washing-machine', name: 'Washing Machine Service', desc: 'Drum descaling, drain pump & motor belt fix', price: 299, link: '/appliance/washing-machine', bookingService: 'washing-machine', Icon: WashingMachineUnitIcon },
+      { id: 'ro-purifier', name: 'RO Purifier Filter Change', desc: 'Sediment, carbon filters & membrane renewal', price: 199, link: '/appliance/ro-purifier', bookingService: 'ro-purifier', Icon: ROPurifierIcon },
+      { id: 'geyser', name: 'Geyser & Water Heater Fix', desc: 'Copper heating element, thermostat & mounting', price: 249, link: '/appliance/geyser', bookingService: 'geyser', Icon: GeyserIcon },
+      { id: 'microwave', name: 'Microwave Oven Repair', desc: 'Magnetron heating, diode, touchpad & PCB', price: 249, link: '/appliance/microwave', bookingService: 'microwave', Icon: MicrowaveUnitIcon },
+      { id: 'air-cooler', name: 'Air Cooler Servicing', desc: 'Honeycomb pad change, pump & motor overhaul', price: 199, link: '/appliance/air-cooler', bookingService: 'air-cooler', Icon: AirCoolerIcon },
+      { id: 'kitchen-chimney', name: 'Kitchen Chimney Deep Clean', desc: 'Degreasing, baffle filter scrub & motor suction', price: 499, link: '/appliance/kitchen-chimney', bookingService: 'kitchen-chimney', Icon: KitchenChimneyIcon },
+      { id: 'inverter', name: 'Inverter Battery Checkup', desc: 'Charging circuit, battery gravity & acid top-up', price: 249, link: '/appliance/inverter', bookingService: 'inverter', Icon: InverterBatteryIcon },
+      { id: 'atta-chakki', name: 'Atta Chakki Motor Repair', desc: 'Cutter sharpening, stone alignment & motor check', price: 249, link: '/appliance/atta-chakki', bookingService: 'atta-chakki', Icon: AttaChakkiIcon }
     ]
   },
   {
@@ -81,14 +81,14 @@ export const MEGA_MENU_CATEGORIES = [
     count: '6 Key Services',
     startingPrice: 69,
     FolderIcon: ChromeTapFolderIcon,
-    primaryLink: '/services/plumber',
+    primaryLink: '/plumber',
     services: [
-      { id: 'plm-main', name: 'Plumber Full Service & Inspection', desc: 'Complete home pipeline & sanitary checkup', price: 149, slug: 'plumber', Icon: ChromeTapFolderIcon },
-      { id: 'plm-tap', name: 'Chrome Tap & Mixer Repair', desc: 'Spindle change, leaking tap & wall mixer fix', price: 149, slug: 'plumber', Icon: ChromeTapFolderIcon },
-      { id: 'plm-toilet', name: 'Toilet Flush Tank & Cistern', desc: 'Syphon replacement, push button & jet spray', price: 199, slug: 'plumber', Icon: ToiletFlushIcon },
-      { id: 'plm-drain', name: 'Drain Pipe & Sink Blockage', desc: 'Heavy-duty steel snake blockage clearing', price: 349, slug: 'plumber', Icon: DrainPipeIcon },
-      { id: 'plm-tank', name: 'Overhead Water Tank Clean', desc: 'Pressure wash, sludge removal & UV sanitize', price: 499, slug: 'plumber', Icon: WaterTankIcon },
-      { id: 'plm-fittings', name: 'Bathroom Fitting & Shower', desc: 'Overhead shower arm, towel rods & soap holder', price: 69, slug: 'plumber', Icon: BathroomFittingIcon }
+      { id: 'plm-main', name: 'Plumber Full Service & Inspection', desc: 'Complete home pipeline & sanitary checkup', price: 149, link: '/plumber', bookingService: 'plumber', Icon: ChromeTapFolderIcon },
+      { id: 'plm-tap', name: 'Chrome Tap & Mixer Repair', desc: 'Spindle change, leaking tap & wall mixer fix', price: 149, link: '/plumber/tap-mixer-repair', bookingService: 'plumber', Icon: ChromeTapFolderIcon },
+      { id: 'plm-toilet', name: 'Toilet Flush Tank & Cistern', desc: 'Syphon replacement, push button & jet spray', price: 199, link: '/plumber/toilet-flush-repair', bookingService: 'plumber', Icon: ToiletFlushIcon },
+      { id: 'plm-drain', name: 'Drain Pipe & Sink Blockage', desc: 'Heavy-duty steel snake blockage clearing', price: 349, link: '/plumber/drain-blockage', bookingService: 'plumber', Icon: DrainPipeIcon },
+      { id: 'plm-tank', name: 'Overhead Water Tank Clean', desc: 'Pressure wash, sludge removal & UV sanitize', price: 499, link: '/plumber/water-tank-cleaning', bookingService: 'plumber', Icon: WaterTankIcon },
+      { id: 'plm-fittings', name: 'Bathroom Fitting & Shower', desc: 'Overhead shower arm, towel rods & soap holder', price: 69, link: '/plumber/bathroom-fittings', bookingService: 'plumber', Icon: BathroomFittingIcon }
     ]
   },
   {
@@ -98,31 +98,41 @@ export const MEGA_MENU_CATEGORIES = [
     count: '6 Key Services',
     startingPrice: 149,
     FolderIcon: SwitchboardFolderIcon,
-    primaryLink: '/services/electrician',
+    primaryLink: '/electrician',
     services: [
-      { id: 'elec-main', name: 'Electrician Full Service Inspection', desc: 'Doorstep electrical diagnostics & multimeter check', price: 149, slug: 'electrician', Icon: SwitchboardFolderIcon },
-      { id: 'elec-switch', name: 'Switchboard & Socket Repair', desc: 'Modular switch replacement & 16A power socket', price: 149, slug: 'electrician', Icon: SwitchboardFolderIcon },
-      { id: 'elec-fan', name: 'Ceiling Fan Installation & Fix', desc: 'Capacitor change, bearing greasing & mounting', price: 199, slug: 'electrician', Icon: CeilingFanIcon },
-      { id: 'elec-light', name: 'Chandelier & LED Lighting', desc: 'False ceiling COB lights, batten & chandelier', price: 249, slug: 'electrician', Icon: ChandelierIcon },
-      { id: 'elec-mcb', name: 'MCB Box & Distribution Panel', desc: 'Tripping breaker fix, RCCB & DB box overhaul', price: 399, slug: 'electrician', Icon: MCBBoxIcon },
-      { id: 'elec-wiring', name: 'Home Wiring & Fault Finding', desc: 'Short circuit tracing, casing & concealed copper wiring', price: 499, slug: 'electrician', Icon: WiringIcon }
+      { id: 'elec-main', name: 'Electrician Full Service Inspection', desc: 'Doorstep electrical diagnostics & multimeter check', price: 149, link: '/electrician', bookingService: 'electrician', Icon: SwitchboardFolderIcon },
+      { id: 'elec-switch', name: 'Switchboard & Socket Repair', desc: 'Modular switch replacement & 16A power socket', price: 149, link: '/electrician/switchboard-socket', bookingService: 'electrician', Icon: SwitchboardFolderIcon },
+      { id: 'elec-fan', name: 'Ceiling Fan Installation & Fix', desc: 'Capacitor change, bearing greasing & mounting', price: 199, link: '/electrician/ceiling-fan', bookingService: 'electrician', Icon: CeilingFanIcon },
+      { id: 'elec-light', name: 'Chandelier & LED Lighting', desc: 'False ceiling COB lights, batten & chandelier', price: 249, link: '/electrician/lights-chandelier', bookingService: 'electrician', Icon: ChandelierIcon },
+      { id: 'elec-mcb', name: 'MCB Box & Distribution Panel', desc: 'Tripping breaker fix, RCCB & DB box overhaul', price: 399, link: '/electrician/mcb-db-box', bookingService: 'electrician', Icon: MCBBoxIcon },
+      { id: 'elec-wiring', name: 'Home Wiring & Fault Finding', desc: 'Short circuit tracing, casing & concealed copper wiring', price: 499, link: '/electrician/wiring-short-circuit', bookingService: 'electrician', Icon: WiringIcon }
     ]
   },
   {
     id: 'pest',
     title: 'Pest Control',
     subtitle: 'Cockroaches, Ants, Bed Bugs & Termite Treatment',
-    count: '3 Services',
+    count: '4 Key Services',
     startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
-    primaryLink: '/services/pest-control',
+    primaryLink: '/pest-control',
     services: [
+      { 
+        id: 'pest-main', 
+        name: 'Pest Control Full Service Inspection', 
+        desc: 'Odorless inspection & customized extermination plan', 
+        price: 499, 
+        link: '/pest-control', 
+        bookingService: 'pest-control', 
+        Icon: SprayBottleFolderIcon 
+      },
       { 
         id: 'pest-cockroach', 
         name: 'Cockroaches, Ants & General Pest Control', 
         desc: 'Odorless spray & gel bait for complete roach and ant elimination', 
         price: 599, 
-        slug: 'pest-control', 
+        link: '/pest-control/cockroach-ants', 
+        bookingService: 'pest-control', 
         Icon: CockroachSprayIcon 
       },
       { 
@@ -130,7 +140,8 @@ export const MEGA_MENU_CATEGORIES = [
         name: 'Bed Bugs Control', 
         desc: 'Advanced two-stage chemical spray for mattress, furniture & cracks', 
         price: 799, 
-        slug: 'pest-control', 
+        link: '/pest-control/bed-bugs', 
+        bookingService: 'pest-control', 
         Icon: BedBugsIcon 
       },
       { 
@@ -138,7 +149,8 @@ export const MEGA_MENU_CATEGORIES = [
         name: 'Termite Control', 
         desc: 'Drill-and-inject anti-termite wall & wood barrier with warranty', 
         price: 999, 
-        slug: 'pest-control', 
+        link: '/pest-control/termite-control', 
+        bookingService: 'pest-control', 
         Icon: TermiteKitIcon 
       }
     ]
@@ -150,14 +162,14 @@ export const MEGA_MENU_CATEGORIES = [
     count: '6 Key Services',
     startingPrice: 199,
     FolderIcon: HammerPaintbrushFolderIcon,
-    primaryLink: '/services/carpenter',
+    primaryLink: '/carpenter-paint',
     services: [
-      { id: 'crp-main', name: 'Carpenter Full Service & Drill', desc: 'Precision woodwork, hardware & furniture repairs', price: 199, slug: 'carpenter', Icon: HammerPaintbrushFolderIcon },
-      { id: 'crp-furn', name: 'Furniture Toolkit & Assembly', desc: 'IKEA / Wakefit / Pepperfry bed & table setup', price: 399, slug: 'carpenter', Icon: FurnitureKitIcon },
-      { id: 'crp-hinge', name: 'Door Hinge & Hydraulic Slider', desc: 'Wardrobe soft-close hinge & drawer channel fix', price: 249, slug: 'carpenter', Icon: DoorHingeIcon },
-      { id: 'crp-lock', name: 'Door Lock & Security Latch', desc: 'Main door mortise lock & cylindrical latch repair', price: 199, slug: 'carpenter', Icon: DoorLockIcon },
-      { id: 'crp-roller', name: 'Paint Roller Wall Touch-up', desc: 'Wall putty, crack filing & 2-coat paint touch-up', price: 999, slug: 'painting-waterproofing', Icon: PaintRollerIcon },
-      { id: 'crp-waterproof', name: 'Waterproofing Tub & Anti-Damp', desc: 'SmartCare moisture barrier for wet wall patches', price: 1499, slug: 'painting-waterproofing', Icon: WaterproofingTubIcon }
+      { id: 'crp-main', name: 'Carpenter Full Service & Drill', desc: 'Precision woodwork, hardware & furniture repairs', price: 199, link: '/carpenter-paint', bookingService: 'carpenter', Icon: HammerPaintbrushFolderIcon },
+      { id: 'crp-furn', name: 'Furniture Toolkit & Assembly', desc: 'IKEA / Wakefit / Pepperfry bed & table setup', price: 399, link: '/carpenter-paint/furniture-assembly', bookingService: 'carpenter', Icon: FurnitureKitIcon },
+      { id: 'crp-hinge', name: 'Door Hinge & Hydraulic Slider', desc: 'Wardrobe soft-close hinge & drawer channel fix', price: 249, link: '/carpenter-paint/carpenter', bookingService: 'carpenter', Icon: DoorHingeIcon },
+      { id: 'crp-lock', name: 'Door Lock & Security Latch', desc: 'Main door mortise lock & cylindrical latch repair', price: 199, link: '/carpenter-paint/door-locks', bookingService: 'carpenter', Icon: DoorLockIcon },
+      { id: 'crp-roller', name: 'Paint Roller Wall Touch-up', desc: 'Wall putty, crack filing & 2-coat paint touch-up', price: 999, link: '/carpenter-paint/painting-waterproofing', bookingService: 'painting-waterproofing', Icon: PaintRollerIcon },
+      { id: 'crp-waterproof', name: 'Waterproofing Tub & Anti-Damp', desc: 'SmartCare moisture barrier for wet wall patches', price: 1499, link: '/carpenter-paint/wall-waterproofing', bookingService: 'painting-waterproofing', Icon: WaterproofingTubIcon }
     ]
   }
 ];
@@ -170,9 +182,9 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
 
   const currentFolder = MEGA_MENU_CATEGORIES.find((f) => f.id === selectedFolderId) || MEGA_MENU_CATEGORIES[0];
 
-  const handleBookingClick = (slug, title, price) => {
+  const handleBookingClick = (serviceId, title, price) => {
     onClose?.();
-    openBookingModal(slug, { title, price });
+    openBookingModal(serviceId, { title, price });
   };
 
   return (
@@ -181,72 +193,62 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="bg-white border border-slate-200/90 rounded-3xl md:rounded-[32px] shadow-2xl overflow-hidden text-slate-900 animate-in fade-in slide-in-from-top-2 duration-150">
+      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
         
-        {/* Mega Menu Top Header */}
-        <div className="px-6 sm:px-8 pt-5 pb-4 border-b border-slate-100 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">
-                Interactive Mega Menu
+        {/* Top Header with 5 Distinct Folder Tabs */}
+        <div className="bg-slate-900 text-white px-6 pt-5 pb-0 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
+                Service Catalog
               </span>
-              <span className="text-[10px] font-semibold text-emerald-600 flex items-center gap-1">
-                <Clock className="w-3 h-3" /> 45-minute doorstep arrival in Indore
-              </span>
+              <span className="text-xs text-slate-400 font-medium">Select a Trade Folder:</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading tracking-tight">
-              Explore Home Services by Category
-            </h2>
+            
+            <button
+              onClick={onClose}
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close mega menu"
-            className="w-9 h-9 rounded-full bg-[#F3F4F6] hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all duration-150 focus:outline-none"
-          >
-            <X className="w-4 h-4 stroke-[2.5]" />
-          </button>
+          {/* 5 Tab Buttons across Desktop Header */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1">
+            {MEGA_MENU_CATEGORIES.map((folder) => {
+              const isSelected = selectedFolderId === folder.id;
+              const FolderIconComponent = folder.FolderIcon;
+              return (
+                <button
+                  key={folder.id}
+                  onClick={() => setSelectedFolderId(folder.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-t-2xl text-xs font-bold transition-all shrink-0 cursor-pointer border-t border-x ${
+                    isSelected
+                      ? 'bg-slate-50 text-slate-900 border-slate-200 font-extrabold shadow-sm translate-y-[1px]'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80 border-transparent'
+                  }`}
+                >
+                  <FolderIconComponent className="w-5 h-5" />
+                  <span>{folder.title}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
+                    isSelected ? 'bg-amber-100 text-amber-800' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {folder.count.split(' ')[0]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* 5 CATEGORY TABS / FOLDERS BAR */}
-        <div className="bg-slate-50/80 px-6 sm:px-8 py-3 border-b border-slate-200/80 flex items-center gap-2.5 overflow-x-auto [scrollbar-width:none]">
-          {MEGA_MENU_CATEGORIES.map((folder) => {
-            const isSelected = selectedFolderId === folder.id;
-            const FolderIconComp = folder.FolderIcon;
-            return (
-              <button
-                key={folder.id}
-                type="button"
-                onClick={() => setSelectedFolderId(folder.id)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 border ${
-                  isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-amber-400'
-                    : 'bg-white text-slate-700 border-slate-200 hover:border-amber-300 hover:bg-slate-100'
-                }`}
-              >
-                <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
-                  <FolderIconComp className="w-5 h-5" />
-                </div>
-                <span>{folder.title}</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                  isSelected ? 'bg-amber-400 text-slate-950 font-extrabold' : 'bg-slate-100 text-slate-500'
-                }`}>
-                  {folder.services.length}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* ACTIVE CATEGORY SERVICES PANEL */}
-        <div className="p-6 sm:p-8 space-y-6 max-h-[62vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200">
+        {/* Tab Content Body (Studio-Lit Service Grid) */}
+        <div className="bg-slate-50 p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
           
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          {/* Sub-Header info for Active Folder */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
             <div>
-              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 font-heading flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                <span>{currentFolder.title} Services</span>
+              <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 font-heading">
+                {currentFolder.title} Catalog
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
                 {currentFolder.subtitle}
@@ -281,7 +283,7 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                     {/* Service Name & Description */}
                     <div className="min-w-0 flex-1 space-y-0.5 sm:space-y-1">
                       <Link
-                        href={`/services/${srv.slug}`}
+                        href={srv.link}
                         onClick={onClose}
                         className="text-[11px] sm:text-sm font-bold text-slate-900 group-hover:text-amber-700 font-heading block transition-colors leading-tight hover:underline line-clamp-2"
                       >
@@ -305,8 +307,8 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                     <div className="flex items-center gap-1 sm:gap-1.5">
                       <button
                         type="button"
-                        onClick={() => handleBookingClick(srv.slug, srv.name, srv.price)}
-                        className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-xs px-2 sm:px-3.5 py-1 rounded-md sm:rounded-lg shadow-sm transition-all flex items-center gap-0.5 sm:gap-1"
+                        onClick={() => handleBookingClick(srv.bookingService, srv.name, srv.price)}
+                        className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-xs px-2 sm:px-3.5 py-1 rounded-md sm:rounded-lg shadow-sm transition-all flex items-center gap-0.5 sm:gap-1 cursor-pointer"
                       >
                         <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                         <span>Book</span>

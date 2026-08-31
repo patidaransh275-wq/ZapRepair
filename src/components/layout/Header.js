@@ -7,6 +7,7 @@ import { Menu, X, Search, ChevronDown, MapPin, Wrench, ArrowRight } from 'lucide
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { SERVICES_DATA } from '../../data/servicesData';
+import { getLegacyServiceRedirect } from '../../data/categoriesData';
 import { INDORE_AREAS_DATA } from '../../data/indoreAreasData';
 import ServicesMegaMenu from './ServicesMegaMenu';
 
@@ -84,7 +85,7 @@ export default function Header() {
   const handleSelectService = (slug) => {
     setIsSearchFocused(false);
     setSearchQuery('');
-    router.push(`/services/${slug}`);
+    router.push(getLegacyServiceRedirect(slug));
   };
 
   const handleSelectArea = (slug) => {

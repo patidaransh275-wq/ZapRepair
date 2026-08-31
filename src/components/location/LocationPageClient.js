@@ -21,6 +21,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
+import { getLegacyServiceRedirect } from '../../data/categoriesData';
 import { useBooking } from '../../context/BookingContext';
 import Breadcrumbs from '../layout/Breadcrumbs';
 
@@ -196,7 +197,7 @@ export default function LocationPageClient({ areaInfo }) {
 
                   <div>
                     <Link 
-                      href={`/services/${srv.slug}`}
+                      href={getLegacyServiceRedirect(srv.slug)}
                       className="text-xs sm:text-base font-bold text-slate-900 font-heading hover:text-amber-600 transition-colors line-clamp-1 leading-tight block"
                     >
                       {srv.name}

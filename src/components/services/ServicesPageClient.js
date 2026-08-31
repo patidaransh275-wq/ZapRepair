@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Search, ShieldCheck, MapPin, ArrowRight, Filter, Loader2 } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
+import { getLegacyServiceRedirect } from '../../data/categoriesData';
 import { useBooking } from '../../context/BookingContext';
 import PackageComparisonTable from './PackageComparisonTable';
 
@@ -110,7 +111,7 @@ function ServicesContent() {
 
             <div className="p-3 sm:p-6 pt-0 flex flex-col sm:flex-row gap-1 sm:gap-2">
               <Link
-                href={`/services/${srv.slug}`}
+                href={getLegacyServiceRedirect(srv.slug)}
                 className="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-colors"
               >
                 View Details

@@ -60,18 +60,19 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '10 Services',
     startingPrice: 199,
     FolderIcon: ToolboxFolderIcon,
-    primaryLink: '/services/ac-repair',
+    primaryLink: '/appliance',
+    bookingId: 'ac-repair',
     services: [
-      { id: 'ac-repair', name: 'AC Unit Repair & Service', price: 399, slug: 'ac-repair', Icon: ACUnitIcon },
-      { id: 'refrigerator', name: 'Refrigerator Repair', price: 299, slug: 'refrigerator', Icon: RefrigeratorUnitIcon },
-      { id: 'washing-machine', name: 'Washing Machine Service', price: 299, slug: 'washing-machine', Icon: WashingMachineUnitIcon },
-      { id: 'ro-purifier', name: 'RO Purifier Filter Change', price: 199, slug: 'ro-purifier', Icon: ROPurifierIcon },
-      { id: 'geyser', name: 'Geyser & Water Heater Fix', price: 249, slug: 'geyser', Icon: GeyserIcon },
-      { id: 'microwave', name: 'Microwave Oven Repair', price: 249, slug: 'microwave', Icon: MicrowaveUnitIcon },
-      { id: 'air-cooler', name: 'Air Cooler Servicing', price: 199, slug: 'air-cooler', Icon: AirCoolerIcon },
-      { id: 'kitchen-chimney', name: 'Kitchen Chimney Deep Clean', price: 499, slug: 'kitchen-chimney', Icon: KitchenChimneyIcon },
-      { id: 'inverter', name: 'Inverter Battery Checkup', price: 249, slug: 'inverter', Icon: InverterBatteryIcon },
-      { id: 'atta-chakki', name: 'Atta Chakki Motor Repair', price: 249, slug: 'atta-chakki', Icon: AttaChakkiIcon }
+      { id: 'ac-repair', name: 'AC Unit Repair & Service', price: 399, link: '/appliance/ac-repair', bookingService: 'ac-repair', Icon: ACUnitIcon },
+      { id: 'refrigerator', name: 'Refrigerator Repair', price: 299, link: '/appliance/refrigerator', bookingService: 'refrigerator', Icon: RefrigeratorUnitIcon },
+      { id: 'washing-machine', name: 'Washing Machine Service', price: 299, link: '/appliance/washing-machine', bookingService: 'washing-machine', Icon: WashingMachineUnitIcon },
+      { id: 'ro-purifier', name: 'RO Purifier Filter Change', price: 199, link: '/appliance/ro-purifier', bookingService: 'ro-purifier', Icon: ROPurifierIcon },
+      { id: 'geyser', name: 'Geyser & Water Heater Fix', price: 249, link: '/appliance/geyser', bookingService: 'geyser', Icon: GeyserIcon },
+      { id: 'microwave', name: 'Microwave Oven Repair', price: 249, link: '/appliance/microwave', bookingService: 'microwave', Icon: MicrowaveUnitIcon },
+      { id: 'air-cooler', name: 'Air Cooler Servicing', price: 199, link: '/appliance/air-cooler', bookingService: 'air-cooler', Icon: AirCoolerIcon },
+      { id: 'kitchen-chimney', name: 'Kitchen Chimney Deep Clean', price: 499, link: '/appliance/kitchen-chimney', bookingService: 'kitchen-chimney', Icon: KitchenChimneyIcon },
+      { id: 'inverter', name: 'Inverter Battery Checkup', price: 249, link: '/appliance/inverter', bookingService: 'inverter', Icon: InverterBatteryIcon },
+      { id: 'atta-chakki', name: 'Atta Chakki Motor Repair', price: 249, link: '/appliance/atta-chakki', bookingService: 'atta-chakki', Icon: AttaChakkiIcon }
     ]
   },
   {
@@ -81,13 +82,14 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '5 Key Services',
     startingPrice: 69,
     FolderIcon: ChromeTapFolderIcon,
-    primaryLink: '/services/plumber',
+    primaryLink: '/plumber',
+    bookingId: 'plumber',
     services: [
-      { id: 'plm-tap', name: 'Chrome Tap & Mixer Repair', price: 149, slug: 'plumber', Icon: ChromeTapFolderIcon },
-      { id: 'plm-toilet', name: 'Toilet Flush Tank & Cistern', price: 199, slug: 'plumber', Icon: ToiletFlushIcon },
-      { id: 'plm-drain', name: 'Drain Pipe & Sink Blockage', price: 349, slug: 'plumber', Icon: DrainPipeIcon },
-      { id: 'plm-tank', name: 'Overhead Water Tank Clean', price: 499, slug: 'plumber', Icon: WaterTankIcon },
-      { id: 'plm-fittings', name: 'Bathroom Fitting & Shower', price: 69, slug: 'plumber', Icon: BathroomFittingIcon }
+      { id: 'plm-tap', name: 'Chrome Tap & Mixer Repair', price: 149, link: '/plumber/tap-mixer-repair', bookingService: 'plumber', Icon: ChromeTapFolderIcon },
+      { id: 'plm-toilet', name: 'Toilet Flush Tank & Cistern', price: 199, link: '/plumber/toilet-flush-repair', bookingService: 'plumber', Icon: ToiletFlushIcon },
+      { id: 'plm-drain', name: 'Drain Pipe & Sink Blockage', price: 349, link: '/plumber/drain-blockage', bookingService: 'plumber', Icon: DrainPipeIcon },
+      { id: 'plm-tank', name: 'Overhead Water Tank Clean', price: 499, link: '/plumber/water-tank-cleaning', bookingService: 'plumber', Icon: WaterTankIcon },
+      { id: 'plm-fittings', name: 'Bathroom Fitting & Shower', price: 69, link: '/plumber/bathroom-fittings', bookingService: 'plumber', Icon: BathroomFittingIcon }
     ]
   },
   {
@@ -97,13 +99,14 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '5 Key Services',
     startingPrice: 149,
     FolderIcon: SwitchboardFolderIcon,
-    primaryLink: '/services/electrician',
+    primaryLink: '/electrician',
+    bookingId: 'electrician',
     services: [
-      { id: 'elec-switch', name: 'Switchboard & Socket Repair', price: 149, slug: 'electrician', Icon: SwitchboardFolderIcon },
-      { id: 'elec-fan', name: 'Ceiling Fan Installation & Fix', price: 199, slug: 'electrician', Icon: CeilingFanIcon },
-      { id: 'elec-light', name: 'Chandelier & LED Lighting', price: 249, slug: 'electrician', Icon: ChandelierIcon },
-      { id: 'elec-mcb', name: 'MCB Box & Distribution Panel', price: 399, slug: 'electrician', Icon: MCBBoxIcon },
-      { id: 'elec-wiring', name: 'Home Wiring & Fault Finding', price: 499, slug: 'electrician', Icon: WiringIcon }
+      { id: 'elec-switch', name: 'Switchboard & Socket Repair', price: 149, link: '/electrician/switchboard-socket', bookingService: 'electrician', Icon: SwitchboardFolderIcon },
+      { id: 'elec-fan', name: 'Ceiling Fan Installation & Fix', price: 199, link: '/electrician/ceiling-fan', bookingService: 'electrician', Icon: CeilingFanIcon },
+      { id: 'elec-light', name: 'Chandelier & LED Lighting', price: 249, link: '/electrician/lights-chandelier', bookingService: 'electrician', Icon: ChandelierIcon },
+      { id: 'elec-mcb', name: 'MCB Box & Distribution Panel', price: 399, link: '/electrician/mcb-db-box', bookingService: 'electrician', Icon: MCBBoxIcon },
+      { id: 'elec-wiring', name: 'Home Wiring & Fault Finding', price: 499, link: '/electrician/wiring-short-circuit', bookingService: 'electrician', Icon: WiringIcon }
     ]
   },
   {
@@ -113,27 +116,31 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '3 Services',
     startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
-    primaryLink: '/services/pest-control',
+    primaryLink: '/pest-control',
+    bookingId: 'pest-control',
     services: [
       { 
         id: 'pest-cockroach', 
         name: 'Cockroaches, Ants & General Pest Control', 
         price: 599, 
-        slug: 'pest-control', 
+        link: '/pest-control/cockroach-ants', 
+        bookingService: 'pest-control', 
         Icon: CockroachSprayIcon 
       },
       { 
         id: 'pest-bedbugs', 
         name: 'Bed Bugs Control', 
         price: 799, 
-        slug: 'pest-control', 
+        link: '/pest-control/bed-bugs', 
+        bookingService: 'pest-control', 
         Icon: BedBugsIcon 
       },
       { 
         id: 'pest-termite', 
         name: 'Termite Control', 
         price: 999, 
-        slug: 'pest-control', 
+        link: '/pest-control/termite-control', 
+        bookingService: 'pest-control', 
         Icon: TermiteKitIcon 
       }
     ]
@@ -145,13 +152,14 @@ export const CATEGORY_FOLDERS_DATA = [
     count: '5 Key Services',
     startingPrice: 199,
     FolderIcon: HammerPaintbrushFolderIcon,
-    primaryLink: '/services/carpenter',
+    primaryLink: '/carpenter-paint',
+    bookingId: 'carpenter',
     services: [
-      { id: 'crp-furn', name: 'Furniture Toolkit & Assembly', price: 399, slug: 'carpenter', Icon: FurnitureKitIcon },
-      { id: 'crp-hinge', name: 'Door Hinge & Hydraulic Slider', price: 249, slug: 'carpenter', Icon: DoorHingeIcon },
-      { id: 'crp-lock', name: 'Door Lock & Security Latch', price: 199, slug: 'carpenter', Icon: DoorLockIcon },
-      { id: 'crp-roller', name: 'Paint Roller Wall Touch-up', price: 999, slug: 'painting-waterproofing', Icon: PaintRollerIcon },
-      { id: 'crp-waterproof', name: 'Waterproofing Tub & Anti-Damp', price: 1499, slug: 'painting-waterproofing', Icon: WaterproofingTubIcon }
+      { id: 'crp-furn', name: 'Furniture Toolkit & Assembly', price: 399, link: '/carpenter-paint/furniture-assembly', bookingService: 'carpenter', Icon: FurnitureKitIcon },
+      { id: 'crp-hinge', name: 'Door Hinge & Hydraulic Slider', price: 249, link: '/carpenter-paint/carpenter', bookingService: 'carpenter', Icon: DoorHingeIcon },
+      { id: 'crp-lock', name: 'Door Lock & Security Latch', price: 199, link: '/carpenter-paint/door-locks', bookingService: 'carpenter', Icon: DoorLockIcon },
+      { id: 'crp-roller', name: 'Paint Roller Wall Touch-up', price: 999, link: '/carpenter-paint/painting-waterproofing', bookingService: 'painting-waterproofing', Icon: PaintRollerIcon },
+      { id: 'crp-waterproof', name: 'Waterproofing Tub & Anti-Damp', price: 1499, link: '/carpenter-paint/wall-waterproofing', bookingService: 'painting-waterproofing', Icon: WaterproofingTubIcon }
     ]
   }
 ];
@@ -179,8 +187,8 @@ export default function ServiceTabs() {
           </p>
         </div>
 
-        {/* 5 CATEGORY FOLDERS (E-COMMERCE STUDIO-LIT PRODUCT ICON STYLE) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+        {/* 5 HORIZONTAL CATEGORY FOLDERS TABS */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {CATEGORY_FOLDERS_DATA.map((folder) => {
             const isSelected = activeFolderId === folder.id;
             const FolderIconComponent = folder.FolderIcon;
@@ -189,14 +197,21 @@ export default function ServiceTabs() {
               <div
                 key={folder.id}
                 onClick={() => setActiveFolderId(folder.id)}
-                className={`relative rounded-3xl p-4 sm:p-5 text-center transition-all duration-300 flex flex-col items-center justify-between border bg-white cursor-pointer ${
+                className={`relative rounded-3xl p-4 sm:p-5 border text-center transition-all duration-300 flex flex-col items-center justify-between cursor-pointer group select-none ${
                   isSelected
-                    ? 'border-amber-500 ring-4 ring-amber-400/30 shadow-soft-md scale-[1.03] z-10'
-                    : 'border-slate-200 hover:border-amber-300 hover:shadow-soft-sm group'
+                    ? 'bg-white border-amber-500 shadow-soft-lg scale-[1.02] ring-2 ring-amber-500/20'
+                    : 'bg-white/80 hover:bg-white border-slate-200 shadow-soft-sm hover:border-slate-300 hover:shadow-soft-md'
                 }`}
               >
-                {/* Photorealistic Product Icon on Clean White Background */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white flex items-center justify-center p-2 mb-3 shadow-inner border border-slate-100 group-hover:scale-105 transition-transform duration-300">
+                {/* Visual Tab Fold Lip Indicator */}
+                {isSelected && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-3 py-0.5 rounded-full shadow-sm">
+                    ACTIVE
+                  </div>
+                )}
+
+                {/* Studio Folder 3D Icon */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300">
                   <FolderIconComponent className="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-sm" />
                 </div>
 
@@ -220,7 +235,7 @@ export default function ServiceTabs() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      openBookingModal(folder.primaryLink.replace('/services/', ''));
+                      openBookingModal(folder.bookingId);
                     }}
                     className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1 cursor-pointer ${
                       isSelected
@@ -280,7 +295,7 @@ export default function ServiceTabs() {
                   {/* Title & Price */}
                   <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
                     <Link
-                      href={`/services/${srv.slug}`}
+                      href={srv.link}
                       className="text-[11px] sm:text-sm font-bold text-slate-900 font-heading hover:text-amber-600 transition-colors line-clamp-2 leading-tight block"
                     >
                       {srv.name}
@@ -297,7 +312,7 @@ export default function ServiceTabs() {
                   {/* Actions */}
                   <div className="pt-2 sm:pt-3 w-full mt-1.5 sm:mt-2">
                     <button
-                      onClick={() => openBookingModal(srv.slug, { title: srv.name, price: srv.price })}
+                      onClick={() => openBookingModal(srv.bookingService, { title: srv.name, price: srv.price })}
                       className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] sm:text-xs py-1.5 sm:py-2 px-2 rounded-lg sm:rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5 stroke-[2.5]" />

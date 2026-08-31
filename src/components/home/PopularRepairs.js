@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ShieldCheck, Clock, ArrowRight } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
+import { getLegacyServiceRedirect } from '../../data/categoriesData';
 
 export default function PopularRepairs() {
   const { openBookingModal } = useBooking();
@@ -28,49 +29,52 @@ export default function PopularRepairs() {
             href="/services"
             className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 shrink-0"
           >
-            <span>Explore All 12 Services</span>
+            <span>Explore All 13 Services</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {topServices.map((srv) => (
-            <div
-              key={srv.id}
-              className="bg-slate-50 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 border border-slate-200/80 hover:border-amber-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
-            >
-              <div className="space-y-2 sm:space-y-3">
-                <div className="h-24 sm:h-40 rounded-lg sm:rounded-xl overflow-hidden bg-slate-900 relative">
-                  <img
-                    src={srv.bannerImage}
-                    alt={srv.name}
-                    className="w-full h-full object-cover"
-                  />
+          {topServices.map((srv) => {
+            const targetUrl = getLegacyServiceRedirect(srv.slug);
+            return (
+              <div
+                key={srv.id}
+                className="bg-slate-50 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 border border-slate-200/80 hover:border-amber-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+              >
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="h-24 sm:h-40 rounded-lg sm:rounded-xl overflow-hidden bg-slate-900 relative">
+                    <img
+                      src={srv.bannerImage}
+                      alt={srv.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <Link href={targetUrl} className="block hover:text-amber-600 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight hover:text-amber-600 transition-colors">
+                      {srv.name}
+                    </h3>
+                  </Link>
+                  <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
                 </div>
 
-                <Link href={`/services/${srv.slug}`} className="block hover:text-amber-600 transition-colors">
-                  <h3 className="font-bold text-slate-900 text-xs sm:text-base font-heading line-clamp-1 leading-tight hover:text-amber-600 transition-colors">
-                    {srv.name}
-                  </h3>
-                </Link>
-                <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2">{srv.description}</p>
-              </div>
+                <div className="pt-2 sm:pt-4 mt-2 sm:mt-3 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0">
+                  <div>
+                    <span className="text-[8px] sm:text-[10px] text-slate-400 font-bold block uppercase">Fixed Rate</span>
+                    <span className="text-xs sm:text-base font-extrabold text-slate-900 font-heading">₹{srv.startingPrice}</span>
+                  </div>
 
-              <div className="pt-2 sm:pt-4 mt-2 sm:mt-3 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-0">
-                <div>
-                  <span className="text-[8px] sm:text-[10px] text-slate-400 font-bold block uppercase">Fixed Rate</span>
-                  <span className="text-xs sm:text-base font-extrabold text-slate-900 font-heading">₹{srv.startingPrice}</span>
+                  <button
+                    onClick={() => openBookingModal(srv.id)}
+                    className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-sm cursor-pointer"
+                  >
+                    Book Now
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => openBookingModal(srv.id)}
-                  className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-sm"
-                >
-                  Book Now
-                </button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
