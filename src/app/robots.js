@@ -3,8 +3,16 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/auth/', '/profile/'],
+      disallow: [
+        '/api/',
+        '/profile/',
+        '/admin/',
+        '/login',
+        '/signup',
+        '/privacy-policy',
+        '/terms-and-conditions'
+      ],
     },
-    sitemap: 'https://plumberindore.in/sitemap.xml',
+    sitemap: 'https://www.plumberindore.in/sitemap.xml',
   };
 }

@@ -1,9 +1,29 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { BLOG_POSTS_DATA } from '../../data/blogData';
 import Breadcrumbs from '../../components/layout/Breadcrumbs';
+
+export const metadata = {
+  title: 'Home Repair & Maintenance Blog | PlumberIndore',
+  description: 'Expert home maintenance tips, DIY plumbing fixes, AC servicing guides, and appliance care advice from certified Indore technicians.',
+  keywords: 'PlumberIndore blog, AC gas refill signs Indore, dripping tap repair guide, home appliance tips Indore',
+  alternates: {
+    canonical: 'https://www.plumberindore.in/blog'
+  },
+  openGraph: {
+    title: 'Home Repair & Maintenance Blog | PlumberIndore',
+    description: 'Expert home maintenance tips, DIY plumbing fixes, AC servicing guides, and appliance care advice from certified Indore technicians.',
+    url: 'https://www.plumberindore.in/blog',
+    siteName: 'PlumberIndore',
+    locale: 'en_IN',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Home Repair & Maintenance Blog | PlumberIndore',
+    description: 'Expert home maintenance tips, DIY plumbing fixes, and appliance care guides.'
+  }
+};
 
 export default function BlogPage() {
   const breadcrumbs = [

@@ -1,6 +1,16 @@
-'use client';
-
 import React from 'react';
+
+export const metadata = {
+  title: 'Privacy Policy | PlumberIndore',
+  description: 'Privacy policy and customer data security guidelines of PlumberIndore Tech Services Private Limited.',
+  alternates: {
+    canonical: 'https://www.plumberindore.in/privacy-policy'
+  },
+  robots: {
+    index: false,
+    follow: true
+  }
+};
 
 export default function PrivacyPolicyPage() {
   return (
@@ -14,7 +24,7 @@ export default function PrivacyPolicyPage() {
           <h1 className="text-3xl font-extrabold text-slate-900 font-heading mt-3">
             Privacy Policy - PlumberIndore
           </h1>
-          <p className="text-xs text-slate-400 mt-1">Last updated: August 21, 2026</p>
+          <p className="text-xs text-slate-400 mt-1">Last updated: August 2026</p>
         </div>
 
         <div className="space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed">

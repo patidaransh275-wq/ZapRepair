@@ -1,6 +1,16 @@
-'use client';
-
 import React from 'react';
+
+export const metadata = {
+  title: 'Terms & Conditions | PlumberIndore',
+  description: 'Terms of service, doorstep service warranty terms, and booking conditions of PlumberIndore.',
+  alternates: {
+    canonical: 'https://www.plumberindore.in/terms-and-conditions'
+  },
+  robots: {
+    index: false,
+    follow: true
+  }
+};
 
 export default function TermsPage() {
   return (
@@ -14,7 +24,7 @@ export default function TermsPage() {
           <h1 className="text-3xl font-extrabold text-slate-900 font-heading mt-3">
             Terms & Conditions - PlumberIndore
           </h1>
-          <p className="text-xs text-slate-400 mt-1">Last updated: August 21, 2026</p>
+          <p className="text-xs text-slate-400 mt-1">Last updated: August 2026</p>
         </div>
 
         <div className="space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed">
@@ -28,7 +38,7 @@ export default function TermsPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900 font-heading">2. Inspection & Payment</h2>
             <p>
-              An inspection fee of ₹299 applies if no repair is undertaken. If the customer accepts the repair rate card, the inspection fee is 100% waived. Payment can be made post-service completion via Cash, UPI, or Card.
+              An inspection fee applies if no repair is undertaken. If the customer accepts the repair rate card, the inspection fee is 100% waived. Payment can be made post-service completion via Cash, UPI, or Card.
             </p>
           </section>
 

@@ -616,10 +616,32 @@ export default function BookingModal() {
               <div className="pt-2 flex flex-col sm:flex-row gap-2">
                 <button
                   type="button"
-                  onClick={closeBookingModal}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs"
+                  onClick={() => {
+                    setCreatedBooking(null);
+                    setSelectedServices([]);
+                    setStep(2);
+                  }}
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 px-4 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  Done
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                  <span>+ Book Another Service</span>
+                </button>
+
+                <Link
+                  href="/bookings"
+                  onClick={closeBookingModal}
+                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-1.5"
+                >
+                  <span>View All Bookings</span>
+                  <ArrowRight className="w-4 h-4 text-amber-400" />
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={closeBookingModal}
+                  className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs cursor-pointer"
+                >
+                  Close
                 </button>
               </div>
             </div>

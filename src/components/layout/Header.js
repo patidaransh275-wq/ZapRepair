@@ -250,6 +250,15 @@ export default function Header() {
             >
               {t.navAbout}
             </Link>
+
+            <Link
+              href="/blog"
+              className={`text-sm font-semibold transition-colors duration-200 ${
+                pathname.startsWith('/blog') ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t.navBlog || 'Blog'}
+            </Link>
           </nav>
 
           {/* Right Action CTA Button (Book Now) */}
@@ -352,6 +361,14 @@ export default function Header() {
             className="block px-3 py-2 text-base font-semibold text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg"
           >
             {t.navAbout}
+          </Link>
+
+          <Link
+            href="/blog"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg"
+          >
+            {t.navBlog || 'Blog'}
           </Link>
 
           <div className="pt-2">
