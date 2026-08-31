@@ -71,11 +71,6 @@ export default function HowItWorks() {
                     {st.desc}
                   </p>
                 </div>
-
-                <div className="pt-6 mt-6 border-t border-slate-200/60 flex items-center text-xs font-bold text-amber-600 group-hover:text-amber-700">
-                  <span>Fast & Reliable</span>
-                  <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
-                </div>
               </div>
             );
           })}
