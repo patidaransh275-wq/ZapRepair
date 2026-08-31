@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { X, Wrench, Calendar, MapPin, Phone, User, CheckCircle2, ArrowRight, ShieldCheck, Upload, Plus, Trash2, Tag } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
