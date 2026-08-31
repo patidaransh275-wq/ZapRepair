@@ -79,12 +79,11 @@ export const MEGA_MENU_CATEGORIES = [
     id: 'plumbing',
     title: 'Plumbing',
     subtitle: 'Tap, Flush tank, Drain pipe, Water tank & Fittings',
-    count: '6 Key Services',
+    count: '5 Key Services',
     startingPrice: 69,
     FolderIcon: ChromeTapFolderIcon,
     primaryLink: '/plumber',
     services: [
-      { id: 'plm-main', name: 'Plumber Full Service & Inspection', desc: 'Complete home pipeline & sanitary checkup', price: 149, link: '/plumber', bookingService: 'plumber', Icon: ChromeTapFolderIcon },
       { id: 'plm-tap', name: 'Chrome Tap & Mixer Repair', desc: 'Spindle change, leaking tap & wall mixer fix', price: 149, link: '/plumber/tap-mixer-repair', bookingService: 'plumber', Icon: ChromeTapFolderIcon },
       { id: 'plm-toilet', name: 'Toilet Flush Tank & Cistern', desc: 'Syphon replacement, push button & jet spray', price: 199, link: '/plumber/toilet-flush-repair', bookingService: 'plumber', Icon: ToiletFlushIcon },
       { id: 'plm-drain', name: 'Drain Pipe & Sink Blockage', desc: 'Heavy-duty steel snake blockage clearing', price: 349, link: '/plumber/drain-blockage', bookingService: 'plumber', Icon: DrainPipeIcon },
@@ -96,12 +95,11 @@ export const MEGA_MENU_CATEGORIES = [
     id: 'electrician',
     title: 'Electrician',
     subtitle: 'Switchboard, Fan, Chandelier, MCB & Wiring',
-    count: '6 Key Services',
+    count: '5 Key Services',
     startingPrice: 149,
     FolderIcon: SwitchboardFolderIcon,
     primaryLink: '/electrician',
     services: [
-      { id: 'elec-main', name: 'Electrician Full Service Inspection', desc: 'Doorstep electrical diagnostics & multimeter check', price: 149, link: '/electrician', bookingService: 'electrician', Icon: SwitchboardFolderIcon },
       { id: 'elec-switch', name: 'Switchboard & Socket Repair', desc: 'Modular switch replacement & 16A power socket', price: 149, link: '/electrician/switchboard-socket', bookingService: 'electrician', Icon: SwitchboardFolderIcon },
       { id: 'elec-fan', name: 'Ceiling Fan Installation & Fix', desc: 'Capacitor change, bearing greasing & mounting', price: 199, link: '/electrician/ceiling-fan', bookingService: 'electrician', Icon: CeilingFanIcon },
       { id: 'elec-light', name: 'Chandelier & LED Lighting', desc: 'False ceiling COB lights, batten & chandelier', price: 249, link: '/electrician/lights-chandelier', bookingService: 'electrician', Icon: ChandelierIcon },
@@ -113,20 +111,11 @@ export const MEGA_MENU_CATEGORIES = [
     id: 'pest',
     title: 'Pest Control',
     subtitle: 'Cockroaches, Ants, Bed Bugs & Termite Treatment',
-    count: '4 Key Services',
+    count: '3 Services',
     startingPrice: 599,
     FolderIcon: SprayBottleFolderIcon,
     primaryLink: '/pest-control',
     services: [
-      { 
-        id: 'pest-main', 
-        name: 'Pest Control Full Service Inspection', 
-        desc: 'Odorless inspection & customized extermination plan', 
-        price: 499, 
-        link: '/pest-control', 
-        bookingService: 'pest-control', 
-        Icon: SprayBottleFolderIcon 
-      },
       { 
         id: 'pest-cockroach', 
         name: 'Cockroaches, Ants & General Pest Control', 
@@ -160,12 +149,11 @@ export const MEGA_MENU_CATEGORIES = [
     id: 'carpenter',
     title: 'Carpenter & Paint',
     subtitle: 'Furniture kit, Hinge, Lock, Paint roller & Waterproofing',
-    count: '6 Key Services',
+    count: '5 Key Services',
     startingPrice: 199,
     FolderIcon: HammerPaintbrushFolderIcon,
     primaryLink: '/carpenter-paint',
     services: [
-      { id: 'crp-main', name: 'Carpenter Full Service & Drill', desc: 'Precision woodwork, hardware & furniture repairs', price: 199, link: '/carpenter-paint', bookingService: 'carpenter', Icon: HammerPaintbrushFolderIcon },
       { id: 'crp-furn', name: 'Furniture Toolkit & Assembly', desc: 'IKEA / Wakefit / Pepperfry bed & table setup', price: 399, link: '/carpenter-paint/furniture-assembly', bookingService: 'carpenter', Icon: FurnitureKitIcon },
       { id: 'crp-hinge', name: 'Door Hinge & Hydraulic Slider', desc: 'Wardrobe soft-close hinge & drawer channel fix', price: 249, link: '/carpenter-paint/carpenter', bookingService: 'carpenter', Icon: DoorHingeIcon },
       { id: 'crp-lock', name: 'Door Lock & Security Latch', desc: 'Main door mortise lock & cylindrical latch repair', price: 199, link: '/carpenter-paint/door-locks', bookingService: 'carpenter', Icon: DoorLockIcon },
@@ -325,34 +313,6 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
             })}
           </div>
 
-        </div>
-
-        {/* Mega Menu Footer Bar with Category Landing Links */}
-        <div className="bg-slate-900 text-white px-6 sm:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-800">
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Categories:</span>
-            {MEGA_MENU_CATEGORIES.map((cat, idx) => (
-              <React.Fragment key={cat.id}>
-                <Link
-                  href={cat.primaryLink}
-                  onClick={onClose}
-                  className="text-slate-300 hover:text-amber-400 font-semibold transition-colors"
-                >
-                  {cat.title}
-                </Link>
-                {idx < MEGA_MENU_CATEGORIES.length - 1 && <span className="text-slate-600">•</span>}
-              </React.Fragment>
-            ))}
-          </div>
-
-          <Link
-            href="/services"
-            onClick={onClose}
-            className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1.5 shrink-0"
-          >
-            <span>View All 13 Indore Services</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
 
       </div>
