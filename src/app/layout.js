@@ -12,7 +12,7 @@ import { LanguageProvider } from '../context/LanguageContext';
 
 export const metadata = {
   metadataBase: new URL('https://www.plumberindore.in'),
-  title: 'PlumberIndore - Indore’s #1 Doorstep Plumbing & Appliance Repair Service',
+  title: 'Home Services Indore - Plumbing, Electrician, Appliance & Pest Control',
   description: 'Book certified plumbers, electricians, AC repair, refrigerator repair, washing machine & RO repair in Indore. 45-minute arrival with 30-day post service warranty.',
   keywords: 'plumber indore, AC repair Vijay Nagar, electrician Indore, refrigerator repair Palasia, washing machine service Indore, RO purifier repair Indore',
   alternates: {

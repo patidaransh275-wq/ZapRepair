@@ -45,7 +45,7 @@ export default function Hero() {
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-heading leading-[1.15]">
-              Indore’s #1 Doorstep <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500">Plumbing & Repair</span> Expert
+              Doorstep <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500">Home Services</span>
             </h1>
 
             {/* Subtitle */}
@@ -107,7 +107,7 @@ export default function Hero() {
 
               <a
                 href="tel:+919174934135"
-                className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-800 text-xs sm:text-sm transition-all flex items-center justify-center gap-2"
+                className="hidden sm:flex w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-800 text-xs sm:text-sm transition-all items-center justify-center gap-2"
               >
                 <PhoneCall className="w-4 h-4 text-amber-400" />
                 <span>Helpline: +91 91749 34135</span>
@@ -130,7 +130,7 @@ export default function Hero() {
               <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700/80 shadow-xl space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>100% Verified Indian Technicians</span>
+                  <span>100% Verified Technicians</span>
                 </div>
                 <div className="text-[11px] text-slate-300">
                   Fixed upfront rate card. Inspection fee waived if repair is approved.

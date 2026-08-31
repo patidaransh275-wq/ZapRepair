@@ -92,7 +92,7 @@ export const SERVICES_DATA = [
       { title: 'Mild Electric Shock from Geyser, Refrigerator, or Taps', startingPrice: 349, cause: 'Broken earth pit electrode, missing ground wire continuity, or high earthing resistance' }
     ],
     faqs: [
-      { q: 'Are your electricians certified for high-voltage short circuit fixes?', a: 'Yes, all our electricians are ITI-certified Indian technicians carrying digital multimeters, insulation testers, and insulated safety tools.' },
+      { q: 'Are your electricians certified for high-voltage short circuit fixes?', a: 'Yes, all our electricians are ITI-certified technicians carrying digital multimeters, insulation testers, and insulated safety tools.' },
       { q: 'Do you install heavy 16A/25A sockets for ACs and Geysers in Indore?', a: 'Yes, we fit heavy-duty modular sockets with 2.5mm/4mm Finolex/Havells copper wiring and independent earth lines.' },
       { q: 'How fast can an electrician reach my home in Indore?', a: 'Our electrician arrives at your doorstep in Vijay Nagar, Palasia, Bhanwarkuan, or any Indore location within 45 minutes.' },
       { q: 'Is there a warranty on electrical installations?', a: 'Yes, PlumberIndore offers a 30-day doorstep warranty on all switch, socket, fan, light, and MCB installations.' },

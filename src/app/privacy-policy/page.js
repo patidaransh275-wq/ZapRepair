@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900 font-heading">2. How We Use Your Information</h2>
             <p>
-              Your contact details and service address are used exclusively to dispatch verified Indian technicians to your home, provide live service tracking updates, issue digital invoices, and communicate regarding customer support queries.
+              Your contact details and service address are used exclusively to dispatch verified technicians to your home, provide live service tracking updates, issue digital invoices, and communicate regarding customer support queries.
             </p>
           </section>
 

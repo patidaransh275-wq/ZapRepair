@@ -155,7 +155,7 @@ export default function CategoryHubClient({ category, baseService }) {
               </h2>
             </div>
             <p className="text-xs text-slate-500 max-w-md sm:text-right">
-              Fixed rate cards, verified background-checked Indian technicians, and genuine spare parts.
+              Fixed rate cards, verified background-checked technicians, and genuine spare parts.
             </p>
           </div>
 

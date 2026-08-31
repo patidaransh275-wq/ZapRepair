@@ -22,7 +22,7 @@ export default function TrustBar() {
     },
     {
       icon: CheckCircle2,
-      title: 'Indian Technicians',
+      title: 'Technicians',
       desc: 'Uniformed & certified Indore technicians'
     }
   ];
@@ -39,7 +39,7 @@ export default function TrustBar() {
                   <Icon className="w-5 h-5 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white font-heading">{item.title}</h4>
+                  <span className="text-xs font-bold text-white font-heading block">{item.title}</span>
                   <p className="text-[11px] text-slate-400 leading-tight">{item.desc}</p>
                 </div>
               </div>

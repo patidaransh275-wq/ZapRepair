@@ -22,8 +22,8 @@ export default function WhyChooseUs() {
     },
     {
       icon: UserCheck,
-      title: 'Indian Technicians',
-      desc: '100% skilled Indian technicians equipped with uniforms, photo IDs, and safety gear.'
+      title: 'Technicians',
+      desc: '100% skilled technicians equipped with uniforms, photo IDs, and safety gear.'
     },
     {
       icon: Wrench,
