@@ -356,6 +356,50 @@ export default function Header() {
             {t.navServices}
           </Link>
 
+          {/* Mobile Categories Links */}
+          <div className="pl-3 pr-2 py-1 space-y-1 bg-slate-950/60 rounded-xl border border-slate-800/80 my-1">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block px-2 pt-1">
+              Main Categories
+            </span>
+            <div className="grid grid-cols-2 gap-1 pb-1">
+              <Link
+                href="/appliance"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-2 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 rounded-lg block"
+              >
+                Appliance Repair
+              </Link>
+              <Link
+                href="/plumber"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-2 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 rounded-lg block"
+              >
+                Plumbing
+              </Link>
+              <Link
+                href="/electrician"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-2 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 rounded-lg block"
+              >
+                Electrician
+              </Link>
+              <Link
+                href="/pest-control"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-2 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 rounded-lg block"
+              >
+                Pest Control
+              </Link>
+              <Link
+                href="/carpenter-paint"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-2 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 rounded-lg col-span-2 block"
+              >
+                Carpenter & Paint
+              </Link>
+            </div>
+          </div>
+
           <Link
             href="/about"
             onClick={() => setIsMobileMenuOpen(false)}

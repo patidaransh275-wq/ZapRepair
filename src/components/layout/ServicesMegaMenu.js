@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  X, Sparkles, ArrowRight, Clock, ChevronRight, Plus, FolderOpen, ShieldCheck
+  X, Sparkles, ArrowRight, Clock, ChevronRight, Plus, FolderOpen, ShieldCheck, 
+  Layers, ExternalLink 
 } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 
@@ -195,26 +196,51 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
     >
       <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
         
-        {/* Top Header with 5 Distinct Folder Tabs */}
+        {/* Top Header with 5 Distinct Folder Tabs & Direct Category Links */}
         <div className="bg-slate-900 text-white px-6 pt-5 pb-0 border-b border-slate-800">
-          <div className="flex items-center justify-between pb-3">
+          
+          {/* Header Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
-                Service Catalog
+              <span className="text-xs font-extrabold uppercase tracking-wider text-amber-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-amber-400" />
+                <span>All Service Categories</span>
               </span>
-              <span className="text-xs text-slate-400 font-medium">Select a Trade Folder:</span>
+              <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+                Click any category hub or switch tabs below:
+              </span>
+            </div>
+
+            {/* Direct Category Page Links Bar */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+              {MEGA_MENU_CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={cat.primaryLink}
+                  onClick={onClose}
+                  className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all shrink-0 flex items-center gap-1 ${
+                    selectedFolderId === cat.id 
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-extrabold' 
+                      : 'bg-slate-800/90 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-700'
+                  }`}
+                  title={`Go to ${cat.title} Category Page`}
+                >
+                  <span>{cat.title}</span>
+                  <ArrowRight className="w-2.5 h-2.5 opacity-70" />
+                </Link>
+              ))}
             </div>
             
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors hidden sm:block"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* 5 Tab Buttons across Desktop Header */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2">
             {MEGA_MENU_CATEGORIES.map((folder) => {
               const isSelected = selectedFolderId === folder.id;
               const FolderIconComponent = folder.FolderIcon;
@@ -244,12 +270,19 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
         {/* Tab Content Body (Studio-Lit Service Grid) */}
         <div className="bg-slate-50 p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
           
-          {/* Sub-Header info for Active Folder */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
+          {/* Sub-Header info for Active Folder with Direct Link to Category Page */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/80">
             <div>
-              <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 font-heading">
-                {currentFolder.title} Catalog
-              </h3>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={currentFolder.primaryLink}
+                  onClick={onClose}
+                  className="text-lg sm:text-xl font-extrabold text-slate-900 hover:text-amber-600 font-heading flex items-center gap-1.5 transition-colors"
+                >
+                  <span>{currentFolder.title} Category Hub</span>
+                  <ArrowRight className="w-4 h-4 text-amber-500" />
+                </Link>
+              </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 {currentFolder.subtitle}
               </p>
@@ -258,9 +291,9 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
             <Link
               href={currentFolder.primaryLink}
               onClick={onClose}
-              className="text-xs font-extrabold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shrink-0"
+              className="text-xs font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-500 px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0 shadow-xs"
             >
-              <span>View Full {currentFolder.title} Page</span>
+              <span>Explore Full {currentFolder.title} Page</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -323,12 +356,22 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
 
         </div>
 
-        {/* Mega Menu Footer Bar */}
-        <div className="bg-slate-900 text-white px-6 sm:px-8 py-3.5 flex items-center justify-between border-t border-slate-800">
-          <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="hidden sm:inline">Transparent fixed rate cards & 30-day post service warranty across all Indore Sectors</span>
-            <span className="sm:hidden">Fixed rates & 30-day warranty</span>
+        {/* Mega Menu Footer Bar with Category Landing Links */}
+        <div className="bg-slate-900 text-white px-6 sm:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-800">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Categories:</span>
+            {MEGA_MENU_CATEGORIES.map((cat, idx) => (
+              <React.Fragment key={cat.id}>
+                <Link
+                  href={cat.primaryLink}
+                  onClick={onClose}
+                  className="text-slate-300 hover:text-amber-400 font-semibold transition-colors"
+                >
+                  {cat.title}
+                </Link>
+                {idx < MEGA_MENU_CATEGORIES.length - 1 && <span className="text-slate-600">•</span>}
+              </React.Fragment>
+            ))}
           </div>
 
           <Link
@@ -336,7 +379,7 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
             onClick={onClose}
             className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1.5 shrink-0"
           >
-            <span>View All Indore Services</span>
+            <span>View All 13 Indore Services</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
