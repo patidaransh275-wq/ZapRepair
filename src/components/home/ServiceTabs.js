@@ -210,18 +210,30 @@ export default function ServiceTabs() {
                   </div>
                 )}
 
-                {/* Studio Folder 3D Icon */}
-                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300">
+                {/* Studio Folder 3D Icon - Clickable link to Category Page */}
+                <Link
+                  href={folder.primaryLink}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300 block"
+                  title={`Explore all ${folder.title} Services in Indore`}
+                >
                   <FolderIconComponent className="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-sm" />
-                </div>
+                </Link>
 
-                {/* Text & Badges */}
+                {/* Text & Badges - Category Title linked directly to category page */}
                 <div className="space-y-1 w-full">
-                  <h3 className={`text-sm sm:text-base font-extrabold font-heading leading-tight ${
-                    isSelected ? 'text-amber-600' : 'text-slate-900 group-hover:text-amber-600'
-                  }`}>
-                    {folder.title}
-                  </h3>
+                  <Link
+                    href={folder.primaryLink}
+                    onClick={(e) => e.stopPropagation()}
+                    className="block group/link"
+                    title={`Explore all ${folder.title} Services in Indore`}
+                  >
+                    <h3 className={`text-sm sm:text-base font-extrabold font-heading leading-tight transition-colors ${
+                      isSelected ? 'text-amber-600 group-hover/link:text-amber-700 underline underline-offset-2' : 'text-slate-900 group-hover:text-amber-600 group-hover/link:underline'
+                    }`}>
+                      {folder.title}
+                    </h3>
+                  </Link>
                   <div className="flex items-center justify-center gap-1 text-[11px] font-semibold text-slate-500">
                     <span>{folder.count}</span>
                     <span>•</span>

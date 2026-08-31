@@ -245,7 +245,7 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
               const isSelected = selectedFolderId === folder.id;
               const FolderIconComponent = folder.FolderIcon;
               return (
-                <button
+                <div
                   key={folder.id}
                   onClick={() => setSelectedFolderId(folder.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-t-2xl text-xs font-bold transition-all shrink-0 cursor-pointer border-t border-x ${
@@ -255,13 +255,25 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
                   }`}
                 >
                   <FolderIconComponent className="w-5 h-5" />
-                  <span>{folder.title}</span>
+                  <Link
+                    href={folder.primaryLink}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClose?.();
+                    }}
+                    className={`hover:underline transition-colors ${
+                      isSelected ? 'text-slate-900 font-extrabold' : 'text-slate-300 hover:text-amber-400'
+                    }`}
+                    title={`Go to ${folder.title} Category Page`}
+                  >
+                    {folder.title}
+                  </Link>
                   <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
                     isSelected ? 'bg-amber-100 text-amber-800' : 'bg-slate-800 text-slate-400'
                   }`}>
                     {folder.count.split(' ')[0]}
                   </span>
-                </button>
+                </div>
               );
             })}
           </div>
