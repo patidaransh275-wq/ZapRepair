@@ -210,15 +210,10 @@ export default function ServiceTabs() {
                   </div>
                 )}
 
-                {/* Studio Folder 3D Icon - Clickable link to Category Page */}
-                <Link
-                  href={folder.primaryLink}
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300 block"
-                  title={`Explore all ${folder.title} Services in Indore`}
-                >
+                {/* Studio Folder 3D Icon */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300">
                   <FolderIconComponent className="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-sm" />
-                </Link>
+                </div>
 
                 {/* Text & Badges - Category Title linked directly to category page */}
                 <div className="space-y-1 w-full">

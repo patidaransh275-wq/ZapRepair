@@ -614,6 +614,12 @@ export default function BookingModal() {
                 </div>
               </div>
 
+              {/* Automated Notification Dispatch Notice */}
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800 flex items-center justify-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Instant SMS & WhatsApp confirmation sent to <strong>{createdBooking.customerPhone}</strong></span>
+              </div>
+
               <div className="pt-2 flex flex-col sm:flex-row gap-2">
                 <button
                   type="button"
@@ -628,21 +634,22 @@ export default function BookingModal() {
                   <span>+ Book Another Service</span>
                 </button>
 
-                <Link
-                  href="/bookings"
-                  onClick={closeBookingModal}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-1.5"
+                <a
+                  href={`https://wa.me/919174934135?text=${encodeURIComponent(`Hello PlumberIndore, I just booked service #${createdBooking.id} (${createdBooking.serviceName}) for ${createdBooking.customerName} at ${createdBooking.address}. Please confirm technician visit.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-1.5 shadow-sm transition-all"
                 >
-                  <span>View All Bookings</span>
-                  <ArrowRight className="w-4 h-4 text-amber-400" />
-                </Link>
+                  <span>Chat on WhatsApp</span>
+                  <ArrowRight className="w-4 h-4 text-emerald-200" />
+                </a>
 
                 <button
                   type="button"
                   onClick={closeBookingModal}
-                  className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs cursor-pointer"
+                  className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-5 rounded-xl text-xs cursor-pointer"
                 >
-                  Close
+                  Done
                 </button>
               </div>
             </div>

@@ -5,56 +5,7 @@ import { SERVICES_DATA } from '../data/servicesData';
 
 const BookingContext = createContext();
 
-const INITIAL_DEMO_BOOKINGS = [
-  {
-    id: 'IND-84920',
-    serviceId: 'ac-repair',
-    serviceName: 'AC Power Foam Service',
-    packageTitle: 'Power Foam Jet Service',
-    price: 499,
-    pincode: '452010',
-    address: 'Flat 402, Vijay Nagar, Indore, MP',
-    date: '2026-08-25',
-    timeSlot: '2:00 PM - 4:00 PM',
-    status: 'Technician En Route',
-    statusStep: 3,
-    confirmationSent: { sms: true, email: true },
-    technician: {
-      title: 'Verified Doorstep Expert',
-      phone: '+91 91749 34135',
-      rating: 4.9,
-      repairsCount: 480,
-      photo: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'Service Vehicle (MP 09 CW 4920)',
-      eta: '18 Mins'
-    },
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: 'IND-72109',
-    serviceId: 'washing-machine',
-    serviceName: 'Washing Machine Repair',
-    packageTitle: 'Deep Descaling & Drum Service',
-    price: 499,
-    pincode: '452001',
-    address: 'Flat 201, Industry House, AB Road, Palasia, Indore, MP',
-    date: '2026-08-15',
-    timeSlot: '10:00 AM - 12:00 PM',
-    status: 'Completed',
-    statusStep: 5,
-    confirmationSent: { sms: true, email: true },
-    technician: {
-      title: 'Certified Service Specialist',
-      phone: '+91 91749 34135',
-      rating: 4.85,
-      repairsCount: 310,
-      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
-      vehicle: 'Service Vehicle (MP 09 EV 8812)',
-      eta: 'Completed'
-    },
-    createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
-  }
-];
+const INITIAL_DEMO_BOOKINGS = [];
 
 export function BookingProvider({ children }) {
   // Modal states
@@ -123,16 +74,18 @@ export function BookingProvider({ children }) {
     try {
       const savedBookings = localStorage.getItem('plumberindore_bookings');
       if (savedBookings) {
-        setUserBookings(JSON.parse(savedBookings));
+        const parsed = JSON.parse(savedBookings);
+        // Exclude legacy demo IDs if any existed
+        const filtered = Array.isArray(parsed) ? parsed.filter(b => b.id !== 'IND-84920' && b.id !== 'IND-72109') : [];
+        setUserBookings(filtered);
       } else {
-        setUserBookings(INITIAL_DEMO_BOOKINGS);
-        localStorage.setItem('plumberindore_bookings', JSON.stringify(INITIAL_DEMO_BOOKINGS));
+        setUserBookings([]);
       }
 
       const savedPincode = localStorage.getItem('plumberindore_pincode');
       if (savedPincode) setUserPincodeState(savedPincode);
     } catch (e) {
-      setUserBookings(INITIAL_DEMO_BOOKINGS);
+      setUserBookings([]);
     }
   }, []);
 

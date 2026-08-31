@@ -184,9 +184,14 @@ export default function OnlinePaymentModal({ isOpen, onClose, booking, onPayment
           )}
 
           {paid && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>Payment Successful! Receipt generated.</span>
+            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold space-y-1">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Payment Verified Successfully!</span>
+              </div>
+              <p className="text-[11px] text-emerald-700 font-medium pl-6">
+                Official Tax Invoice & Warranty Receipt dispatched to <strong>{booking.customerPhone || 'registered phone number'}</strong>.
+              </p>
             </div>
           )}
 

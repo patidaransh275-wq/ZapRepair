@@ -15,7 +15,7 @@ import InAppChatDrawer from '../../components/tracking/InAppChatDrawer';
 
 export default function BookingsPage() {
   const router = useRouter();
-  const { userBookings, openTrackingModal, openBookingModal, openRescheduleModal, cancelBooking, isAuthenticated, authLoading } = useBooking();
+  const { userBookings, openTrackingModal, openBookingModal, openRescheduleModal, cancelBooking } = useBooking();
 
   const [activeInvoiceBooking, setActiveInvoiceBooking] = useState(null);
   const [activePaymentBooking, setActivePaymentBooking] = useState(null);
@@ -23,23 +23,6 @@ export default function BookingsPage() {
   const [activeTicketBooking, setActiveTicketBooking] = useState(null);
   const [activeWarrantyBooking, setActiveWarrantyBooking] = useState(null);
   const [activeChatBooking, setActiveChatBooking] = useState(null);
-
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push('/login?returnUrl=/bookings');
-    }
-  }, [isAuthenticated, authLoading, router]);
-
-  if (authLoading) {
-    return (
-      <div className="py-24 text-center space-y-3 bg-slate-50 min-h-screen flex flex-col items-center justify-center">
-        <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
-        <p className="text-xs font-semibold text-slate-600">Verifying session...</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">

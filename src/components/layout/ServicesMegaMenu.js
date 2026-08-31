@@ -196,51 +196,10 @@ export default function ServicesMegaMenu({ isOpen, onClose, onMouseEnter, onMous
     >
       <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
         
-        {/* Top Header with 5 Distinct Folder Tabs & Direct Category Links */}
-        <div className="bg-slate-900 text-white px-6 pt-5 pb-0 border-b border-slate-800">
-          
-          {/* Header Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-amber-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-amber-400" />
-                <span>All Service Categories</span>
-              </span>
-              <span className="text-xs text-slate-400 font-medium hidden sm:inline">
-                Click any category hub or switch tabs below:
-              </span>
-            </div>
-
-            {/* Direct Category Page Links Bar */}
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-              {MEGA_MENU_CATEGORIES.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={cat.primaryLink}
-                  onClick={onClose}
-                  className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all shrink-0 flex items-center gap-1 ${
-                    selectedFolderId === cat.id 
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-extrabold' 
-                      : 'bg-slate-800/90 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-700'
-                  }`}
-                  title={`Go to ${cat.title} Category Page`}
-                >
-                  <span>{cat.title}</span>
-                  <ArrowRight className="w-2.5 h-2.5 opacity-70" />
-                </Link>
-              ))}
-            </div>
-            
-            <button
-              onClick={onClose}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors hidden sm:block"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
+        {/* Top Header with 5 Distinct Folder Tabs */}
+        <div className="bg-slate-900 text-white px-6 pt-4 pb-0 border-b border-slate-800">
           {/* 5 Tab Buttons across Desktop Header */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             {MEGA_MENU_CATEGORIES.map((folder) => {
               const isSelected = selectedFolderId === folder.id;
               const FolderIconComponent = folder.FolderIcon;
