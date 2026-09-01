@@ -1,7 +1,12 @@
 import React from 'react';
 import Script from 'next/script';
 import './globals.css';
-import PublicSiteGate from '../components/layout/PublicSiteGate';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
+import MobileNav from '../components/layout/MobileNav';
+import BookingModal from '../components/booking/BookingModal';
+import TrackingModal from '../components/booking/TrackingModal';
+import AllServicesModal from '../components/services/AllServicesModal';
 import { BookingProvider } from '../context/BookingContext';
 import { LanguageProvider } from '../context/LanguageContext';
 
@@ -74,9 +79,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         <LanguageProvider>
           <BookingProvider>
-            <PublicSiteGate>
+            <Header />
+            <main className="flex-1">
               {children}
-            </PublicSiteGate>
+            </main>
+            <Footer />
+            <MobileNav />
+            <BookingModal />
+            <TrackingModal />
+            <AllServicesModal />
           </BookingProvider>
         </LanguageProvider>
       </body>
