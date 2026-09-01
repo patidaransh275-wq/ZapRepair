@@ -404,6 +404,32 @@ CREATE POLICY "Users can view own invoices" ON public.invoices FOR SELECT USING 
     EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
 );
 
+CREATE POLICY "Users can view own payments" ON public.payments FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+);
+
+-- Notifications & Reviews Policies
+CREATE POLICY "Users can view own notifications" ON public.notifications FOR SELECT USING (
+    auth.uid() = user_id OR public.is_admin()
+);
+
+CREATE POLICY "Users can insert reviews for own bookings" ON public.reviews FOR INSERT WITH CHECK (
+    auth.uid() = customer_id OR public.is_admin()
+);
+
+-- Technician Assignments & Status History Policies
+CREATE POLICY "Technicians can view assigned jobs" ON public.technician_assignments FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.technicians t WHERE t.id = technician_id AND (t.profile_id = auth.uid() OR public.is_admin()))
+);
+
+CREATE POLICY "Technicians can update job status" ON public.technician_assignments FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM public.technicians t WHERE t.id = technician_id AND (t.profile_id = auth.uid() OR public.is_admin()))
+);
+
+CREATE POLICY "Users can view booking status history" ON public.booking_status_history FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+);
+
 -- Admin Full Access Policies
 CREATE POLICY "Admins full access profiles" ON public.profiles FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access technicians" ON public.technicians FOR ALL USING (public.is_admin());
@@ -411,9 +437,13 @@ CREATE POLICY "Admins full access categories" ON public.service_categories FOR A
 CREATE POLICY "Admins full access services" ON public.services FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access bookings" ON public.bookings FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access booking_items" ON public.booking_items FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access technician_assignments" ON public.technician_assignments FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access booking_status_history" ON public.booking_status_history FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access payments" ON public.payments FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access invoices" ON public.invoices FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access invoice_items" ON public.invoice_items FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access reviews" ON public.reviews FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access notifications" ON public.notifications FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access contact_messages" ON public.contact_messages FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access quote_requests" ON public.quote_requests FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access email_logs" ON public.email_logs FOR ALL USING (public.is_admin());
