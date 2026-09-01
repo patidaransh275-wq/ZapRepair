@@ -218,8 +218,8 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
             <div className="grid grid-cols-2 gap-6 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div>
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block mb-1">Customer Details</span>
-                <div className="font-bold text-slate-900 text-sm">{booking.customerName || 'Ansh Patidar'}</div>
-                <div className="text-slate-600">{booking.customerPhone || '+91 91749 34135'}</div>
+                <div className="font-bold text-slate-900 text-sm">{booking.customerName || 'Valued Customer'}</div>
+                <div className="text-slate-600">{booking.customerPhone || ''}</div>
                 <div className="text-slate-600">{booking.address}</div>
                 <div className="text-slate-600">Pincode: {booking.pincode} (Indore)</div>
               </div>

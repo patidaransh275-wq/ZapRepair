@@ -144,10 +144,20 @@ export default function OnlinePaymentModal({ isOpen, onClose, booking, onPayment
           {/* UPI QR Display */}
           {method === 'upi' && (
             <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center space-y-3">
-              <div className="w-32 h-32 bg-white p-2 rounded-xl border border-slate-300 mx-auto shadow-sm flex items-center justify-center">
-                <QrCode className="w-24 h-24 text-slate-900" />
+              <div className="w-36 h-36 bg-white p-2 rounded-xl border border-slate-300 mx-auto shadow-sm flex items-center justify-center">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`upi://pay?pa=9174934135@yescred&pn=sarthak%20patidar&am=${booking.price}&cu=INR&tn=PlumberIndore%20Booking`)}`}
+                  alt="UPI QR Code"
+                  className="w-32 h-32 rounded-lg"
+                />
               </div>
-              <p className="text-xs font-semibold text-slate-600">Scan QR Code via PhonePe, GPay, Paytm, or BHIM UPI</p>
+              <div>
+                <span className="text-[10px] text-slate-500 font-bold uppercase block">Verified Payee: sarthak patidar</span>
+                <span className="text-xs font-mono font-bold text-slate-900 bg-white px-3 py-1 rounded-lg border border-slate-200 inline-block mt-1">
+                  9174934135@yescred
+                </span>
+              </div>
+              <p className="text-[11px] font-medium text-slate-500">Scan via PhonePe, GPay, Paytm, or BHIM UPI</p>
             </div>
           )}
 

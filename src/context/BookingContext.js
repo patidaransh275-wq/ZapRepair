@@ -32,13 +32,10 @@ export function BookingProvider({ children }) {
   const [authLoading, setAuthLoading] = useState(true);
   
   const [userProfile, setUserProfile] = useState({
-    name: 'Ansh Patidar',
-    phone: '+91 91749 34135',
-    email: 'plumberindore@gmail.com',
-    addresses: [
-      { id: 'addr-1', tag: 'Home', fullAddress: 'Vijay Nagar, Indore, MP - 452010' },
-      { id: 'addr-2', tag: 'Office', fullAddress: 'Office 201, Industry House, AB Road, Old Palasia, Indore, MP - 452001' }
-    ]
+    name: '',
+    phone: '',
+    email: '',
+    addresses: []
   });
 
   const checkSession = async () => {
@@ -215,6 +212,7 @@ export function BookingProvider({ children }) {
 
   const addBooking = (bookingData) => {
     const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
+    const isPaid = bookingData.paymentStatus === 'Paid' || bookingData.paymentMethod?.includes('UPI');
     const newBooking = {
       id: randomId,
       serviceId: bookingData.serviceId,
@@ -228,10 +226,13 @@ export function BookingProvider({ children }) {
       timeSlot: bookingData.timeSlot,
       isSubscription: bookingData.isSubscription || false,
       subscriptionPlan: bookingData.subscriptionPlan || null,
-      customerName: bookingData.name || userProfile.name,
-      customerPhone: bookingData.phone || userProfile.phone,
-      customerEmail: userProfile.email,
-      status: 'Technician Assigned',
+      customerName: bookingData.name || '',
+      customerPhone: bookingData.phone || '',
+      customerEmail: bookingData.email || '',
+      paymentStatus: isPaid ? 'Paid' : 'Pay on Service (Pending)',
+      paymentMethod: bookingData.paymentMethod || 'Cash / UPI on Doorstep',
+      paymentRef: bookingData.paymentRef || (isPaid ? `UPI-${Math.floor(10000000 + Math.random() * 90000000)}` : null),
+      status: isPaid ? 'Payment Verified & Technician Assigned' : 'Technician Assigned',
       statusStep: 2,
       confirmationSent: { sms: true, email: true },
       technician: {
@@ -258,6 +259,28 @@ export function BookingProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'create', booking: newBooking })
     }).catch(err => console.warn('Booking create email dispatch error:', err));
+
+    // If paid now, auto-trigger official tax invoice email to customer's entered email
+    if (isPaid && (newBooking.customerEmail || 'plumberindore@gmail.com')) {
+      const invNumber = `INV-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+      fetch('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceNumber: invNumber,
+          customerName: newBooking.customerName || 'Customer',
+          customerEmail: newBooking.customerEmail,
+          customerPhone: newBooking.customerPhone,
+          address: newBooking.address,
+          serviceName: newBooking.serviceName,
+          packageTitle: newBooking.packageTitle,
+          laborCost: newBooking.price,
+          totalPaid: newBooking.price,
+          paymentMethod: newBooking.paymentMethod,
+          paymentRef: newBooking.paymentRef
+        })
+      }).catch(err => console.warn('Auto invoice email dispatch error:', err));
+    }
 
     return newBooking;
   };
