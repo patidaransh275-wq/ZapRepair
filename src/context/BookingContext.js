@@ -212,7 +212,6 @@ export function BookingProvider({ children }) {
 
   const addBooking = (bookingData) => {
     const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
-    const isPaid = bookingData.paymentStatus === 'Paid' || bookingData.paymentMethod?.includes('UPI');
     const newBooking = {
       id: randomId,
       serviceId: bookingData.serviceId,
@@ -229,10 +228,13 @@ export function BookingProvider({ children }) {
       customerName: bookingData.name || '',
       customerPhone: bookingData.phone || '',
       customerEmail: bookingData.email || '',
-      paymentStatus: isPaid ? 'Paid' : 'Pay on Service (Pending)',
-      paymentMethod: bookingData.paymentMethod || 'Cash / UPI on Doorstep',
-      paymentRef: bookingData.paymentRef || (isPaid ? `UPI-${Math.floor(10000000 + Math.random() * 90000000)}` : null),
-      status: isPaid ? 'Payment Verified & Technician Assigned' : 'Technician Assigned',
+      description: bookingData.description || '',
+      paymentStatus: 'Pending (Pay on Completion)',
+      paymentMethod: 'Cash / UPI on Doorstep',
+      paymentRef: null,
+      invoiceNumber: null,
+      invoiceSentAt: null,
+      status: 'Technician Assigned',
       statusStep: 2,
       confirmationSent: { sms: true, email: true },
       technician: {
@@ -253,36 +255,91 @@ export function BookingProvider({ children }) {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
 
-    // Send confirmation email via Resend
+    // Send instant booking confirmation email ONLY via Resend
     fetch('/api/booking/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'create', booking: newBooking })
     }).catch(err => console.warn('Booking create email dispatch error:', err));
 
-    // If paid now, auto-trigger official tax invoice email to customer's entered email
-    if (isPaid && (newBooking.customerEmail || 'plumberindore@gmail.com')) {
-      const invNumber = `INV-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
-      fetch('/api/invoice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          invoiceNumber: invNumber,
-          customerName: newBooking.customerName || 'Customer',
-          customerEmail: newBooking.customerEmail,
-          customerPhone: newBooking.customerPhone,
-          address: newBooking.address,
-          serviceName: newBooking.serviceName,
-          packageTitle: newBooking.packageTitle,
-          laborCost: newBooking.price,
-          totalPaid: newBooking.price,
-          paymentMethod: newBooking.paymentMethod,
-          paymentRef: newBooking.paymentRef
-        })
-      }).catch(err => console.warn('Auto invoice email dispatch error:', err));
-    }
-
     return newBooking;
+  };
+
+  const updateBookingPayment = (bookingId, { paymentMethod = 'UPI', paymentRef, extraParts = 0 }) => {
+    let targetBooking = null;
+    const updated = userBookings.map(b => {
+      if (b.id === bookingId) {
+        const invNum = b.invoiceNumber || `INV-2026-${b.id}`;
+        const newTotal = (b.price || 0) + Number(extraParts || 0);
+        targetBooking = {
+          ...b,
+          paymentStatus: 'Paid',
+          paymentMethod,
+          paymentRef: paymentRef || (paymentMethod === 'Cash' ? `CASH-VERIFIED/${Math.floor(100000 + Math.random() * 900000)}` : `UPI-${Math.floor(10000000 + Math.random() * 90000000)}`),
+          invoiceNumber: invNum,
+          price: newTotal,
+          status: 'Payment Verified & Completed'
+        };
+        return targetBooking;
+      }
+      return b;
+    });
+    setUserBookings(updated);
+    try {
+      localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
+    } catch (e) {}
+    return targetBooking;
+  };
+
+  const updateBookingStatus = (bookingId, newStatus) => {
+    const updated = userBookings.map(b => {
+      if (b.id === bookingId) {
+        return { ...b, status: newStatus };
+      }
+      return b;
+    });
+    setUserBookings(updated);
+    try {
+      localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
+    } catch (e) {}
+  };
+
+  const sendInvoiceForBooking = async (booking) => {
+    const invNumber = booking.invoiceNumber || `INV-2026-${booking.id}`;
+    const res = await fetch('/api/invoice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        invoiceNumber: invNumber,
+        customerName: booking.customerName || 'Customer',
+        customerEmail: booking.customerEmail || 'plumberindore@gmail.com',
+        customerPhone: booking.customerPhone,
+        address: booking.address,
+        serviceName: booking.serviceName,
+        packageTitle: booking.packageTitle,
+        laborCost: booking.price,
+        totalPaid: booking.price,
+        paymentMethod: booking.paymentMethod || 'UPI / Cash Verified',
+        paymentRef: booking.paymentRef || `TXN-${booking.id}`,
+        date: booking.date
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      const nowStr = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const updated = userBookings.map(b => {
+        if (b.id === booking.id) {
+          return { ...b, invoiceNumber: invNumber, invoiceSentAt: nowStr, paymentStatus: 'Paid' };
+        }
+        return b;
+      });
+      setUserBookings(updated);
+      try {
+        localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
+      } catch (e) {}
+      return { success: true, invoiceNumber: invNumber, message: data.message };
+    }
+    return { success: false, error: data.error || 'Failed to send invoice email' };
   };
 
   const rescheduleBooking = (bookingId, newDate, newTimeSlot) => {
@@ -366,6 +423,9 @@ export function BookingProvider({ children }) {
         setUserPincode,
         userBookings,
         addBooking,
+        updateBookingPayment,
+        updateBookingStatus,
+        sendInvoiceForBooking,
         cancelBooking,
         userProfile,
         setUserProfile,
