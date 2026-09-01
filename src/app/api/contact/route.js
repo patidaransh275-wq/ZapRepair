@@ -1,17 +1,53 @@
 import { NextResponse } from 'next/server';
 import { sendNotificationEmail } from '../../../utils/resend';
+import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, getClientIp } from '../../../lib/security';
 
 export async function POST(request) {
   try {
-    const body = await request.json();
-    const { name, phone, message, email } = body || {};
-
-    if (!name || !phone || !message) {
+    // 1. Rate Limiting (Max 5 inquiries per minute per IP)
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`contact_${ip}`, 5, 60000);
+    if (!rateLimit.allowed) {
       return NextResponse.json(
-        { success: false, error: 'Name, phone, and message are required fields.' },
+        { success: false, error: 'Too many requests. Please wait a minute before submitting again.' },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+    const rawName = body?.name;
+    const rawPhone = body?.phone;
+    const rawMessage = body?.message;
+    const rawEmail = body?.email;
+
+    const name = sanitizeString(rawName);
+    const message = sanitizeString(rawMessage);
+    const cleanPhone = validateIndianPhone(rawPhone);
+    const cleanEmail = validateEmail(rawEmail);
+
+    if (!name || name.length < 2) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a valid full name.' },
         { status: 400 }
       );
     }
+
+    if (!cleanPhone) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a valid 10-digit Indian mobile number.' },
+        { status: 400 }
+      );
+    }
+
+    if (!message || message.length < 5) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a message of at least 5 characters.' },
+        { status: 400 }
+      );
+    }
+
+    const phone = cleanPhone;
+    const email = cleanEmail;
 
     const submissionTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 

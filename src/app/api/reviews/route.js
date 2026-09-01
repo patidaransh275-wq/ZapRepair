@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '../../../lib/supabase/admin';
+import { checkRateLimit, sanitizeString, getClientIp } from '../../../lib/security';
 
 /**
  * POST /api/reviews
@@ -8,14 +9,25 @@ import { getAdminClient } from '../../../lib/supabase/admin';
  */
 export async function POST(request) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`review_${ip}`, 5, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many review requests. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { bookingId, customerName, rating, comment } = body;
+    const { bookingId, rating } = body || {};
+    const customerName = sanitizeString(body?.customerName);
+    const comment = sanitizeString(body?.comment);
 
     if (!rating || rating < 1 || rating > 5) {
       return NextResponse.json({ success: false, error: 'Rating must be between 1 and 5 stars.' }, { status: 400 });
     }
 
-    if (!customerName || !customerName.trim()) {
+    if (!customerName || customerName.length < 2) {
       return NextResponse.json({ success: false, error: 'Customer name is required.' }, { status: 400 });
     }
 

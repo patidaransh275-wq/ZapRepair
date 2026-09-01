@@ -80,36 +80,51 @@ export async function GET(request) {
  * Creates a new doorstep booking record in Supabase.
  * Strictly calculates and validates prices server-side.
  */
+import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, validatePincode, getClientIp } from '../../../lib/security';
+
 export async function POST(request) {
   try {
+    // 1. Rate Limiting (Max 10 bookings per minute per IP)
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`booking_${ip}`, 10, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many booking attempts. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const {
-      name,
-      phone,
-      email,
-      address,
-      pincode,
-      date,
-      timeSlot,
-      services = [],
-      description,
-      serviceId,
-      serviceName,
-      packageTitle
-    } = body || {};
+    const rawName = body?.name;
+    const rawPhone = body?.phone;
+    const rawEmail = body?.email;
+    const rawAddress = body?.address;
+    const rawPincode = body?.pincode;
+    const rawDate = body?.date;
+    const rawTimeSlot = body?.timeSlot;
+    const services = Array.isArray(body?.services) ? body.services : [];
+    const description = sanitizeString(body?.description);
+    const serviceId = sanitizeString(body?.serviceId);
+    const serviceName = sanitizeString(body?.serviceName);
+    const packageTitle = sanitizeString(body?.packageTitle);
+
+    const name = sanitizeString(rawName);
+    const address = sanitizeString(rawAddress);
+    const cleanedPhone = validateIndianPhone(rawPhone);
+    const email = validateEmail(rawEmail);
+    const pincode = validatePincode(rawPincode);
 
     // 1. Mandatory field validations
-    if (!name || !name.trim()) {
+    if (!name || name.length < 2) {
       return NextResponse.json({ success: false, error: 'Full name is required.' }, { status: 400 });
     }
 
-    const cleanedPhone = (phone || '').replace(/\D/g, '');
-    if (!cleanedPhone || cleanedPhone.length !== 10 || !/^[6-9]\d{9}$/.test(cleanedPhone)) {
+    if (!cleanedPhone) {
       return NextResponse.json({ success: false, error: 'A valid 10-digit Indian mobile number is required.' }, { status: 400 });
     }
 
-    if (!address || !address.trim()) {
-      return NextResponse.json({ success: false, error: 'Doorstep service address is required.' }, { status: 400 });
+    if (!address || address.length < 5) {
+      return NextResponse.json({ success: false, error: 'Doorstep service address is required (min 5 characters).' }, { status: 400 });
     }
 
     // 2. Server-side price calculation

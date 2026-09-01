@@ -1,20 +1,29 @@
 import { NextResponse } from 'next/server';
 import { sendNotificationEmail } from '../../../utils/resend';
+import { checkRateLimit, sanitizeString, validateIndianPhone, validatePincode, getClientIp } from '../../../lib/security';
 
 export async function POST(request) {
   try {
+    // 1. Rate Limiting (Max 5 quote requests per minute per IP)
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`quote_${ip}`, 5, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please wait a minute before submitting again.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { 
-      category, 
-      brand, 
-      modelType, 
-      issue, 
-      estimatedPrice, 
-      customerName, 
-      customerPhone, 
-      customerPincode,
-      remarks 
-    } = body || {};
+    const category = sanitizeString(body?.category);
+    const brand = sanitizeString(body?.brand);
+    const modelType = sanitizeString(body?.modelType);
+    const issue = sanitizeString(body?.issue);
+    const estimatedPrice = Number(body?.estimatedPrice) || 0;
+    const customerName = sanitizeString(body?.customerName);
+    const customerPhone = validateIndianPhone(body?.customerPhone) || sanitizeString(body?.customerPhone);
+    const customerPincode = validatePincode(body?.customerPincode);
+    const remarks = sanitizeString(body?.remarks);
 
     if (!category || !issue) {
       return NextResponse.json(
