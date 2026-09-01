@@ -107,7 +107,7 @@ export async function POST(request) {
         </table>
 
         <!-- Total Calculation Box -->
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
           <div style="width: 260px; background-color: #0f172a; color: #ffffff; padding: 16px; border-radius: 12px;">
             <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: #94a3b8;">
               <span>Total Amount:</span>
@@ -119,6 +119,26 @@ export async function POST(request) {
             </div>
           </div>
         </div>
+
+        <!-- Compact UPI Scan & Pay Box -->
+        <table style="width: 100%; margin-bottom: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <tr>
+            <td style="width: 64px; vertical-align: middle; padding-right: 12px;">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D9174934135%40yescred%26pn%3Dsarthak%20patidar" alt="UPI QR" style="width: 60px; height: 60px; display: block; border-radius: 6px; border: 1px solid #cbd5e1; background: #ffffff;" />
+            </td>
+            <td style="vertical-align: middle;">
+              <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #b45309; background: #fef3c7; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px;">
+                Quick Scan & Pay via UPI
+              </div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">
+                UPI ID: <span style="color: #059669; font-family: monospace;">9174934135@yescred</span> (sarthak patidar)
+              </div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                Google Pay • PhonePe • Paytm • BHIM • Cred
+              </div>
+            </td>
+          </tr>
+        </table>
 
         <!-- Footer -->
         <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; font-size: 11px; color: #475569; text-align: center; line-height: 1.5;">

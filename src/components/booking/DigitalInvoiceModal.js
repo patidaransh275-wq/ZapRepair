@@ -284,6 +284,34 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
               </div>
             </div>
 
+            {/* Compact Quick Scan & Pay UPI Box */}
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 bg-white p-1 rounded-lg border border-slate-200 shrink-0 shadow-sm flex items-center justify-center">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D9174934135%40yescred%26pn%3Dsarthak%20patidar"
+                    alt="UPI QR Code"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="text-left space-y-0.5">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
+                    Quick Scan & Pay
+                  </span>
+                  <div className="text-xs font-bold text-slate-900">
+                    UPI ID: <span className="font-mono text-emerald-700 select-all">9174934135@yescred</span> (sarthak patidar)
+                  </div>
+                  <div className="text-[11px] text-slate-500 font-medium">
+                    Google Pay • PhonePe • Paytm • BHIM • Cred
+                  </div>
+                </div>
+              </div>
+              <div className="text-right hidden sm:block">
+                <span className="text-[10px] font-semibold text-slate-400 block">Instant Settlement</span>
+                <span className="text-[11px] font-bold text-emerald-600">✓ 0% Surcharge</span>
+              </div>
+            </div>
+
             {/* Footer Note */}
             <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-[11px] text-emerald-900 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />

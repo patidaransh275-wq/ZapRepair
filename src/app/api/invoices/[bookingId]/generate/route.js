@@ -152,7 +152,28 @@ export async function POST(request, { params }) {
             <td style="padding: 12px; text-align: right; color: #059669;">₹${totalPaid}</td>
           </tr>
         </table>
-        <div style="text-align: center; padding: 12px; font-size: 11px; color: #64748b; margin-top: 24px; border-top: 1px solid #e2e8f0;">
+
+        <!-- Compact UPI Scan & Pay Box -->
+        <table style="width: 100%; margin-top: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <tr>
+            <td style="width: 64px; vertical-align: middle; padding-right: 12px;">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D9174934135%40yescred%26pn%3Dsarthak%20patidar" alt="UPI QR" style="width: 60px; height: 60px; display: block; border-radius: 6px; border: 1px solid #cbd5e1; background: #ffffff;" />
+            </td>
+            <td style="vertical-align: middle;">
+              <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #b45309; background: #fef3c7; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px;">
+                Quick Scan & Pay via UPI
+              </div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">
+                UPI ID: <span style="color: #059669; font-family: monospace;">9174934135@yescred</span> (sarthak patidar)
+              </div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                Google Pay • PhonePe • Paytm • BHIM • Cred
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <div style="text-align: center; padding: 12px; font-size: 11px; color: #64748b; margin-top: 20px; border-top: 1px solid #e2e8f0;">
           30-Day Post Service Warranty Included • Helpline: +91 91749 34135 • plumberindore.in
         </div>
       </div>
