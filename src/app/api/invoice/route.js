@@ -130,6 +130,54 @@ export async function POST(request) {
 
     const recipient = customerEmail || 'plumberindore@gmail.com';
 
+    // 1. Persist in Supabase PostgreSQL
+    try {
+      const { getAdminClient } = await import('../../../lib/supabase/admin');
+      const supabaseAdmin = getAdminClient();
+      if (supabaseAdmin) {
+        // Find booking if exists
+        const bookingNum = invoiceNumber.replace('INV-2026-', '').replace('INV-', '');
+        const { data: bData } = await supabaseAdmin.from('bookings').select('id').or(`booking_number.eq.${bookingNum},id.eq.${bookingNum}`).maybeSingle();
+
+        const { data: invRecord, error: invErr } = await supabaseAdmin.from('invoices').insert({
+          booking_id: bData ? bData.id : null,
+          invoice_number: invoiceNumber,
+          customer_name: customerName,
+          customer_email: customerEmail,
+          customer_phone: customerPhone || '+91 91749 34135',
+          billing_address: address || 'Indore, MP',
+          labor_cost: Number(laborCost || totalPaid),
+          parts_cost: Number(partsCost || 0),
+          tax_amount: Number(taxCost || 0),
+          discount_amount: Number(discountCost || 0),
+          total_paid: Number(totalPaid),
+          payment_method: paymentMethod || 'Cash / UPI Verified',
+          payment_ref: paymentRef || `TXN-${invoiceNumber}`,
+          sent_at: new Date().toISOString()
+        }).select().single();
+
+        if (invRecord) {
+          await supabaseAdmin.from('invoice_items').insert({
+            invoice_id: invRecord.id,
+            description: `${serviceName} - ${packageTitle || 'Service Package'}`,
+            quantity: 1,
+            unit_price: Number(totalPaid),
+            amount: Number(totalPaid)
+          });
+        }
+
+        if (bData) {
+          await supabaseAdmin.from('bookings').update({
+            payment_status: 'Paid',
+            status: 'Payment Verified & Completed'
+          }).eq('id', bData.id);
+        }
+      }
+    } catch (dbEx) {
+      console.warn('Supabase invoice save exception (continuing email dispatch):', dbEx.message);
+    }
+
+    // 2. Dispatch Email via Resend
     const { sendEmail } = await import('../../../utils/resend');
     const result = await sendEmail({
       to: [recipient, 'plumberindore@gmail.com'],

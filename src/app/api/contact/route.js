@@ -57,6 +57,23 @@ export async function POST(request) {
       </div>
     `;
 
+    // Persist in Supabase contact_messages table
+    try {
+      const { getAdminClient } = await import('../../../lib/supabase/admin');
+      const supabaseAdmin = getAdminClient();
+      if (supabaseAdmin) {
+        await supabaseAdmin.from('contact_messages').insert({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email ? email.trim() : null,
+          message: message.trim(),
+          status: 'new'
+        });
+      }
+    } catch (dbEx) {
+      console.warn('Supabase contact save warning:', dbEx.message);
+    }
+
     const result = await sendNotificationEmail({
       subject: `[PlumberIndore] New Contact Message from ${name} (${phone})`,
       html: htmlContent,

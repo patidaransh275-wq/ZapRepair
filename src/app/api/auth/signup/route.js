@@ -33,10 +33,26 @@ export async function POST(request) {
       name: name.trim(),
       phone: `+91 ${cleanPhone}`,
       email: email.toLowerCase().trim(),
-      role: 'user',
+      role: 'customer',
       authMethod: 'signup',
       authenticatedAt: new Date().toISOString()
     };
+
+    // Synchronize with Supabase profiles
+    try {
+      const { getAdminClient } = await import('../../../../lib/supabase/admin');
+      const supabaseAdmin = getAdminClient();
+      if (supabaseAdmin) {
+        await supabaseAdmin.from('profiles').upsert({
+          full_name: name.trim(),
+          phone: `+91 ${cleanPhone}`,
+          email: email.toLowerCase().trim(),
+          role: 'customer'
+        }, { onConflict: 'email' });
+      }
+    } catch (dbEx) {
+      console.warn('Supabase profile sync warning:', dbEx.message);
+    }
 
     // Send Welcome Email via Resend
     try {

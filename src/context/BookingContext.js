@@ -67,23 +67,62 @@ export function BookingProvider({ children }) {
     checkSession();
   }, []);
 
-  useEffect(() => {
+  // Fetch bookings from Supabase API on load
+  const fetchBookings = async () => {
+    try {
+      const res = await fetch('/api/bookings');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.bookings && data.bookings.length > 0) {
+          const normalized = data.bookings.map(b => ({
+            id: b.booking_number || b.id,
+            serviceId: b.service_name?.toLowerCase().includes('plumb') ? 'plumber' : 'ac-repair',
+            serviceName: b.service_name,
+            packageTitle: b.package_title || 'Standard Package',
+            price: Number(b.total_amount || b.price),
+            pincode: b.pincode,
+            address: b.service_address || b.address,
+            date: b.scheduled_date || b.date,
+            timeSlot: b.time_slot || b.timeSlot,
+            customerName: b.customer_name || b.customerName,
+            customerPhone: b.customer_phone || b.customerPhone,
+            customerEmail: b.customer_email || b.customerEmail,
+            description: b.notes || b.description,
+            paymentStatus: b.payment_status || b.paymentStatus,
+            paymentMethod: b.payment_method || b.paymentMethod,
+            paymentRef: b.payment_ref || b.paymentRef,
+            invoiceNumber: b.invoices?.[0]?.invoice_number || b.invoiceNumber || null,
+            invoiceSentAt: b.invoices?.[0]?.sent_at || b.invoiceSentAt || null,
+            status: b.status,
+            createdAt: b.created_at || b.createdAt
+          }));
+          setUserBookings(normalized);
+          try {
+            localStorage.setItem('plumberindore_bookings', JSON.stringify(normalized));
+          } catch (e) {}
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('API bookings fetch notice (using cache):', err.message);
+    }
+
+    // Fallback to local cache if offline
     try {
       const savedBookings = localStorage.getItem('plumberindore_bookings');
       if (savedBookings) {
         const parsed = JSON.parse(savedBookings);
-        // Exclude legacy demo IDs if any existed
-        const filtered = Array.isArray(parsed) ? parsed.filter(b => b.id !== 'IND-84920' && b.id !== 'IND-72109') : [];
-        setUserBookings(filtered);
-      } else {
-        setUserBookings([]);
+        setUserBookings(Array.isArray(parsed) ? parsed : []);
       }
+    } catch (e) {}
+  };
 
+  useEffect(() => {
+    fetchBookings();
+    try {
       const savedPincode = localStorage.getItem('plumberindore_pincode');
       if (savedPincode) setUserPincodeState(savedPincode);
-    } catch (e) {
-      setUserBookings([]);
-    }
+    } catch (e) {}
   }, []);
 
   const requestPhoneOtp = async (phone) => {
@@ -223,8 +262,6 @@ export function BookingProvider({ children }) {
       address: bookingData.address,
       date: bookingData.date,
       timeSlot: bookingData.timeSlot,
-      isSubscription: bookingData.isSubscription || false,
-      subscriptionPlan: bookingData.subscriptionPlan || null,
       customerName: bookingData.name || '',
       customerPhone: bookingData.phone || '',
       customerEmail: bookingData.email || '',
@@ -236,40 +273,56 @@ export function BookingProvider({ children }) {
       invoiceSentAt: null,
       status: 'Technician Assigned',
       statusStep: 2,
-      confirmationSent: { sms: true, email: true },
-      technician: {
-        title: 'Verified Doorstep Technician',
-        phone: '+91 91749 34135',
-        rating: 4.95,
-        repairsCount: 520,
-        photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=200&q=80',
-        vehicle: 'Service Vehicle (MP 09 CZ 1122)',
-        eta: '30 Mins'
-      },
       createdAt: new Date().toISOString()
     };
 
+    // Optimistic local update
     const updated = [newBooking, ...userBookings];
     setUserBookings(updated);
     try {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
 
-    // Send instant booking confirmation email ONLY via Resend
-    fetch('/api/booking/notify', {
+    // Asynchronously persist to Supabase & calculate server prices
+    fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'create', booking: newBooking })
-    }).catch(err => console.warn('Booking create email dispatch error:', err));
+      body: JSON.stringify({
+        name: bookingData.name,
+        phone: bookingData.phone,
+        email: bookingData.email,
+        address: bookingData.address,
+        pincode: bookingData.pincode,
+        date: bookingData.date,
+        timeSlot: bookingData.timeSlot,
+        services: bookingData.services,
+        description: bookingData.description,
+        serviceId: bookingData.serviceId,
+        serviceName: bookingData.serviceName,
+        packageTitle: bookingData.packageTitle
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.booking) {
+          const canonical = {
+            ...newBooking,
+            id: data.booking.booking_number || data.booking.id,
+            price: data.booking.total_amount || newBooking.price
+          };
+          setUserBookings(prev => prev.map(b => b.id === randomId ? canonical : b));
+        }
+      })
+      .catch(err => console.warn('Supabase booking POST warning:', err.message));
 
     return newBooking;
   };
 
   const updateBookingPayment = (bookingId, { paymentMethod = 'UPI', paymentRef, extraParts = 0 }) => {
     let targetBooking = null;
+    const invNum = `INV-2026-${bookingId}`;
     const updated = userBookings.map(b => {
       if (b.id === bookingId) {
-        const invNum = b.invoiceNumber || `INV-2026-${b.id}`;
         const newTotal = (b.price || 0) + Number(extraParts || 0);
         targetBooking = {
           ...b,
@@ -288,6 +341,20 @@ export function BookingProvider({ children }) {
     try {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
+
+    // Persist payment update to Supabase
+    fetch(`/api/bookings/${bookingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paymentStatus: 'Paid',
+        paymentMethod,
+        paymentRef: targetBooking?.paymentRef,
+        extraParts,
+        status: 'Payment Verified & Completed'
+      })
+    }).catch(err => console.warn('Payment update API notice:', err.message));
+
     return targetBooking;
   };
 
@@ -302,6 +369,13 @@ export function BookingProvider({ children }) {
     try {
       localStorage.setItem('plumberindore_bookings', JSON.stringify(updated));
     } catch (e) {}
+
+    // Persist status update to Supabase
+    fetch(`/api/bookings/${bookingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    }).catch(err => console.warn('Status update API notice:', err.message));
   };
 
   const sendInvoiceForBooking = async (booking) => {

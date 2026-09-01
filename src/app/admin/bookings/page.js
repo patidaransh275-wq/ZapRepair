@@ -30,89 +30,45 @@ export default function AdminBookingsDashboard() {
   const [sendingInvoiceId, setSendingInvoiceId] = useState(null);
   const [invoiceNotification, setInvoiceNotification] = useState(null);
 
-  // Sync bookings from context or localStorage
+  // Sync bookings from API and context
   useEffect(() => {
-    if (userBookings && userBookings.length > 0) {
-      setBookingsList(userBookings);
-    } else {
-      // Default initial bookings if none exist yet
-      const initialBookings = [
-        {
-          id: 'IND-84920',
-          customerName: 'Rahul Sharma',
-          customerPhone: '9826011223',
-          customerEmail: 'rahul.sharma.indore@gmail.com',
-          address: 'Flat 402, Royal Residency, Vijay Nagar, Indore, MP',
-          pincode: '452010',
-          serviceName: 'AC Unit Repair & Service',
-          packageTitle: 'Power Jet Foam Wash & Cooling Diagnostics',
-          services: [
-            { serviceName: 'AC Unit Repair & Service', packageTitle: 'Power Jet Wash', price: 399 }
-          ],
-          price: 399,
-          date: '2026-09-01',
-          timeSlot: '2:00 PM - 4:00 PM',
-          status: 'Payment Verified & Completed',
-          paymentStatus: 'Paid',
-          paymentMethod: 'UPI (Prepaid / QR)',
-          paymentRef: 'UPI-9174934135-TXN882',
-          invoiceNumber: 'INV-2026-IND-84920',
-          invoiceSentAt: '01/09/2026, 02:30 PM',
-          description: 'AC cooling coil leaking water inside master bedroom',
-          createdAt: new Date(Date.now() - 3600000 * 4).toISOString()
-        },
-        {
-          id: 'IND-72109',
-          customerName: 'Priya Agrawal',
-          customerPhone: '9893044556',
-          customerEmail: 'priya.agrawal@gmail.com',
-          address: 'Plot 24, Industry House Road, Old Palasia, Indore, MP',
-          pincode: '452001',
-          serviceName: 'Master Plumber Sanitary Fix',
-          packageTitle: 'Chrome Tap & Wall Mixer Spindle Repair',
-          services: [
-            { serviceName: 'Plumbing', packageTitle: 'Chrome Tap & Mixer Repair', price: 149 },
-            { serviceName: 'Plumbing', packageTitle: 'Toilet Flush Tank & Cistern', price: 199 }
-          ],
-          price: 348,
-          date: '2026-09-01',
-          timeSlot: '4:00 PM - 6:00 PM',
-          status: 'Technician Assigned',
-          paymentStatus: 'Pending (Pay on Completion)',
-          paymentMethod: 'Cash / UPI on Doorstep',
-          paymentRef: null,
-          invoiceNumber: null,
-          invoiceSentAt: null,
-          description: 'Kitchen washbasin mixer continuously dripping',
-          createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
-        },
-        {
-          id: 'IND-93821',
-          customerName: 'Vikas Jain',
-          customerPhone: '9425088991',
-          customerEmail: 'vikas.jain@indore.in',
-          address: 'Bungalow 14, Saket Nagar, Indore, MP',
-          pincode: '452018',
-          serviceName: 'Electrician Full Inspection',
-          packageTitle: 'MCB Box & Distribution Panel Overhaul',
-          services: [
-            { serviceName: 'Electrician', packageTitle: 'MCB Box & Distribution Panel', price: 399 }
-          ],
-          price: 399,
-          date: '2026-09-02',
-          timeSlot: '11:00 AM - 1:00 PM',
-          status: 'Technician Assigned',
-          paymentStatus: 'Pending (Pay on Completion)',
-          paymentMethod: 'Cash / UPI on Doorstep',
-          paymentRef: null,
-          invoiceNumber: null,
-          invoiceSentAt: null,
-          description: 'Main line breaker trips frequently when geyser turns on',
-          createdAt: new Date(Date.now() - 3600000 * 1).toISOString()
+    fetch('/api/bookings')
+      .then(r => r.json())
+      .then(data => {
+        if (data.bookings && data.bookings.length > 0) {
+          const mapped = data.bookings.map(b => ({
+            id: b.booking_number || b.id,
+            customerName: b.customer_name,
+            customerPhone: b.customer_phone,
+            customerEmail: b.customer_email,
+            address: b.service_address,
+            pincode: b.pincode,
+            serviceName: b.service_name,
+            packageTitle: b.package_title,
+            price: Number(b.total_amount || b.price),
+            date: b.scheduled_date,
+            timeSlot: b.time_slot,
+            status: b.status,
+            paymentStatus: b.payment_status,
+            paymentMethod: b.payment_method,
+            paymentRef: b.payment_ref,
+            invoiceNumber: b.invoices?.[0]?.invoice_number || null,
+            invoiceSentAt: b.invoices?.[0]?.sent_at || null,
+            description: b.notes,
+            createdAt: b.created_at
+          }));
+          setBookingsList(mapped);
+          return;
         }
-      ];
-      setBookingsList(initialBookings);
-    }
+        if (userBookings && userBookings.length > 0) {
+          setBookingsList(userBookings);
+        }
+      })
+      .catch(() => {
+        if (userBookings && userBookings.length > 0) {
+          setBookingsList(userBookings);
+        }
+      });
   }, [userBookings]);
 
   // Search & Filter Logic

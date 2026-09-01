@@ -123,6 +123,31 @@ export async function sendEmail({
       error = sandboxResult.error;
     }
 
+    const emailResult = {
+      success: !error,
+      data,
+      deliveredTo: recipientList.join(', '),
+      error: error ? (error.message || 'Failed to deliver email through Resend') : null
+    };
+
+    // Asynchronously log to Supabase email_logs table
+    try {
+      const { getAdminClient } = await import('../lib/supabase/admin');
+      const supabaseAdmin = getAdminClient();
+      if (supabaseAdmin) {
+        await supabaseAdmin.from('email_logs').insert({
+          recipient: recipientList.join(', '),
+          subject: subject,
+          email_type: subject.includes('Invoice') ? 'invoice_pdf' : subject.includes('Booking') ? 'booking_confirmed' : 'contact_inquiry',
+          status: error ? 'failed' : 'sent',
+          resend_id: data?.id || null,
+          error_message: error ? error.message : null
+        });
+      }
+    } catch (dbErr) {
+      console.warn('Could not record to email_logs in Supabase:', dbErr.message);
+    }
+
     if (error) {
       console.error('Resend API delivery error:', error);
       return {

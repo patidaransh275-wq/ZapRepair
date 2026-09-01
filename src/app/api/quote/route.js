@@ -92,6 +92,28 @@ export async function POST(request) {
       </div>
     `;
 
+    // Persist in Supabase quote_requests table
+    try {
+      const { getAdminClient } = await import('../../../lib/supabase/admin');
+      const supabaseAdmin = getAdminClient();
+      if (supabaseAdmin) {
+        await supabaseAdmin.from('quote_requests').insert({
+          category,
+          brand: brand || null,
+          model_type: modelType || null,
+          issue,
+          estimated_price: Number(estimatedPrice) || null,
+          customer_name: customerName || null,
+          customer_phone: customerPhone || null,
+          customer_pincode: customerPincode || null,
+          remarks: remarks || null,
+          status: 'pending'
+        });
+      }
+    } catch (dbEx) {
+      console.warn('Supabase quote request save warning:', dbEx.message);
+    }
+
     const result = await sendNotificationEmail({
       subject: `[PlumberIndore] New Quote Request: ${category.toUpperCase()} (${issue})`,
       html: htmlContent,
