@@ -1,9 +1,10 @@
 -- ==============================================================================
 -- PLUMBERINDORE PRODUCTION DATABASE SCHEMA (POSTGRESQL / SUPABASE)
 -- Migration: 20260901_initial_schema.sql
+-- Contains 19 Tables, Triggers, Sequence Generators, and Row Level Security
 -- ==============================================================================
 
--- Enable UUID extension
+-- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
@@ -26,11 +27,28 @@ CREATE INDEX IF NOT EXISTS idx_profiles_phone ON public.profiles(phone);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON public.profiles(email);
 
 -- ==============================================================================
--- 2. TECHNICIANS EXTENSION
+-- 2. CUSTOMERS EXTENSION
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    profile_id UUID UNIQUE REFERENCES public.profiles(id) ON DELETE CASCADE,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(255),
+    loyalty_tier VARCHAR(50) DEFAULT 'standard',
+    total_bookings INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
+);
+
+CREATE INDEX IF NOT EXISTS idx_customers_phone ON public.customers(phone);
+CREATE INDEX IF NOT EXISTS idx_customers_profile_id ON public.customers(profile_id);
+
+-- ==============================================================================
+-- 3. TECHNICIANS EXTENSION
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.technicians (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    profile_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    profile_id UUID UNIQUE REFERENCES public.profiles(id) ON DELETE SET NULL,
     title VARCHAR(100) NOT NULL DEFAULT 'Verified Doorstep Technician',
     phone VARCHAR(20) NOT NULL,
     rating NUMERIC(3, 2) NOT NULL DEFAULT 4.95,
@@ -46,7 +64,7 @@ CREATE TABLE IF NOT EXISTS public.technicians (
 CREATE INDEX IF NOT EXISTS idx_technicians_active ON public.technicians(is_active);
 
 -- ==============================================================================
--- 3. SERVICE CATEGORIES & SERVICES CATALOG
+-- 4. SERVICE CATEGORIES & SERVICES CATALOG
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.service_categories (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -81,11 +99,11 @@ CREATE INDEX IF NOT EXISTS idx_services_category_id ON public.services(category_
 CREATE INDEX IF NOT EXISTS idx_services_slug ON public.services(slug);
 
 -- ==============================================================================
--- 4. CUSTOMER ADDRESSES
+-- 5. CUSTOMER ADDRESSES
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.customer_addresses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    customer_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+    customer_id UUID REFERENCES public.customers(id) ON DELETE CASCADE,
     full_name VARCHAR(150),
     phone VARCHAR(20),
     address_line TEXT NOT NULL,
@@ -100,12 +118,12 @@ CREATE TABLE IF NOT EXISTS public.customer_addresses (
 CREATE INDEX IF NOT EXISTS idx_customer_addresses_customer_id ON public.customer_addresses(customer_id);
 
 -- ==============================================================================
--- 5. BOOKINGS & BOOKING ITEMS
+-- 6. BOOKINGS & BOOKING ITEMS
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_number VARCHAR(50) UNIQUE NOT NULL, -- e.g. IND-84920
-    customer_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    customer_id UUID REFERENCES public.customers(id) ON DELETE SET NULL,
     address_id UUID REFERENCES public.customer_addresses(id) ON DELETE SET NULL,
     customer_name VARCHAR(150) NOT NULL,
     customer_phone VARCHAR(20) NOT NULL,
@@ -152,7 +170,7 @@ CREATE TABLE IF NOT EXISTS public.booking_items (
 CREATE INDEX IF NOT EXISTS idx_booking_items_booking_id ON public.booking_items(booking_id);
 
 -- ==============================================================================
--- 6. TECHNICIAN ASSIGNMENTS & STATUS HISTORY
+-- 7. TECHNICIAN ASSIGNMENTS & STATUS HISTORY
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.technician_assignments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -164,6 +182,9 @@ CREATE TABLE IF NOT EXISTS public.technician_assignments (
     completed_at TIMESTAMPTZ,
     notes TEXT
 );
+
+CREATE INDEX IF NOT EXISTS idx_technician_assignments_booking_id ON public.technician_assignments(booking_id);
+CREATE INDEX IF NOT EXISTS idx_technician_assignments_technician_id ON public.technician_assignments(technician_id);
 
 CREATE TABLE IF NOT EXISTS public.booking_status_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -177,7 +198,7 @@ CREATE TABLE IF NOT EXISTS public.booking_status_history (
 CREATE INDEX IF NOT EXISTS idx_status_history_booking_id ON public.booking_status_history(booking_id);
 
 -- ==============================================================================
--- 7. PAYMENTS & INVOICES
+-- 8. PAYMENTS & INVOICES
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.payments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -227,19 +248,23 @@ CREATE TABLE IF NOT EXISTS public.invoice_items (
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
 );
 
+CREATE INDEX IF NOT EXISTS idx_invoice_items_invoice_id ON public.invoice_items(invoice_id);
+
 -- ==============================================================================
--- 8. REVIEWS, NOTIFICATIONS & AUDIT LOGS
+-- 9. REVIEWS, NOTIFICATIONS & AUDIT LOGS
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.reviews (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_id UUID REFERENCES public.bookings(id) ON DELETE SET NULL,
-    customer_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    customer_id UUID REFERENCES public.customers(id) ON DELETE SET NULL,
     customer_name VARCHAR(150) NOT NULL,
     rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
     comment TEXT,
     is_verified BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
 );
+
+CREATE INDEX IF NOT EXISTS idx_reviews_booking_id ON public.reviews(booking_id);
 
 CREATE TABLE IF NOT EXISTS public.notifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -251,6 +276,8 @@ CREATE TABLE IF NOT EXISTS public.notifications (
     is_read BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
 );
+
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON public.notifications(user_id);
 
 CREATE TABLE IF NOT EXISTS public.contact_messages (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -281,12 +308,14 @@ CREATE TABLE IF NOT EXISTS public.email_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     recipient VARCHAR(255) NOT NULL,
     subject TEXT NOT NULL,
-    email_type VARCHAR(50) NOT NULL, -- e.g. 'booking_confirmed', 'invoice_pdf', 'contact_inquiry', 'quote_estimate'
+    email_type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'sent' CHECK (status IN ('sent', 'failed', 'delivered')),
     resend_id VARCHAR(100),
     error_message TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
 );
+
+CREATE INDEX IF NOT EXISTS idx_email_logs_recipient ON public.email_logs(recipient);
 
 CREATE TABLE IF NOT EXISTS public.audit_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -301,10 +330,10 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
 );
 
 -- ==============================================================================
--- 9. TRIGGERS & FUNCTIONS
+-- 10. AUTOMATED TRIGGERS & FUNCTIONS
 -- ==============================================================================
 
--- Trigger function to automatically update updated_at timestamp
+-- 1. Auto-update updated_at timestamp
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -317,6 +346,10 @@ CREATE OR REPLACE TRIGGER update_profiles_updated_at
 BEFORE UPDATE ON public.profiles
 FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+CREATE OR REPLACE TRIGGER update_customers_updated_at
+BEFORE UPDATE ON public.customers
+FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
 CREATE OR REPLACE TRIGGER update_technicians_updated_at
 BEFORE UPDATE ON public.technicians
 FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
@@ -325,17 +358,51 @@ CREATE OR REPLACE TRIGGER update_services_updated_at
 BEFORE UPDATE ON public.services
 FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+CREATE OR REPLACE TRIGGER update_customer_addresses_updated_at
+BEFORE UPDATE ON public.customer_addresses
+FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
 CREATE OR REPLACE TRIGGER update_bookings_updated_at
 BEFORE UPDATE ON public.bookings
 FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
--- Trigger function to automatically log booking status transitions
+-- 2. Auto-generate booking number if not provided (IND-XXXXX)
+CREATE OR REPLACE FUNCTION public.handle_booking_number_generation()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.booking_number IS NULL OR NEW.booking_number = '' THEN
+        NEW.booking_number := 'IND-' || LPAD(FLOOR(RANDOM() * 90000 + 10000)::TEXT, 5, '0');
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trg_generate_booking_number
+BEFORE INSERT ON public.bookings
+FOR EACH ROW EXECUTE FUNCTION public.handle_booking_number_generation();
+
+-- 3. Auto-generate invoice number if not provided (INV-YYYY-IND-XXXXX)
+CREATE OR REPLACE FUNCTION public.handle_invoice_number_generation()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.invoice_number IS NULL OR NEW.invoice_number = '' THEN
+        NEW.invoice_number := 'INV-' || TO_CHAR(NOW(), 'YYYY') || '-' || LPAD(FLOOR(RANDOM() * 90000 + 10000)::TEXT, 5, '0');
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trg_generate_invoice_number
+BEFORE INSERT ON public.invoices
+FOR EACH ROW EXECUTE FUNCTION public.handle_invoice_number_generation();
+
+-- 4. Auto-log booking status history on status changes
 CREATE OR REPLACE FUNCTION public.log_booking_status_change()
 RETURNS TRIGGER AS $$
 BEGIN
     IF (OLD.status IS DISTINCT FROM NEW.status) THEN
         INSERT INTO public.booking_status_history (booking_id, status, notes)
-        VALUES (NEW.id, NEW.status, 'Status updated automatically from ' || COALESCE(OLD.status, 'none') || ' to ' || NEW.status);
+        VALUES (NEW.id, NEW.status, 'Status transitioned from ' || COALESCE(OLD.status, 'none') || ' to ' || NEW.status);
     END IF;
     RETURN NEW;
 END;
@@ -346,10 +413,11 @@ AFTER UPDATE ON public.bookings
 FOR EACH ROW EXECUTE FUNCTION public.log_booking_status_change();
 
 -- ==============================================================================
--- 10. ROW LEVEL SECURITY (RLS) POLICIES
+-- 11. ROW LEVEL SECURITY (RLS) POLICIES
 -- ==============================================================================
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.technicians ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.service_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
@@ -379,45 +447,51 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Public / General Catalog Read Access
+-- Public / Anonymous Catalog Read Policies
 CREATE POLICY "Allow public read active categories" ON public.service_categories FOR SELECT USING (is_active = TRUE);
 CREATE POLICY "Allow public read active services" ON public.services FOR SELECT USING (is_active = TRUE);
 CREATE POLICY "Allow public read reviews" ON public.reviews FOR SELECT USING (is_verified = TRUE);
 CREATE POLICY "Allow public insert contact messages" ON public.contact_messages FOR INSERT WITH CHECK (TRUE);
 CREATE POLICY "Allow public insert quote requests" ON public.quote_requests FOR INSERT WITH CHECK (TRUE);
 
--- Profiles Policies
+-- Profiles & Customers Policies
 CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id OR public.is_admin());
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
+CREATE POLICY "Customers can view own customer record" ON public.customers FOR SELECT USING (
+    profile_id = auth.uid() OR public.is_admin()
+);
+CREATE POLICY "Customers can update own customer record" ON public.customers FOR UPDATE USING (
+    profile_id = auth.uid() OR public.is_admin()
+);
+
 -- Customer Addresses Policies
-CREATE POLICY "Users can manage own addresses" ON public.customer_addresses FOR ALL USING (auth.uid() = customer_id OR public.is_admin());
+CREATE POLICY "Customers can manage own addresses" ON public.customer_addresses FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.customers c WHERE c.id = customer_id AND (c.profile_id = auth.uid() OR public.is_admin()))
+);
 
 -- Bookings & Items Policies
-CREATE POLICY "Users can view own bookings" ON public.bookings FOR SELECT USING (auth.uid() = customer_id OR public.is_admin());
-CREATE POLICY "Users can view own booking items" ON public.booking_items FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+CREATE POLICY "Customers can view own bookings" ON public.bookings FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.customers c WHERE c.id = customer_id AND c.profile_id = auth.uid()) OR public.is_admin()
 );
 
--- Invoices & Payments Policies
-CREATE POLICY "Users can view own invoices" ON public.invoices FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+CREATE POLICY "Technicians can view assigned bookings" ON public.bookings FOR SELECT USING (
+    EXISTS (
+        SELECT 1 FROM public.technician_assignments ta
+        JOIN public.technicians t ON t.id = ta.technician_id
+        WHERE ta.booking_id = public.bookings.id AND t.profile_id = auth.uid()
+    ) OR public.is_admin()
 );
 
-CREATE POLICY "Users can view own payments" ON public.payments FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+CREATE POLICY "Customers can view own booking items" ON public.booking_items FOR SELECT USING (
+    EXISTS (
+        SELECT 1 FROM public.bookings b 
+        LEFT JOIN public.customers c ON c.id = b.customer_id
+        WHERE b.id = booking_id AND (c.profile_id = auth.uid() OR public.is_admin())
+    )
 );
 
--- Notifications & Reviews Policies
-CREATE POLICY "Users can view own notifications" ON public.notifications FOR SELECT USING (
-    auth.uid() = user_id OR public.is_admin()
-);
-
-CREATE POLICY "Users can insert reviews for own bookings" ON public.reviews FOR INSERT WITH CHECK (
-    auth.uid() = customer_id OR public.is_admin()
-);
-
--- Technician Assignments & Status History Policies
+-- Technician Assignments & Job Status
 CREATE POLICY "Technicians can view assigned jobs" ON public.technician_assignments FOR SELECT USING (
     EXISTS (SELECT 1 FROM public.technicians t WHERE t.id = technician_id AND (t.profile_id = auth.uid() OR public.is_admin()))
 );
@@ -426,15 +500,56 @@ CREATE POLICY "Technicians can update job status" ON public.technician_assignmen
     EXISTS (SELECT 1 FROM public.technicians t WHERE t.id = technician_id AND (t.profile_id = auth.uid() OR public.is_admin()))
 );
 
+-- Invoices & Payments Policies
+CREATE POLICY "Customers can view own invoices" ON public.invoices FOR SELECT USING (
+    EXISTS (
+        SELECT 1 FROM public.bookings b 
+        LEFT JOIN public.customers c ON c.id = b.customer_id
+        WHERE b.id = booking_id AND (c.profile_id = auth.uid() OR public.is_admin())
+    )
+);
+
+CREATE POLICY "Customers can view own invoice items" ON public.invoice_items FOR SELECT USING (
+    EXISTS (
+        SELECT 1 FROM public.invoices i
+        JOIN public.bookings b ON b.id = i.booking_id
+        LEFT JOIN public.customers c ON c.id = b.customer_id
+        WHERE i.id = invoice_id AND (c.profile_id = auth.uid() OR public.is_admin())
+    )
+);
+
+CREATE POLICY "Customers can view own payments" ON public.payments FOR SELECT USING (
+    EXISTS (
+        SELECT 1 FROM public.bookings b 
+        LEFT JOIN public.customers c ON c.id = b.customer_id
+        WHERE b.id = booking_id AND (c.profile_id = auth.uid() OR public.is_admin())
+    )
+);
+
+-- Notifications & Reviews Policies
+CREATE POLICY "Users can view own notifications" ON public.notifications FOR SELECT USING (
+    auth.uid() = user_id OR public.is_admin()
+);
+
+CREATE POLICY "Customers can insert reviews for own bookings" ON public.reviews FOR INSERT WITH CHECK (
+    EXISTS (SELECT 1 FROM public.customers c WHERE c.id = customer_id AND c.profile_id = auth.uid()) OR public.is_admin()
+);
+
 CREATE POLICY "Users can view booking status history" ON public.booking_status_history FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.bookings b WHERE b.id = booking_id AND (b.customer_id = auth.uid() OR public.is_admin()))
+    EXISTS (
+        SELECT 1 FROM public.bookings b 
+        LEFT JOIN public.customers c ON c.id = b.customer_id
+        WHERE b.id = booking_id AND (c.profile_id = auth.uid() OR public.is_admin())
+    )
 );
 
 -- Admin Full Access Policies
 CREATE POLICY "Admins full access profiles" ON public.profiles FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access customers" ON public.customers FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access technicians" ON public.technicians FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access categories" ON public.service_categories FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access services" ON public.services FOR ALL USING (public.is_admin());
+CREATE POLICY "Admins full access customer_addresses" ON public.customer_addresses FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access bookings" ON public.bookings FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access booking_items" ON public.booking_items FOR ALL USING (public.is_admin());
 CREATE POLICY "Admins full access technician_assignments" ON public.technician_assignments FOR ALL USING (public.is_admin());
