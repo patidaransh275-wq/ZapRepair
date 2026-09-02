@@ -34,6 +34,7 @@ export default function IndoreServiceAreas() {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117763.5518485293!2d75.7955523972656!3d22.71956870000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fcad1b410ddb%3A0x96ec4da356240f4!2sIndore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity"
                 loading="lazy"
+                allowFullScreen={true}
                 referrerPolicy="no-referrer-when-downgrade"
               />
 
