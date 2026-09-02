@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '../../../../../lib/supabase/admin';
+import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCode';
 
 /**
  * GET /api/invoices/[bookingId]/pdf
@@ -148,14 +149,14 @@ export async function GET(request, { params }) {
         <div style="margin-top: 20px; padding: 12px 16px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
           <div style="display: flex; align-items: center; gap: 14px;">
             <div style="width: 64px; height: 64px; background: #ffffff; padding: 4px; border: 1px solid #cbd5e1; border-radius: 8px; flex-shrink: 0; text-align: center;">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D9174934135%40yescred%26pn%3Dsarthak%20patidar" alt="UPI QR" style="width: 100%; height: 100%; object-fit: contain;" />
+              <img src="${UPI_QR_DATA_URI}" alt="UPI QR" style="width: 100%; height: 100%; object-fit: contain;" />
             </div>
             <div>
               <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #b45309; background: #fef3c7; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px;">
                 Quick Scan & Pay
               </div>
               <div style="font-size: 13px; font-weight: 700; color: #0f172a;">
-                UPI ID: <span style="color: #059669; font-family: monospace;">9174934135@yescred</span> (sarthak patidar)
+                UPI ID: <span style="color: #059669; font-family: monospace;">${UPI_ID}</span> (${UPI_PAYEE_NAME})
               </div>
               <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
                 Accepts Google Pay, PhonePe, Paytm, BHIM, Cred & Mobile Banking
