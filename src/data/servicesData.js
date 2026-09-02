@@ -6,7 +6,7 @@ export const SERVICES_DATA = [
     iconName: 'Wind',
     badge: 'Popular',
     startingPrice: 399,
-    bannerImage: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80',
+    bannerImage: '/images/services/ac-repair.jpg',
     description: 'Expert doorstep Air Conditioner repair, foam jet servicing, gas leak refill, and installation by certified HVAC technicians across Indore.',
     heroSubtitle: '45-Minute Arrival | 30-Day Warranty | Certified HVAC Pros in Indore',
     packages: [
@@ -39,7 +39,7 @@ export const SERVICES_DATA = [
     iconName: 'Wrench',
     badge: 'Essential',
     startingPrice: 149,
-    bannerImage: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
+    bannerImage: '/images/services/plumber.jpg',
     description: 'Expert doorstep plumbing services in Indore. Tap & mixer repair, toilet flush tank fix, sink & floor drain blockage removal, water tank installation, and bathroom fittings.',
     heroSubtitle: 'Expert Plumbers | Leakage & Blockage Specialists | 45-Min Doorstep Arrival',
     packages: [
@@ -73,7 +73,7 @@ export const SERVICES_DATA = [
     iconName: 'PlugZap',
     badge: 'Essential',
     startingPrice: 149,
-    bannerImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
+    bannerImage: '/images/services/electrician.jpg',
     description: 'Certified doorstep electrician services in Indore. Switchboard & socket repair, ceiling fan installation, light & chandelier mounting, MCB tripping fix, and short circuit fault finding.',
     heroSubtitle: 'Safety First | ITI-Certified Electricians | 45-Min Doorstep Arrival',
     packages: [
@@ -355,7 +355,7 @@ export const SERVICES_DATA = [
     iconName: 'Hammer',
     badge: 'Essential',
     startingPrice: 199,
-    bannerImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    bannerImage: '/images/services/carpenter-paint.jpg',
     description: 'Doorstep carpenter services in Indore. Door lock replacement, wardrobe & cupboard hinge repair, bed and sofa assembly, wall hanging drill work, and custom furniture adjustments.',
     heroSubtitle: 'Master Carpenters | Precision Woodwork & Hardware Fixes | 45-Min Arrival',
     packages: [
