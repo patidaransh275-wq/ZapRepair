@@ -359,25 +359,29 @@ export async function POST(request) {
     let customerEmailResult = null;
 
     try {
-      // 1. Send dedicated Admin Alert to plumberindore@gmail.com
+      // 1. Send dedicated Admin Alert strictly to plumberindore@gmail.com
+      console.log(`[POST /api/bookings] Dispatching Admin Alert to plumberindore@gmail.com for #${bookingNo}...`);
       adminEmailResult = await sendEmail({
-        to: 'plumberindore@gmail.com',
+        to: ['plumberindore@gmail.com'],
         subject: adminEmailSubject,
         html: adminEmailHtml,
         replyTo: recipientEmail || 'plumberindore@gmail.com'
       });
+      console.log(`[POST /api/bookings] Admin Alert Result for #${bookingNo}:`, adminEmailResult);
 
       // 2. If customer provided email and it is not plumberindore@gmail.com, send Customer Confirmation
       if (recipientEmail && recipientEmail.toLowerCase() !== 'plumberindore@gmail.com') {
+        console.log(`[POST /api/bookings] Dispatching Customer Confirmation to ${recipientEmail} for #${bookingNo}...`);
         customerEmailResult = await sendEmail({
-          to: recipientEmail,
+          to: [recipientEmail],
           subject: customerEmailSubject,
           html: customerEmailHtml,
           replyTo: 'plumberindore@gmail.com'
         });
+        console.log(`[POST /api/bookings] Customer Confirmation Result for #${bookingNo}:`, customerEmailResult);
       }
     } catch (emailErr) {
-      console.error('Email dispatch error in POST /api/bookings:', emailErr);
+      console.error(`[POST /api/bookings] Email dispatch exception for #${bookingNo}:`, emailErr);
     }
 
     return NextResponse.json({
