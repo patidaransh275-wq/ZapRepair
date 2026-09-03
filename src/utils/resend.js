@@ -160,14 +160,13 @@ export async function sendEmail({
       });
 
       // Attempt 2: Fallback to onboarding@resend.dev if custom sender domain was rejected
-      if (error && (
-        error.message?.includes('not verified') || 
-        error.message?.includes('domain is not verified') || 
-        error.message?.includes('Domain not verified') || 
-        error.message?.includes('from address') ||
-        error.name === 'validation_error' ||
-        error.statusCode === 403
-      )) {
+      const isSenderDomainError = error && (
+        error.message?.includes('from address') || 
+        error.message?.includes('does not match any of your verified domains') || 
+        (error.message?.includes('not verified') && !error.message?.includes('testing emails'))
+      );
+
+      if (isSenderDomainError) {
         console.warn(`[Resend Fallback] Sender (${from}) unverified on Resend. Retrying to ${recipient} via (${FALLBACK_SENDER_EMAIL})...`);
         
         const retryResult = await resend.emails.send({
@@ -182,35 +181,44 @@ export async function sendEmail({
         error = retryResult.error;
       }
 
-      // Attempt 3: Fallback if Resend trial sandbox restricts non-account recipient addresses
-      if (error && (
+      // Attempt 3: Fallback if Resend trial sandbox restricts delivery to non-account addresses
+      const isSandboxError = error && (
         error.message?.includes('only send testing emails') || 
         error.message?.includes('testing emails') ||
         error.message?.includes('can only send testing')
-      )) {
-        console.warn(`[Resend Sandbox Notice] Recipient ${recipient} restricted by Resend sandbox policy. Forwarding copy to business inbox (${ADMIN_NOTIFICATION_EMAIL})...`);
+      );
+
+      if (isSandboxError) {
+        const match = error.message?.match(/own email address \(([^)]+)\)/);
+        const allowedSandboxRecipient = match ? match[1] : (process.env.RESEND_ACCOUNT_OWNER || 'patidaransh275@gmail.com');
+
+        console.warn(`[Resend Sandbox Notice] Resend trial sandbox restricts direct delivery to ${recipient}. Forwarding alert to registered Resend account (${allowedSandboxRecipient})...`);
         
         const sandboxBanner = `
-          <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
+          <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 14px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 13px;">
             <strong>[PlumberIndore System Alert]</strong><br/>
-            Intended Recipient: <strong>${recipient}</strong><br/>
-            <em>Notice: Delivered to admin inbox (${ADMIN_NOTIFICATION_EMAIL}). To send directly to external customer inboxes, complete domain verification for <strong>plumberindore.in</strong> at <a href="https://resend.com/domains" style="color: #b45309; text-decoration: underline;">resend.com/domains</a>.</em>
+            Intended Business Recipient: <strong>${recipient}</strong><br/>
+            <em>Notice: Delivered to registered Resend account owner (<strong>${allowedSandboxRecipient}</strong>). To deliver directly to <strong>plumberindore@gmail.com</strong> and customers, either:</em>
+            <ol style="margin: 6px 0 0 18px; padding: 0;">
+              <li>Add and verify your domain (<strong>plumberindore.in</strong>) at <a href="https://resend.com/domains" style="color: #b45309; font-weight: bold;">resend.com/domains</a> (Recommended for full production).</li>
+              <li>OR invite <strong>plumberindore@gmail.com</strong> to your Resend team / create an API key for it.</li>
+            </ol>
           </div>
         `;
 
         const sandboxResult = await resend.emails.send({
           from: FALLBACK_SENDER_EMAIL,
-          to: [ADMIN_NOTIFICATION_EMAIL],
+          to: [allowedSandboxRecipient],
           subject: `[FORWARDED for ${recipient}] ${subject}`,
           html: sandboxBanner + html,
           reply_to: replyTo
         });
 
         if (!sandboxResult.error) {
-          console.log(`[Resend Response Success] Sandbox forwarded copy delivered to ${ADMIN_NOTIFICATION_EMAIL} | ID: ${sandboxResult.data?.id}`);
+          console.log(`[Resend Response Success] Sandbox forwarded copy delivered to ${allowedSandboxRecipient} | ID: ${sandboxResult.data?.id}`);
           
           await logEmailToSupabase({
-            recipient: `${recipient} (Forwarded to ${ADMIN_NOTIFICATION_EMAIL})`,
+            recipient: `${recipient} (Forwarded to ${allowedSandboxRecipient})`,
             subject,
             emailType,
             status: 'sent',
@@ -222,7 +230,7 @@ export async function sendEmail({
             recipient,
             success: true,
             id: sandboxResult.data?.id,
-            deliveredTo: ADMIN_NOTIFICATION_EMAIL,
+            deliveredTo: allowedSandboxRecipient,
             forwarded: true
           });
           continue;
