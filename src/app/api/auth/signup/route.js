@@ -56,7 +56,7 @@ export async function POST(request) {
 
     // Send Welcome Email via Resend
     try {
-      const { sendEmail } = await import('../../../../utils/resend');
+      const { sendEmail } = await import('../../../../utils/resend.js');
       await sendEmail({
         to: [email.toLowerCase().trim(), 'plumberindore@gmail.com'],
         subject: `[PlumberIndore] Welcome to Indore's #1 Doorstep Service Network, ${name}!`,

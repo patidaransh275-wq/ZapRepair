@@ -199,7 +199,7 @@ export async function POST(request) {
     }
 
     // 2. Dispatch Email via Resend
-    const { sendEmail } = await import('../../../utils/resend');
+    const { sendEmail } = await import('../../../utils/resend.js');
     const result = await sendEmail({
       to: [recipient, 'plumberindore@gmail.com'],
       subject: `[PlumberIndore Tax Invoice] ${invoiceNumber} - ₹${totalPaid} (${serviceName})`,

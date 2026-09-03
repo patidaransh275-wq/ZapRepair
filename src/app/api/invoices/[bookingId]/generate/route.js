@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../lib/supabase/admin';
-import { sendEmail } from '../../../../../utils/resend';
-import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCode';
+import { getAdminClient } from '../../../../../lib/supabase/admin.js';
+import { sendEmail } from '../../../../../utils/resend.js';
+import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCode.js';
 
 /**
  * POST /api/invoices/[bookingId]/generate
