@@ -190,7 +190,7 @@ export async function sendEmail({
 
       if (isSandboxError) {
         const match = error.message?.match(/own email address \(([^)]+)\)/);
-        const allowedSandboxRecipient = match ? match[1] : (process.env.RESEND_ACCOUNT_OWNER || 'patidaransh275@gmail.com');
+        const allowedSandboxRecipient = match ? match[1] : (process.env.RESEND_ACCOUNT_OWNER || 'plumberindore@gmail.com');
 
         console.warn(`[Resend Sandbox Notice] Resend trial sandbox restricts direct delivery to ${recipient}. Forwarding alert to registered Resend account (${allowedSandboxRecipient})...`);
         
