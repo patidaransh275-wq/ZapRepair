@@ -2,9 +2,8 @@ import { Resend } from 'resend';
 
 export const ADMIN_NOTIFICATION_EMAIL = process.env.BUSINESS_NOTIFICATION_EMAIL || 'plumberindore@gmail.com';
 
-// Default sender set to 'onboarding@resend.dev' to guarantee zero domain-verification rejections out-of-the-box.
-// Once custom domain (plumberindore.in) is verified, set RESEND_SENDER_EMAIL="PlumberIndore <notifications@plumberindore.in>".
-const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <onboarding@resend.dev>';
+// plumberindore.in is verified in Resend. Direct sending to all recipients enabled.
+const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
 
 /**
