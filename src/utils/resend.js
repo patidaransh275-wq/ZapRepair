@@ -3,11 +3,10 @@ import { Resend } from 'resend';
 export const ADMIN_NOTIFICATION_EMAIL = process.env.BUSINESS_NOTIFICATION_EMAIL || 'plumberindore@gmail.com';
 const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
-const RESEND_TEST_ACCOUNT_OWNER = process.env.RESEND_ACCOUNT_EMAIL || 'patidaransh275@gmail.com';
 
 /**
  * Helper to safely obtain Resend client on server-side only.
- * Supports RESEND_API_KEY, plumberindore, or RESEND_KEY.
+ * Checks RESEND_API_KEY, plumberindore, or RESEND_KEY.
  */
 function getResendClient() {
   const apiKey = 
@@ -46,6 +45,8 @@ async function logEmailToSupabase({ recipient, subject, emailType, status, resen
 
 /**
  * Universal email sender via Resend API
+ * Ensures reliable delivery to plumberindore@gmail.com with graceful fallback.
+ * 
  * @param {Object} options
  * @param {string|string[]} options.to - Recipient email(s)
  * @param {string} options.subject - Email subject line
@@ -68,7 +69,9 @@ export async function sendEmail({
 
   // Deduplicate and clean recipient list
   const rawList = Array.isArray(to) ? to : (to ? [to] : [ADMIN_NOTIFICATION_EMAIL]);
-  const recipientList = Array.from(new Set(rawList.filter(e => typeof e === 'string' && e.includes('@')).map(e => e.trim())));
+  const recipientList = Array.from(
+    new Set(rawList.filter(e => typeof e === 'string' && e.includes('@')).map(e => e.trim()))
+  );
   
   if (recipientList.length === 0) {
     recipientList.push(ADMIN_NOTIFICATION_EMAIL);
@@ -82,7 +85,7 @@ export async function sendEmail({
     ? 'quote_request' 
     : 'contact_inquiry';
 
-  // 1. If API key is missing, record in email_logs and return graceful simulated success/status
+  // 1. If API key is missing, record in Supabase email_logs and return diagnostic status
   if (!resend) {
     const warningMsg = 'Resend API key ("RESEND_API_KEY" or "plumberindore") is not configured in server environment.';
     console.warn(`[Resend Notice] ${warningMsg} Logging to email_logs.`);
@@ -104,131 +107,140 @@ export async function sendEmail({
     };
   }
 
-  try {
-    // 2. Primary Attempt: Send from verified domain
-    let { data, error } = await resend.emails.send({
-      from: from || PRIMARY_SENDER_EMAIL,
-      to: recipientList,
-      subject: subject,
-      html: html,
-      reply_to: replyTo,
-      ...(cc && { cc: Array.isArray(cc) ? cc : [cc] }),
-      ...(bcc && { bcc: Array.isArray(bcc) ? bcc : [bcc] })
-    });
+  const results = [];
 
-    // 3. Fallback 1: If custom domain (plumberindore.in) is not verified in DNS, retry via onboarding@resend.dev
-    if (error && (
-      error.message?.includes('not verified') || 
-      error.message?.includes('domain is not verified') || 
-      error.message?.includes('Domain not verified') ||
-      error.message?.includes('from address')
-    )) {
-      console.warn(`Primary domain (${from}) unverified on Resend. Retrying via fallback sender (${FALLBACK_SENDER_EMAIL}) to ${recipientList.join(', ')}...`);
-      
-      const retryResult = await resend.emails.send({
-        from: FALLBACK_SENDER_EMAIL,
-        to: recipientList,
+  // Send to each recipient individually so one unverified recipient never blocks others
+  for (const recipient of recipientList) {
+    try {
+      // Step A: Primary Attempt from configured sender (e.g. notifications@plumberindore.in)
+      let { data, error } = await resend.emails.send({
+        from: from || PRIMARY_SENDER_EMAIL,
+        to: [recipient],
         subject: subject,
         html: html,
-        reply_to: replyTo
+        reply_to: replyTo,
+        ...(cc && { cc: Array.isArray(cc) ? cc : [cc] }),
+        ...(bcc && { bcc: Array.isArray(bcc) ? bcc : [bcc] })
       });
 
-      data = retryResult.data;
-      error = retryResult.error;
-    }
-
-    // 4. Fallback 2: If Resend free tier sandbox blocks non-account emails, deliver to verified account owner
-    if (error && (
-      error.message?.includes('only send testing emails to your own email address') || 
-      error.message?.includes(RESEND_TEST_ACCOUNT_OWNER) ||
-      error.message?.includes('testing emails') ||
-      error.message?.includes('can only send testing')
-    )) {
-      console.warn(`Resend sandbox policy active. Forwarding alert to verified account owner (${RESEND_TEST_ACCOUNT_OWNER}) to prevent lead/booking loss...`);
-      
-      const sandboxBanner = `
-        <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
-          <strong>[PlumberIndore System Dispatch Alert]</strong><br/>
-          Intended Recipient(s): <strong>${recipientList.join(', ')}</strong><br/>
-          <em>Notice: Delivered to verified Resend account owner. To send directly to external customer inboxes, complete domain verification for <strong>plumberindore.in</strong> at <a href="https://resend.com/domains" style="color: #b45309; text-decoration: underline;">resend.com/domains</a>.</em>
-        </div>
-      `;
-
-      const sandboxResult = await resend.emails.send({
-        from: FALLBACK_SENDER_EMAIL,
-        to: [RESEND_TEST_ACCOUNT_OWNER],
-        subject: `[FORWARDED for ${recipientList.join(', ')}] ${subject}`,
-        html: sandboxBanner + html,
-        reply_to: replyTo
-      });
-
-      if (!sandboxResult.error) {
-        await logEmailToSupabase({
-          recipient: `${recipientList.join(', ')} (Forwarded to ${RESEND_TEST_ACCOUNT_OWNER})`,
-          subject,
-          emailType,
-          status: 'sent',
-          resendId: sandboxResult.data?.id,
-          errorMessage: null
+      // Step B: Fallback if sender domain is unverified on Resend DNS
+      if (error && (
+        error.message?.includes('not verified') || 
+        error.message?.includes('domain is not verified') || 
+        error.message?.includes('Domain not verified') ||
+        error.message?.includes('from address')
+      )) {
+        console.warn(`Primary domain (${from}) unverified on Resend. Retrying to ${recipient} via fallback sender (${FALLBACK_SENDER_EMAIL})...`);
+        
+        const retryResult = await resend.emails.send({
+          from: FALLBACK_SENDER_EMAIL,
+          to: [recipient],
+          subject: subject,
+          html: html,
+          reply_to: replyTo
         });
 
-        return {
-          success: true,
-          data: sandboxResult.data,
-          deliveredTo: RESEND_TEST_ACCOUNT_OWNER,
-          intendedRecipients: recipientList,
-          sandboxNotice: 'Domain verification pending at resend.com/domains. Email safely delivered to verified account owner.'
-        };
+        data = retryResult.data;
+        error = retryResult.error;
       }
 
-      data = sandboxResult.data;
-      error = sandboxResult.error;
-    }
+      // Step C: Fallback if Resend trial sandbox blocks external non-account emails
+      if (error && (
+        error.message?.includes('only send testing emails') || 
+        error.message?.includes('testing emails') ||
+        error.message?.includes('can only send testing')
+      )) {
+        console.warn(`Resend sandbox policy active for recipient ${recipient}. Forwarding alert to ${ADMIN_NOTIFICATION_EMAIL}...`);
+        
+        const sandboxBanner = `
+          <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
+            <strong>[PlumberIndore System Alert]</strong><br/>
+            Intended Recipient: <strong>${recipient}</strong><br/>
+            <em>Notice: Delivered to admin inbox (${ADMIN_NOTIFICATION_EMAIL}). To send directly to external customer inboxes, complete domain verification for <strong>plumberindore.in</strong> at <a href="https://resend.com/domains" style="color: #b45309; text-decoration: underline;">resend.com/domains</a>.</em>
+          </div>
+        `;
 
-    // 5. Log final result in Supabase email_logs
-    await logEmailToSupabase({
-      recipient: recipientList.join(', '),
-      subject,
-      emailType,
-      status: error ? 'failed' : 'sent',
-      resendId: data?.id || null,
-      errorMessage: error ? error.message : null
-    });
+        const sandboxResult = await resend.emails.send({
+          from: FALLBACK_SENDER_EMAIL,
+          to: [ADMIN_NOTIFICATION_EMAIL],
+          subject: `[FORWARDED for ${recipient}] ${subject}`,
+          html: sandboxBanner + html,
+          reply_to: replyTo
+        });
 
-    if (error) {
-      console.error('Resend API delivery error:', error.message);
-      return {
+        if (!sandboxResult.error) {
+          await logEmailToSupabase({
+            recipient: `${recipient} (Forwarded to ${ADMIN_NOTIFICATION_EMAIL})`,
+            subject,
+            emailType,
+            status: 'sent',
+            resendId: sandboxResult.data?.id,
+            errorMessage: null
+          });
+
+          results.push({
+            recipient,
+            success: true,
+            id: sandboxResult.data?.id,
+            deliveredTo: ADMIN_NOTIFICATION_EMAIL,
+            forwarded: true
+          });
+          continue;
+        }
+
+        data = sandboxResult.data;
+        error = sandboxResult.error;
+      }
+
+      // Record this recipient's outcome in Supabase
+      await logEmailToSupabase({
+        recipient,
+        subject,
+        emailType,
+        status: error ? 'failed' : 'sent',
+        resendId: data?.id || null,
+        errorMessage: error ? error.message : null
+      });
+
+      results.push({
+        recipient,
+        success: !error,
+        id: data?.id,
+        error: error ? error.message : null
+      });
+
+    } catch (err) {
+      console.error(`Unexpected exception delivering email to ${recipient}:`, err);
+      
+      await logEmailToSupabase({
+        recipient,
+        subject,
+        emailType,
+        status: 'failed',
+        resendId: null,
+        errorMessage: err.message
+      });
+
+      results.push({
+        recipient,
         success: false,
-        error: error.message || 'Failed to deliver email through Resend',
-        intendedRecipients: recipientList
-      };
+        error: err.message
+      });
     }
-
-    return {
-      success: true,
-      data,
-      deliveredTo: recipientList.join(', ')
-    };
-  } catch (err) {
-    console.error('Unexpected error while calling Resend:', err);
-    await logEmailToSupabase({
-      recipient: recipientList.join(', '),
-      subject,
-      emailType,
-      status: 'failed',
-      resendId: null,
-      errorMessage: err.message
-    });
-
-    return {
-      success: false,
-      error: err.message || 'Internal server error while sending email via Resend'
-    };
   }
+
+  const anySuccess = results.some(r => r.success);
+  const deliveredList = results.filter(r => r.success).map(r => r.deliveredTo || r.recipient);
+
+  return {
+    success: anySuccess,
+    deliveredTo: deliveredList.join(', '),
+    details: results
+  };
 }
 
 /**
- * Convenience helper for single admin notifications to plumberindore@gmail.com
+ * Convenience helper for single admin notifications directly to plumberindore@gmail.com
  */
 export async function sendNotificationEmail({ subject, html, replyTo = ADMIN_NOTIFICATION_EMAIL, to }) {
   return sendEmail({

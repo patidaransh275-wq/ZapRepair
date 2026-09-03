@@ -250,10 +250,73 @@ export async function POST(request) {
       }
     }
 
-    // 4. Send Confirmation Email via Resend (Awaited)
+    // 4. Send Dedicated Admin & Customer Emails via Resend (Awaited)
+    const bookingNo = createdBookingRecord.booking_number || randomBookingNumber;
     const recipientEmail = (email && email.includes('@')) ? email.trim() : null;
-    const emailSubject = `[PlumberIndore Booking Confirmed] #${createdBookingRecord.booking_number || randomBookingNumber} - ${primaryServiceName}`;
-    const emailHtml = `
+
+    // Admin Dispatch HTML
+    const adminEmailSubject = `[🚨 NEW BOOKING] #${bookingNo} - ${primaryServiceName} (${name} | ${cleanedPhone})`;
+    const adminEmailHtml = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 620px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #0f172a;">
+        <div style="background-color: #0f172a; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: #fbbf24; margin: 0; font-size: 22px; font-weight: 800;">Plumber<span style="color: #ffffff;">Indore</span></h1>
+          <p style="color: #94a3b8; font-size: 12px; margin: 4px 0 0 0;">New Doorstep Booking Alert</p>
+        </div>
+        <div style="padding: 24px 16px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <span style="background-color: #fef3c7; color: #b45309; font-size: 13px; font-weight: 800; padding: 6px 16px; border-radius: 9999px; border: 1px solid #fde68a;">
+              ⚡ NEW ORDER #${bookingNo}
+            </span>
+            <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 12px 0 4px 0;">₹${totalAmount} • ${primaryServiceName}</h2>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: #f8fafc; border-radius: 12px; font-size: 13px;">
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b; width: 35%;">Customer Name:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #0f172a;">${name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Customer Phone:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #0284c7;">
+                <a href="tel:${cleanedPhone}" style="color: #0284c7; text-decoration: none;">${cleanedPhone} (Click to Call)</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Customer Email:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #0f172a;">${email || 'Not provided'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Service Booked:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #0f172a;">${primaryServiceName} (${primaryPackageTitle})</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Scheduled Slot:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #d97706;">${scheduledDate}, ${slot}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Service Address:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #0f172a;">${address} (Pincode: ${pincode || '452010'})</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b;">Issue Notes:</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #0f172a;">${description || 'Standard doorstep appointment'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; font-weight: bold; color: #64748b;">Total Price:</td>
+              <td style="padding: 12px 16px; font-weight: 800; font-size: 16px; color: #059669;">₹${totalAmount} <span style="font-size: 11px; font-weight: normal; color: #64748b;">(Cash / UPI on Doorstep)</span></td>
+            </tr>
+          </table>
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="https://www.plumberindore.in/admin/bookings" style="background-color: #0f172a; color: #ffffff; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: inline-block;">
+              Open Admin Dispatch Console →
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Customer Confirmation HTML
+    const customerEmailSubject = `[PlumberIndore Booking Confirmed] #${bookingNo} - ${primaryServiceName}`;
+    const customerEmailHtml = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 620px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #0f172a;">
         <div style="background-color: #0f172a; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
           <h1 style="color: #fbbf24; margin: 0; font-size: 22px; font-weight: 800;">Plumber<span style="color: #ffffff;">Indore</span></h1>
@@ -262,7 +325,7 @@ export async function POST(request) {
         <div style="padding: 24px 16px;">
           <div style="text-align: center; margin-bottom: 20px;">
             <span style="background-color: #ecfdf5; color: #047857; font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 9999px; border: 1px solid #a7f3d0;">
-              ✓ BOOKING CONFIRMED (#${createdBookingRecord.booking_number || randomBookingNumber})
+              ✓ BOOKING CONFIRMED (#${bookingNo})
             </span>
             <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 12px 0 4px 0;">Doorstep Technician Assigned!</h2>
             <p style="font-size: 13px; color: #64748b; margin: 0;">Hello ${name}, your doorstep appointment has been confirmed.</p>
@@ -292,29 +355,39 @@ export async function POST(request) {
       </div>
     `;
 
-    let emailDispatch = { sent: false };
+    let adminEmailResult = null;
+    let customerEmailResult = null;
+
     try {
-      const emailResult = await sendEmail({
-        to: recipientEmail ? [recipientEmail, 'plumberindore@gmail.com'] : ['plumberindore@gmail.com'],
-        subject: emailSubject,
-        html: emailHtml
+      // 1. Send dedicated Admin Alert to plumberindore@gmail.com
+      adminEmailResult = await sendEmail({
+        to: 'plumberindore@gmail.com',
+        subject: adminEmailSubject,
+        html: adminEmailHtml,
+        replyTo: recipientEmail || 'plumberindore@gmail.com'
       });
-      emailDispatch = {
-        sent: emailResult.success,
-        deliveredTo: emailResult.deliveredTo,
-        error: emailResult.error || null,
-        sandboxNotice: emailResult.sandboxNotice || null
-      };
+
+      // 2. If customer provided email and it is not plumberindore@gmail.com, send Customer Confirmation
+      if (recipientEmail && recipientEmail.toLowerCase() !== 'plumberindore@gmail.com') {
+        customerEmailResult = await sendEmail({
+          to: recipientEmail,
+          subject: customerEmailSubject,
+          html: customerEmailHtml,
+          replyTo: 'plumberindore@gmail.com'
+        });
+      }
     } catch (emailErr) {
       console.error('Email dispatch error in POST /api/bookings:', emailErr);
-      emailDispatch = { sent: false, error: emailErr.message };
     }
 
     return NextResponse.json({
       success: true,
       booking: createdBookingRecord,
       validatedPricing: pricing,
-      emailDispatch,
+      emailDispatch: {
+        adminAlert: adminEmailResult,
+        customerConfirmation: customerEmailResult
+      },
       message: 'Booking created successfully with verified server pricing.'
     });
 
