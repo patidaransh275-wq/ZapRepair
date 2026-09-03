@@ -94,40 +94,43 @@ export async function POST(request) {
     `;
 
     // Persist in Supabase contact_messages table
+    let dbRecord = null;
     try {
-      const { getAdminClient } = await import('../../../lib/supabase/admin');
+      const { getAdminClient } = await import('../../../lib/supabase/admin.js');
       const supabaseAdmin = getAdminClient();
       if (supabaseAdmin) {
-        await supabaseAdmin.from('contact_messages').insert({
+        const { data, error } = await supabaseAdmin.from('contact_messages').insert({
           name: name.trim(),
           phone: phone.trim(),
           email: email ? email.trim() : null,
           message: message.trim(),
           status: 'new'
-        });
+        }).select().single();
+        if (error) console.error('Supabase contact save error:', error.message);
+        else dbRecord = data;
       }
     } catch (dbEx) {
-      console.warn('Supabase contact save warning:', dbEx.message);
+      console.warn('Supabase contact save exception:', dbEx.message);
     }
 
-    const result = await sendNotificationEmail({
-      subject: `[PlumberIndore] New Contact Message from ${name} (${phone})`,
-      html: htmlContent,
-      replyTo: email || 'plumberindore@gmail.com'
-    });
-
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 500 }
-      );
+    let emailResult = { sent: false };
+    try {
+      emailResult = await sendNotificationEmail({
+        subject: `[PlumberIndore] New Contact Message from ${name} (${phone})`,
+        html: htmlContent,
+        replyTo: email || 'plumberindore@gmail.com'
+      });
+    } catch (emailErr) {
+      console.warn('Resend contact dispatch notice:', emailErr.message);
+      emailResult = { sent: false, error: emailErr.message };
     }
 
     return NextResponse.json(
       { 
         success: true, 
         message: 'Your message has been received! Our Indore support team will reach out shortly.',
-        data: result.data
+        data: dbRecord || { name, phone },
+        emailDispatch: emailResult
       },
       { status: 200 }
     );

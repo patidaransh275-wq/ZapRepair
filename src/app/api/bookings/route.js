@@ -171,7 +171,7 @@ export async function POST(request) {
       created_at: new Date().toISOString()
     };
 
-    // 3. Insert into Supabase if configured
+    // 3. Insert into Supabase with strict validation
     if (supabaseAdmin) {
       try {
         // Insert main booking record
@@ -200,12 +200,18 @@ export async function POST(request) {
           .single();
 
         if (bookingErr) {
-          console.warn('Supabase booking insert notice:', bookingErr.message);
-        } else if (dbBooking) {
+          console.error('Supabase booking insert error:', bookingErr.message);
+          return NextResponse.json({
+            success: false,
+            error: `Failed to record booking in database: ${bookingErr.message}`
+          }, { status: 500 });
+        }
+
+        if (dbBooking) {
           createdBookingRecord = {
             ...dbBooking,
             id: dbBooking.booking_number || dbBooking.id,
-            price: dbBooking.total_amount,
+            price: Number(dbBooking.total_amount || dbBooking.price || totalAmount),
             customerName: dbBooking.customer_name,
             customerPhone: dbBooking.customer_phone,
             customerEmail: dbBooking.customer_email,
@@ -229,17 +235,24 @@ export async function POST(request) {
               total_price: item.totalPrice
             }));
 
-            await supabaseAdmin.from('booking_items').insert(itemsToInsert);
+            const { error: itemsErr } = await supabaseAdmin.from('booking_items').insert(itemsToInsert);
+            if (itemsErr) {
+              console.warn('Booking items line insert notice:', itemsErr.message);
+            }
           }
         }
       } catch (dbEx) {
-        console.warn('Supabase persistence exception (operating in graceful mode):', dbEx.message);
+        console.error('Supabase booking transaction exception:', dbEx.message);
+        return NextResponse.json({
+          success: false,
+          error: `Database connection error: ${dbEx.message}`
+        }, { status: 500 });
       }
     }
 
-    // 4. Send Confirmation Email via Resend
-    const recipientEmail = (email && email.includes('@')) ? email.trim() : 'plumberindore@gmail.com';
-    const emailSubject = `[PlumberIndore Booking Confirmed] #${randomBookingNumber} - ${primaryServiceName}`;
+    // 4. Send Confirmation Email via Resend (Awaited)
+    const recipientEmail = (email && email.includes('@')) ? email.trim() : null;
+    const emailSubject = `[PlumberIndore Booking Confirmed] #${createdBookingRecord.booking_number || randomBookingNumber} - ${primaryServiceName}`;
     const emailHtml = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 620px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #0f172a;">
         <div style="background-color: #0f172a; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
@@ -249,7 +262,7 @@ export async function POST(request) {
         <div style="padding: 24px 16px;">
           <div style="text-align: center; margin-bottom: 20px;">
             <span style="background-color: #ecfdf5; color: #047857; font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 9999px; border: 1px solid #a7f3d0;">
-              ✓ BOOKING CONFIRMED (#${randomBookingNumber})
+              ✓ BOOKING CONFIRMED (#${createdBookingRecord.booking_number || randomBookingNumber})
             </span>
             <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 12px 0 4px 0;">Doorstep Technician Assigned!</h2>
             <p style="font-size: 13px; color: #64748b; margin: 0;">Hello ${name}, your doorstep appointment has been confirmed.</p>
@@ -279,16 +292,29 @@ export async function POST(request) {
       </div>
     `;
 
-    sendEmail({
-      to: [recipientEmail, 'plumberindore@gmail.com'],
-      subject: emailSubject,
-      html: emailHtml
-    }).catch(err => console.warn('Email dispatch warning:', err));
+    let emailDispatch = { sent: false };
+    try {
+      const emailResult = await sendEmail({
+        to: recipientEmail ? [recipientEmail, 'plumberindore@gmail.com'] : ['plumberindore@gmail.com'],
+        subject: emailSubject,
+        html: emailHtml
+      });
+      emailDispatch = {
+        sent: emailResult.success,
+        deliveredTo: emailResult.deliveredTo,
+        error: emailResult.error || null,
+        sandboxNotice: emailResult.sandboxNotice || null
+      };
+    } catch (emailErr) {
+      console.error('Email dispatch error in POST /api/bookings:', emailErr);
+      emailDispatch = { sent: false, error: emailErr.message };
+    }
 
     return NextResponse.json({
       success: true,
       booking: createdBookingRecord,
       validatedPricing: pricing,
+      emailDispatch,
       message: 'Booking created successfully with verified server pricing.'
     });
 

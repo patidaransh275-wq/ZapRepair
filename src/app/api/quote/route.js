@@ -102,11 +102,12 @@ export async function POST(request) {
     `;
 
     // Persist in Supabase quote_requests table
+    let dbRecord = null;
     try {
-      const { getAdminClient } = await import('../../../lib/supabase/admin');
+      const { getAdminClient } = await import('../../../lib/supabase/admin.js');
       const supabaseAdmin = getAdminClient();
       if (supabaseAdmin) {
-        await supabaseAdmin.from('quote_requests').insert({
+        const { data, error } = await supabaseAdmin.from('quote_requests').insert({
           category,
           brand: brand || null,
           model_type: modelType || null,
@@ -117,30 +118,32 @@ export async function POST(request) {
           customer_pincode: customerPincode || null,
           remarks: remarks || null,
           status: 'pending'
-        });
+        }).select().single();
+        if (error) console.error('Supabase quote request save error:', error.message);
+        else dbRecord = data;
       }
     } catch (dbEx) {
-      console.warn('Supabase quote request save warning:', dbEx.message);
+      console.warn('Supabase quote request save exception:', dbEx.message);
     }
 
-    const result = await sendNotificationEmail({
-      subject: `[PlumberIndore] New Quote Request: ${category.toUpperCase()} (${issue})`,
-      html: htmlContent,
-      replyTo: 'plumberindore@gmail.com'
-    });
-
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 500 }
-      );
+    let emailResult = { sent: false };
+    try {
+      emailResult = await sendNotificationEmail({
+        subject: `[PlumberIndore] New Quote Request: ${category.toUpperCase()} (${issue})`,
+        html: htmlContent,
+        replyTo: 'plumberindore@gmail.com'
+      });
+    } catch (emailErr) {
+      console.warn('Resend quote dispatch notice:', emailErr.message);
+      emailResult = { sent: false, error: emailErr.message };
     }
 
     return NextResponse.json(
       { 
         success: true, 
         message: 'Quote request submitted successfully!',
-        data: result.data
+        data: dbRecord || { category, issue, estimatedPrice },
+        emailDispatch: emailResult
       },
       { status: 200 }
     );
