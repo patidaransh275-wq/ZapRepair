@@ -26,11 +26,15 @@ export function getAdminClient() {
     process.env.SUPABASE_SERVICE_ROLE_KEY || 
     process.env.SUPABASE_SERVICE_KEY;
 
-  if (!supabaseUrl || !serviceRoleKey || serviceRoleKey === 'your_secret_key') {
+  const activeKey = (serviceRoleKey && serviceRoleKey !== 'your_secret_key') 
+    ? serviceRoleKey 
+    : (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+  if (!supabaseUrl || !activeKey) {
     return null;
   }
 
-  return createClient(supabaseUrl, serviceRoleKey, {
+  return createClient(supabaseUrl, activeKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false
