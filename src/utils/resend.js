@@ -1,7 +1,10 @@
 import { Resend } from 'resend';
 
 export const ADMIN_NOTIFICATION_EMAIL = process.env.BUSINESS_NOTIFICATION_EMAIL || 'plumberindore@gmail.com';
-const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
+
+// Default sender set to 'onboarding@resend.dev' to guarantee zero domain-verification rejections out-of-the-box.
+// Once custom domain (plumberindore.in) is verified, set RESEND_SENDER_EMAIL="PlumberIndore <notifications@plumberindore.in>".
+const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <onboarding@resend.dev>';
 const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
 
 /**
@@ -15,9 +18,9 @@ function isValidEmail(email) {
 
 /**
  * Helper to safely obtain Resend client on server-side only.
- * Checks RESEND_API_KEY, plumberindore, or RESEND_KEY.
+ * Discovers and validates RESEND_API_KEY, plumberindore, or RESEND_KEY.
  */
-function getResendClient() {
+function getResendClientInfo() {
   const apiKey = (
     process.env.RESEND_API_KEY || 
     process.env.plumberindore || 
@@ -25,11 +28,19 @@ function getResendClient() {
     ''
   ).trim();
 
-  if (!apiKey || apiKey === 'your_resend_api_key' || apiKey === 'your_api_key') {
-    return null;
+  if (!apiKey || apiKey === 'your_resend_api_key' || apiKey === 'your_api_key' || apiKey === 're_your_api_key_here') {
+    return { client: null, keyMasked: 'NOT_CONFIGURED', isConfigured: false };
   }
 
-  return new Resend(apiKey);
+  const masked = apiKey.length > 8 
+    ? `${apiKey.substring(0, 6)}...${apiKey.substring(apiKey.length - 4)}` 
+    : '***';
+
+  return {
+    client: new Resend(apiKey),
+    keyMasked: masked,
+    isConfigured: true
+  };
 }
 
 /**
@@ -56,12 +67,6 @@ async function logEmailToSupabase({ recipient, subject, emailType, status, resen
 
 /**
  * Universal email sender via Resend API
- * Features:
- * 1. Multi-key environment variable discovery (RESEND_API_KEY, plumberindore, RESEND_KEY)
- * 2. Unverified domain auto-fallback to onboarding@resend.dev
- * 3. Trial sandbox auto-forwarding to business email plumberindore@gmail.com
- * 4. Recipient-by-recipient dispatch to prevent one unverified address from blocking admin alerts
- * 5. Comprehensive structured console logging and Supabase email_logs recording
  * 
  * @param {Object} options
  * @param {string|string[]} options.to - Recipient email(s)
@@ -81,7 +86,7 @@ export async function sendEmail({
   cc,
   bcc
 }) {
-  const resend = getResendClient();
+  const { client: resend, keyMasked, isConfigured } = getResendClientInfo();
 
   // 1. Recipient parsing and normalization
   const rawList = Array.isArray(to) ? to : (to ? [to] : [ADMIN_NOTIFICATION_EMAIL]);
@@ -93,7 +98,7 @@ export async function sendEmail({
     )
   );
   
-  // Guarantee fallback to business admin email if no valid recipients parsed
+  // Guarantee fallback to business admin email if no valid recipients were provided
   if (recipientList.length === 0) {
     recipientList.push(ADMIN_NOTIFICATION_EMAIL.toLowerCase());
   }
@@ -106,12 +111,18 @@ export async function sendEmail({
     ? 'quote_request' 
     : 'contact_inquiry';
 
-  console.log(`[Resend Dispatch] Initiating delivery | Subject: "${subject}" | Target(s): [${recipientList.join(', ')}]`);
+  console.log(`\n======================================================`);
+  console.log(`[Resend Email Dispatch Triggered]`);
+  console.log(`• Subject: "${subject}"`);
+  console.log(`• Target Recipient(s): [${recipientList.join(', ')}]`);
+  console.log(`• Sender Address: "${from || PRIMARY_SENDER_EMAIL}"`);
+  console.log(`• API Key Status: ${isConfigured ? `Loaded (${keyMasked})` : 'MISSING / UNCONFIGURED'}`);
+  console.log(`======================================================`);
 
   // 2. If API key is missing or not configured
   if (!resend) {
-    const warningMsg = 'Resend API key ("RESEND_API_KEY" or "plumberindore") is not configured in server environment.';
-    console.warn(`[Resend Notice] ${warningMsg} Logging to Supabase email_logs.`);
+    const warningMsg = 'CRITICAL: Resend API key is not configured in environment variables (RESEND_API_KEY or plumberindore).';
+    console.error(`[Resend Configuration Error] ${warningMsg}`);
     
     await logEmailToSupabase({
       recipient: recipientList.join(', '),
@@ -135,9 +146,9 @@ export async function sendEmail({
   // 3. Dispatch to each recipient individually
   for (const recipient of recipientList) {
     try {
-      console.log(`[Resend Dispatching] -> Sending to ${recipient}...`);
+      console.log(`[Resend Request] Sending email -> ${recipient}...`);
 
-      // Attempt 1: Send from Primary Sender
+      // Attempt 1: Send from configured sender (defaults to onboarding@resend.dev)
       let { data, error } = await resend.emails.send({
         from: from || PRIMARY_SENDER_EMAIL,
         to: [recipient],
@@ -148,16 +159,16 @@ export async function sendEmail({
         ...(bcc && { bcc: Array.isArray(bcc) ? bcc : [bcc] })
       });
 
-      // Attempt 2: Fallback if sender domain is unverified on Resend DNS
+      // Attempt 2: Fallback to onboarding@resend.dev if custom sender domain was rejected
       if (error && (
         error.message?.includes('not verified') || 
         error.message?.includes('domain is not verified') || 
-        error.message?.includes('Domain not verified') ||
+        error.message?.includes('Domain not verified') || 
         error.message?.includes('from address') ||
         error.name === 'validation_error' ||
         error.statusCode === 403
       )) {
-        console.warn(`[Resend Domain Notice] Sender domain (${from}) is unverified on Resend. Retrying to ${recipient} via fallback sender (${FALLBACK_SENDER_EMAIL})...`);
+        console.warn(`[Resend Fallback] Sender (${from}) unverified on Resend. Retrying to ${recipient} via (${FALLBACK_SENDER_EMAIL})...`);
         
         const retryResult = await resend.emails.send({
           from: FALLBACK_SENDER_EMAIL,
@@ -171,13 +182,13 @@ export async function sendEmail({
         error = retryResult.error;
       }
 
-      // Attempt 3: Fallback if Resend trial sandbox blocks external customer addresses
+      // Attempt 3: Fallback if Resend trial sandbox restricts non-account recipient addresses
       if (error && (
         error.message?.includes('only send testing emails') || 
         error.message?.includes('testing emails') ||
         error.message?.includes('can only send testing')
       )) {
-        console.warn(`[Resend Sandbox Notice] Recipient ${recipient} restricted by Resend sandbox policy. Forwarding copy directly to business inbox (${ADMIN_NOTIFICATION_EMAIL})...`);
+        console.warn(`[Resend Sandbox Notice] Recipient ${recipient} restricted by Resend sandbox policy. Forwarding copy to business inbox (${ADMIN_NOTIFICATION_EMAIL})...`);
         
         const sandboxBanner = `
           <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 12px;">
@@ -196,7 +207,7 @@ export async function sendEmail({
         });
 
         if (!sandboxResult.error) {
-          console.log(`[Resend Dispatch Success] Forwarded copy delivered to ${ADMIN_NOTIFICATION_EMAIL} | Message ID: ${sandboxResult.data?.id}`);
+          console.log(`[Resend Response Success] Sandbox forwarded copy delivered to ${ADMIN_NOTIFICATION_EMAIL} | ID: ${sandboxResult.data?.id}`);
           
           await logEmailToSupabase({
             recipient: `${recipient} (Forwarded to ${ADMIN_NOTIFICATION_EMAIL})`,
@@ -221,10 +232,15 @@ export async function sendEmail({
         error = sandboxResult.error;
       }
 
+      // Log API Outcome
       if (error) {
-        console.error(`[Resend Dispatch Error] Delivery failed for ${recipient}:`, error.message);
+        console.error(`[Resend Response Error] Failed delivering to ${recipient}:`, {
+          message: error.message,
+          name: error.name,
+          statusCode: error.statusCode
+        });
       } else {
-        console.log(`[Resend Dispatch Success] Successfully delivered to ${recipient} | Message ID: ${data?.id}`);
+        console.log(`[Resend Response Success] Successfully delivered to ${recipient} | Message ID: ${data?.id}`);
       }
 
       // Record recipient result in Supabase
