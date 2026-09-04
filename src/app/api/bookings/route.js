@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../lib/supabase/admin';
-import { calculateServerPrice } from '../../../lib/pricing';
-import { sendEmail } from '../../../utils/resend';
+import { getAdminClient } from '../../../lib/supabase/admin.js';
+import { calculateServerPrice } from '../../../lib/pricing.js';
+import { sendEmail } from '../../../utils/resend.js';
 
 /**
  * GET /api/bookings
@@ -113,6 +113,8 @@ export async function POST(request) {
     const cleanedPhone = validateIndianPhone(rawPhone);
     const email = validateEmail(rawEmail);
     const pincode = validatePincode(rawPincode);
+    const date = sanitizeString(rawDate);
+    const timeSlot = sanitizeString(rawTimeSlot);
 
     // 1. Mandatory field validations
     if (!name || name.length < 2) {
@@ -153,7 +155,7 @@ export async function POST(request) {
       booking_number: randomBookingNumber,
       customer_name: name.trim(),
       customer_phone: cleanedPhone,
-      customer_email: (email || '').trim() || 'plumberindore@gmail.com',
+      customer_email: (email || '').trim() || null,
       service_address: address.trim(),
       pincode: pincode || '452010',
       scheduled_date: scheduledDate,

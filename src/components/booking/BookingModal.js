@@ -192,7 +192,7 @@ export default function BookingModal() {
       timeSlot: selectedSlot,
       name: customerName.trim(),
       phone: customerPhone.trim(),
-      email: customerEmail.trim() || 'plumberindore@gmail.com',
+      email: customerEmail.trim() || '',
       description: issueDescription
     });
 
