@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { sendNotificationEmail } from '../../../utils/resend';
-import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, getClientIp } from '../../../lib/security';
+import { sendNotificationEmail } from '../../../utils/resend.js';
+import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, getClientIp } from '../../../lib/security.js';
 
 export async function POST(request) {
   try {

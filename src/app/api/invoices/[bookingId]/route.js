@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID } from '../../../../lib/security.js';
 
 /**
  * GET /api/invoices/[bookingId]
@@ -7,9 +8,12 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function GET(request, { params }) {
   try {
-    const { bookingId } = params;
-    const supabaseAdmin = getAdminClient();
+    const { bookingId } = params || {};
+    if (!bookingId) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
 
+    const supabaseAdmin = getAdminClient();
     if (!supabaseAdmin) {
       return NextResponse.json({
         success: true,
@@ -64,16 +68,20 @@ export async function GET(request, { params }) {
       let bQuery = supabaseAdmin.from('bookings').select('id');
       if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
         bQuery = bQuery.eq('booking_number', bookingId);
-      } else {
+      } else if (isValidUUID(bookingId)) {
         bQuery = bQuery.eq('id', bookingId);
+      } else {
+        return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
       }
-      const { data: bData } = await bQuery.single();
-      if (bData) {
-        query = query.eq('booking_id', bData.id);
+
+      const { data: bData } = await bQuery.maybeSingle();
+      if (!bData) {
+        return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
       }
+      query = query.eq('booking_id', bData.id);
     }
 
-    const { data: invoice, error } = await query.single();
+    const { data: invoice, error } = await query.maybeSingle();
     if (error || !invoice) {
       return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
     }

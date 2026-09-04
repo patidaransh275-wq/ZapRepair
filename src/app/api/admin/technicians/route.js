@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../lib/adminAuth.js';
 
 /**
  * GET /api/admin/technicians — Lists all verified technicians
  * POST /api/admin/technicians — Adds a new technician
  */
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const supabaseAdmin = getAdminClient();
 
     if (!supabaseAdmin) {
@@ -30,9 +36,20 @@ export async function GET() {
             title: 'Senior Electrician & Panel Specialist',
             phone: '+91 91749 34135',
             rating: 4.92,
-            repairsCount: 480,
+            repairsCount: 420,
             photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80',
-            vehicleNumber: 'Service Bike (MP 09 BF 4520)',
+            vehicleNumber: 'Service Bike (MP 09 AB 3344)',
+            eta: '45 Mins',
+            isActive: true
+          },
+          {
+            id: 't3',
+            title: 'AC & Refrigeration Lead Tech',
+            phone: '+91 91749 34135',
+            rating: 4.98,
+            repairsCount: 680,
+            photoUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&h=200&q=80',
+            vehicleNumber: 'Service Van (MP 09 EF 5566)',
             eta: '25 Mins',
             isActive: true
           }
@@ -56,7 +73,7 @@ export async function GET() {
         title: t.title,
         phone: t.phone,
         rating: Number(t.rating),
-        repairsCount: t.repairs_count,
+        repairsCount: Number(t.repairs_count || 0),
         photoUrl: t.photo_url,
         vehicleNumber: t.vehicle_number,
         eta: t.eta,
@@ -71,8 +88,13 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const body = await request.json();
-    const { title, phone, vehicleNumber, eta = '30-45 Mins', photoUrl } = body;
+    const { title, phone, vehicleNumber, eta = '30-45 Mins', photoUrl } = body || {};
 
     if (!title || !phone) {
       return NextResponse.json({ success: false, error: 'Title and phone number are required.' }, { status: 400 });
@@ -96,7 +118,7 @@ export async function POST(request) {
         is_active: true
       })
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });

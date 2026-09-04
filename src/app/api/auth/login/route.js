@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { checkRateLimit, getClientIp } from '../../../../lib/security';
+import { checkRateLimit, getClientIp } from '../../../../lib/security.js';
 
 export async function POST(request) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password } = body || {};
 
     // Validate email format
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -31,12 +31,15 @@ export async function POST(request) {
       );
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+    const isAdmin = normalizedEmail === 'plumberindore@gmail.com' || normalizedEmail === 'patidaransh275@gmail.com';
+
     const userSession = {
-      id: `usr_${email.split('@')[0]}`,
-      name: email.split('@')[0].toUpperCase(),
-      email: email.toLowerCase(),
-      phone: '+91 98765 12345',
-      role: 'user',
+      id: `usr_${normalizedEmail.split('@')[0]}`,
+      name: normalizedEmail.split('@')[0].toUpperCase(),
+      email: normalizedEmail,
+      phone: '+91 91749 34135',
+      role: isAdmin ? 'admin' : 'user',
       authMethod: 'email',
       authenticatedAt: new Date().toISOString()
     };

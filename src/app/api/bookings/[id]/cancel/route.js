@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../../lib/supabase/admin.js';
+import { isValidUUID, checkRateLimit, getClientIp } from '../../../../../lib/security.js';
 
 /**
  * PATCH /api/bookings/[id]/cancel
@@ -7,9 +8,22 @@ import { getAdminClient } from '../../../../../lib/supabase/admin';
  */
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`cancel_booking_${ip}`, 10, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
+    const { id } = params || {};
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
+
     const body = await request.json().catch(() => ({}));
-    const { reason = 'Cancelled by customer' } = body;
+    const { reason = 'Cancelled by customer' } = body || {};
 
     const supabaseAdmin = getAdminClient();
     if (!supabaseAdmin) {
@@ -19,11 +33,13 @@ export async function PATCH(request, { params }) {
     let query = supabaseAdmin.from('bookings').select('*');
     if (id.startsWith('IND-') || id.startsWith('PI-')) {
       query = query.eq('booking_number', id);
-    } else {
+    } else if (isValidUUID(id)) {
       query = query.eq('id', id);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
 
-    const { data: booking, error: fetchErr } = await query.single();
+    const { data: booking, error: fetchErr } = await query.maybeSingle();
     if (fetchErr || !booking) {
       return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
@@ -43,7 +59,7 @@ export async function PATCH(request, { params }) {
       })
       .eq('id', booking.id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (updateErr) {
       return NextResponse.json({ success: false, error: updateErr.message }, { status: 500 });

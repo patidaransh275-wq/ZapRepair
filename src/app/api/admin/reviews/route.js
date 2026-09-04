@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../lib/adminAuth.js';
 
 /**
  * GET /api/admin/reviews — Lists all reviews with verification status
  * PATCH /api/admin/reviews — Toggles verification/moderation status
  */
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const supabaseAdmin = getAdminClient();
 
     if (!supabaseAdmin) {
@@ -30,6 +36,7 @@ export async function GET() {
       .from('reviews')
       .select(`
         id,
+        booking_id,
         customer_name,
         rating,
         comment,
@@ -37,7 +44,8 @@ export async function GET() {
         created_at,
         bookings (
           booking_number,
-          service_name
+          service_name,
+          package_title
         )
       `)
       .order('created_at', { ascending: false });
@@ -46,18 +54,20 @@ export async function GET() {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 
+    const formatted = reviews.map(r => ({
+      id: r.id,
+      bookingNumber: r.bookings?.booking_number || 'Direct',
+      serviceName: r.bookings?.service_name || 'Home Maintenance',
+      customerName: r.customer_name,
+      rating: r.rating,
+      comment: r.comment,
+      isVerified: r.is_verified,
+      createdAt: r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN') : 'Recent'
+    }));
+
     return NextResponse.json({
       success: true,
-      reviews: reviews.map(r => ({
-        id: r.id,
-        customerName: r.customer_name,
-        rating: r.rating,
-        comment: r.comment,
-        isVerified: r.is_verified,
-        bookingNumber: r.bookings?.booking_number || 'N/A',
-        serviceName: r.bookings?.service_name || 'Service',
-        createdAt: r.created_at
-      }))
+      reviews: formatted
     });
   } catch (error) {
     console.error('Error in GET /api/admin/reviews:', error);
@@ -67,8 +77,17 @@ export async function GET() {
 
 export async function PATCH(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const body = await request.json();
-    const { id, isVerified } = body;
+    const { id, isVerified } = body || {};
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Review ID is required.' }, { status: 400 });
+    }
 
     const supabaseAdmin = getAdminClient();
     if (!supabaseAdmin) {
@@ -80,7 +99,7 @@ export async function PATCH(request) {
       .update({ is_verified: !!isVerified })
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });

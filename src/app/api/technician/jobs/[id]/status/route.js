@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../../../lib/supabase/admin.js';
 
 /**
  * PATCH /api/technician/jobs/[id]/status

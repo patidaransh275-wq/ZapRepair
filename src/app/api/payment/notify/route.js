@@ -1,8 +1,17 @@
 import { NextResponse } from 'next/server';
 import { sendEmail } from '../../../../utils/resend.js';
+import { checkRateLimit, getClientIp } from '../../../../lib/security.js';
 
 export async function POST(request) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`pay_notify_${ip}`, 15, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many payment notification requests. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
     const body = await request.json();
     const { 
       status = 'success', // 'success' | 'failed' | 'pending'

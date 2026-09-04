@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID, checkRateLimit, getClientIp } from '../../../../lib/security.js';
 
 /**
  * POST /api/payments/create
@@ -8,8 +9,17 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function POST(request) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`payment_create_${ip}`, 15, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many payment creation attempts. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { bookingId, paymentMethod = 'UPI' } = body;
+    const { bookingId, paymentMethod = 'UPI' } = body || {};
 
     if (!bookingId) {
       return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
@@ -23,15 +33,19 @@ export async function POST(request) {
       let query = supabaseAdmin.from('bookings').select('id, booking_number, total_amount, customer_phone, payment_status');
       if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
         query = query.eq('booking_number', bookingId);
-      } else {
+      } else if (isValidUUID(bookingId)) {
         query = query.eq('id', bookingId);
+      } else {
+        return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
       }
 
-      const { data: booking, error } = await query.single();
-      if (!error && booking) {
-        totalAmount = Number(booking.total_amount);
-        customerPhone = booking.customer_phone;
+      const { data: booking, error } = await query.maybeSingle();
+      if (error || !booking) {
+        return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
       }
+
+      totalAmount = Number(booking.total_amount);
+      customerPhone = booking.customer_phone;
     }
 
     const orderId = `ORDER_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID } from '../../../../lib/security.js';
 
 /**
  * POST /api/payments/webhook
@@ -7,6 +8,15 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function POST(request) {
   try {
+    // Check webhook secret authorization if configured
+    const webhookSecret = process.env.PAYMENT_WEBHOOK_SECRET;
+    if (webhookSecret) {
+      const authHeader = request.headers.get('x-webhook-secret') || request.headers.get('authorization');
+      if (authHeader !== webhookSecret && authHeader !== `Bearer ${webhookSecret}`) {
+        return NextResponse.json({ success: false, error: 'Unauthorized webhook request.' }, { status: 401 });
+      }
+    }
+
     const rawBody = await request.text();
     let event;
     try {
@@ -15,18 +25,20 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Invalid JSON payload' }, { status: 400 });
     }
 
-    const { eventType, bookingId, paymentRef, amount } = event;
+    const { eventType, bookingId, paymentRef, amount } = event || {};
     const supabaseAdmin = getAdminClient();
 
     if (supabaseAdmin && bookingId && eventType === 'payment.captured') {
       let query = supabaseAdmin.from('bookings').select('id, total_amount');
       if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
         query = query.eq('booking_number', bookingId);
-      } else {
+      } else if (isValidUUID(bookingId)) {
         query = query.eq('id', bookingId);
+      } else {
+        return NextResponse.json({ success: false, error: 'Invalid booking identifier' }, { status: 400 });
       }
 
-      const { data: booking } = await query.single();
+      const { data: booking } = await query.maybeSingle();
       if (booking) {
         await supabaseAdmin.from('payments').insert({
           booking_id: booking.id,

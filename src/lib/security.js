@@ -114,3 +114,29 @@ export function getClientIp(request) {
   }
   return '127.0.0.1';
 }
+
+/**
+ * Validates standard UUID format to prevent Postgres syntax exceptions (22P02)
+ * @param {string} id
+ * @returns {boolean}
+ */
+export function isValidUUID(id) {
+  if (!id || typeof id !== 'string') return false;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id.trim());
+}
+
+/**
+ * Escapes HTML entities to prevent HTML injection in emails
+ * @param {string} str
+ * @returns {string}
+ */
+export function escapeHtml(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+

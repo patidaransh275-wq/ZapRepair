@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../lib/supabase/admin';
-import { SERVICES_DATA } from '../../../data/servicesData';
+import { getAdminClient } from '../../../lib/supabase/admin.js';
+import { SERVICES_DATA } from '../../../data/servicesData.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +36,17 @@ export async function GET(request) {
         .eq('is_active', true);
 
       if (categorySlug) {
-        query = query.eq('slug', categorySlug);
+        const { data: cat } = await supabaseAdmin
+          .from('service_categories')
+          .select('id')
+          .eq('slug', categorySlug)
+          .maybeSingle();
+
+        if (cat) {
+          query = query.eq('category_id', cat.id);
+        } else {
+          query = query.eq('slug', categorySlug);
+        }
       }
 
       const { data: services, error } = await query;

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../../../lib/adminAuth.js';
+import { isValidUUID } from '../../../../../../lib/security.js';
 
 /**
  * POST /api/admin/bookings/[id]/assign-technician
@@ -7,9 +9,18 @@ import { getAdminClient } from '../../../../../../lib/supabase/admin';
  */
 export async function POST(request, { params }) {
   try {
-    const { id } = params;
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
+    const { id } = params || {};
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
+
     const body = await request.json();
-    const { technicianId, notes } = body;
+    const { technicianId, notes } = body || {};
 
     if (!technicianId) {
       return NextResponse.json({ success: false, error: 'Technician ID is required.' }, { status: 400 });
@@ -27,11 +38,13 @@ export async function POST(request, { params }) {
     let query = supabaseAdmin.from('bookings').select('*');
     if (id.startsWith('IND-') || id.startsWith('PI-')) {
       query = query.eq('booking_number', id);
-    } else {
+    } else if (isValidUUID(id)) {
       query = query.eq('id', id);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
 
-    const { data: booking, error: fetchErr } = await query.single();
+    const { data: booking, error: fetchErr } = await query.maybeSingle();
     if (fetchErr || !booking) {
       return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
@@ -57,16 +70,19 @@ export async function POST(request, { params }) {
           eta
         )
       `)
-      .single();
+      .maybeSingle();
 
     if (assignErr) {
       return NextResponse.json({ success: false, error: assignErr.message }, { status: 500 });
     }
 
-    // Update booking status
+    // Update main booking status
     await supabaseAdmin
       .from('bookings')
-      .update({ status: 'Technician Assigned' })
+      .update({
+        status: 'Technician Assigned',
+        technician_id: technicianId
+      })
       .eq('id', booking.id);
 
     return NextResponse.json({
@@ -74,7 +90,6 @@ export async function POST(request, { params }) {
       assignment,
       message: 'Technician successfully assigned to booking.'
     });
-
   } catch (error) {
     console.error('Error in /api/admin/bookings/[id]/assign-technician:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

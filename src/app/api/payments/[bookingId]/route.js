@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID } from '../../../../lib/security.js';
 
 /**
  * GET /api/payments/[bookingId]
@@ -7,7 +8,11 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function GET(request, { params }) {
   try {
-    const { bookingId } = params;
+    const { bookingId } = params || {};
+    if (!bookingId) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
+
     const supabaseAdmin = getAdminClient();
 
     if (!supabaseAdmin) {
@@ -22,11 +27,13 @@ export async function GET(request, { params }) {
     let query = supabaseAdmin.from('bookings').select('id, booking_number, payment_status, payment_method, payment_ref, total_amount');
     if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
       query = query.eq('booking_number', bookingId);
-    } else {
+    } else if (isValidUUID(bookingId)) {
       query = query.eq('id', bookingId);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
-    const { data: booking, error: fetchErr } = await query.single();
+    const { data: booking, error: fetchErr } = await query.maybeSingle();
     if (fetchErr || !booking) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }

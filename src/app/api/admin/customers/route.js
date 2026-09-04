@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../lib/adminAuth.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,8 +8,13 @@ export const dynamic = 'force-dynamic';
  * GET /api/admin/customers
  * Returns customer profiles with their booking histories and spend metrics.
  */
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const supabaseAdmin = getAdminClient();
 
     if (!supabaseAdmin) {

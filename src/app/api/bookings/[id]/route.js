@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID, checkRateLimit, getClientIp } from '../../../../lib/security.js';
 
 /**
  * PATCH /api/bookings/[id]
@@ -7,7 +8,20 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`patch_booking_${ip}`, 20, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
+    const { id } = params || {};
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
+
     const body = await request.json();
     const { 
       status, 
@@ -16,8 +30,7 @@ export async function PATCH(request, { params }) {
       paymentRef, 
       extraParts = 0,
       scheduledDate,
-      timeSlot,
-      technicianId
+      timeSlot
     } = body || {};
 
     const supabaseAdmin = getAdminClient();
@@ -30,15 +43,17 @@ export async function PATCH(request, { params }) {
       });
     }
 
-    // Find the booking by ID or booking_number
+    // Safely construct lookup query avoiding Postgres 22P02 UUID syntax error
     let findQuery = supabaseAdmin.from('bookings').select('*');
-    if (id.startsWith('IND-')) {
+    if (id.startsWith('IND-') || id.startsWith('PI-')) {
       findQuery = findQuery.eq('booking_number', id);
-    } else {
+    } else if (isValidUUID(id)) {
       findQuery = findQuery.eq('id', id);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
 
-    const { data: existingBooking, error: fetchErr } = await findQuery.single();
+    const { data: existingBooking, error: fetchErr } = await findQuery.maybeSingle();
 
     if (fetchErr || !existingBooking) {
       return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
@@ -62,27 +77,16 @@ export async function PATCH(request, { params }) {
       .update(updatePayload)
       .eq('id', existingBooking.id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (updateErr) {
       return NextResponse.json({ success: false, error: updateErr.message }, { status: 500 });
     }
 
-    // If payment verified, record in payments table
-    if (paymentStatus === 'Paid') {
-      await supabaseAdmin.from('payments').insert({
-        booking_id: existingBooking.id,
-        amount: updatedBooking.total_amount,
-        payment_method: paymentMethod || 'UPI',
-        payment_status: 'verified',
-        payment_ref: paymentRef || `UPI-${Math.floor(10000000 + Math.random() * 90000000)}`
-      });
-    }
-
     return NextResponse.json({
       success: true,
       booking: updatedBooking,
-      message: 'Booking successfully updated in Supabase.'
+      message: 'Booking updated successfully.'
     });
 
   } catch (err) {

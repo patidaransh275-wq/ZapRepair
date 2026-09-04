@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { isValidUUID, checkRateLimit, getClientIp } from '../../../../lib/security.js';
 
 /**
  * POST /api/payments/verify
@@ -7,16 +8,33 @@ import { getAdminClient } from '../../../../lib/supabase/admin';
  */
 export async function POST(request) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`payment_verify_${ip}`, 10, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many verification attempts. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { 
       bookingId, 
       paymentMethod = 'UPI', 
       paymentRef, 
       transactionNotes 
-    } = body;
+    } = body || {};
 
     if (!bookingId) {
       return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
+
+    // Require valid reference or confirmation
+    if (!paymentRef && paymentMethod !== 'Cash') {
+      return NextResponse.json(
+        { success: false, error: 'A valid payment reference / transaction ID is required.' },
+        { status: 400 }
+      );
     }
 
     const supabaseAdmin = getAdminClient();
@@ -31,18 +49,18 @@ export async function POST(request) {
     let query = supabaseAdmin.from('bookings').select('*');
     if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
       query = query.eq('booking_number', bookingId);
-    } else {
+    } else if (isValidUUID(bookingId)) {
       query = query.eq('id', bookingId);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
 
-    const { data: booking, error: fetchErr } = await query.single();
+    const { data: booking, error: fetchErr } = await query.maybeSingle();
     if (fetchErr || !booking) {
       return NextResponse.json({ success: false, error: 'Booking not found.' }, { status: 404 });
     }
 
-    const finalRef = paymentRef || (paymentMethod === 'Cash' 
-      ? `CASH-VERIFIED/${Math.floor(100000 + Math.random() * 900000)}` 
-      : `UPI-${Math.floor(10000000 + Math.random() * 90000000)}`);
+    const finalRef = paymentRef || `CASH-VERIFIED-${Date.now()}`;
 
     // Insert into payments table
     const { data: paymentRecord, error: payErr } = await supabaseAdmin
@@ -56,7 +74,7 @@ export async function POST(request) {
         transaction_notes: transactionNotes || 'Verified via Doorstep Checkout'
       })
       .select()
-      .single();
+      .maybeSingle();
 
     if (payErr) {
       return NextResponse.json({ success: false, error: payErr.message }, { status: 500 });

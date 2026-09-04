@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../../lib/adminAuth.js';
 
 /**
  * PATCH /api/admin/technicians/[id]
@@ -7,9 +8,18 @@ import { getAdminClient } from '../../../../../lib/supabase/admin';
  */
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
+    const { id } = params || {};
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Technician ID is required.' }, { status: 400 });
+    }
+
     const body = await request.json();
-    const { title, phone, vehicleNumber, eta, isActive, rating } = body;
+    const { title, phone, vehicleNumber, eta, isActive, rating } = body || {};
 
     const supabaseAdmin = getAdminClient();
     if (!supabaseAdmin) {
@@ -29,7 +39,7 @@ export async function PATCH(request, { params }) {
       .update(updatePayload)
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });

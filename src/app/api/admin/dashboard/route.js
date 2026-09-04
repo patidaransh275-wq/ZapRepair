@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { validateAdminRequest } from '../../../../lib/adminAuth.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,8 +9,13 @@ export const dynamic = 'force-dynamic';
  * Aggregates live operational KPIs:
  * Total bookings, Today's bookings, Pending, Active jobs, Completed, Revenue, Average rating.
  */
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = validateAdminRequest(request);
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const supabaseAdmin = getAdminClient();
 
     if (!supabaseAdmin) {

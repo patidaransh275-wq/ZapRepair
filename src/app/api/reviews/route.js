@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../lib/supabase/admin';
-import { checkRateLimit, sanitizeString, getClientIp } from '../../../lib/security';
+import { getAdminClient } from '../../../lib/supabase/admin.js';
+import { checkRateLimit, sanitizeString, getClientIp, isValidUUID } from '../../../lib/security.js';
 
 /**
  * POST /api/reviews
@@ -44,18 +44,20 @@ export async function POST(request) {
       let query = supabaseAdmin.from('bookings').select('id, status, customer_id');
       if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
         query = query.eq('booking_number', bookingId);
-      } else {
+      } else if (isValidUUID(bookingId)) {
         query = query.eq('id', bookingId);
+      } else {
+        return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
       }
 
-      const { data: booking } = await query.single();
+      const { data: booking } = await query.maybeSingle();
       if (booking) {
-        // Check if review already exists for this booking
+        // Check if review already exists for this booking using maybeSingle to avoid PGRST116
         const { data: existingReview } = await supabaseAdmin
           .from('reviews')
           .select('id')
           .eq('booking_id', booking.id)
-          .single();
+          .maybeSingle();
 
         if (existingReview) {
           return NextResponse.json({
@@ -75,7 +77,7 @@ export async function POST(request) {
             is_verified: true
           })
           .select()
-          .single();
+          .maybeSingle();
 
         if (insertErr) {
           return NextResponse.json({ success: false, error: insertErr.message }, { status: 500 });
@@ -84,31 +86,31 @@ export async function POST(request) {
         return NextResponse.json({
           success: true,
           review: newReview,
-          message: 'Thank you! Your verified review has been submitted successfully.'
+          message: 'Thank you! Your verified review has been recorded.'
         });
       }
     }
 
-    // General review insert
-    const { data: generalReview, error: generalErr } = await supabaseAdmin
+    // General platform feedback (no specific booking linked)
+    const { data: generalReview, error: genErr } = await supabaseAdmin
       .from('reviews')
       .insert({
         customer_name: customerName.trim(),
         rating: Number(rating),
         comment: (comment || '').trim(),
-        is_verified: true
+        is_verified: false
       })
       .select()
-      .single();
+      .maybeSingle();
 
-    if (generalErr) {
-      return NextResponse.json({ success: false, error: generalErr.message }, { status: 500 });
+    if (genErr) {
+      return NextResponse.json({ success: false, error: genErr.message }, { status: 500 });
     }
 
     return NextResponse.json({
       success: true,
       review: generalReview,
-      message: 'Thank you! Your feedback has been recorded.'
+      message: 'Review submitted successfully.'
     });
 
   } catch (error) {

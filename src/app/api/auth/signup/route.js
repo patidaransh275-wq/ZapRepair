@@ -40,7 +40,7 @@ export async function POST(request) {
 
     // Synchronize with Supabase profiles
     try {
-      const { getAdminClient } = await import('../../../../lib/supabase/admin');
+      const { getAdminClient } = await import('../../../../lib/supabase/admin.js');
       const supabaseAdmin = getAdminClient();
       if (supabaseAdmin) {
         await supabaseAdmin.from('profiles').upsert({

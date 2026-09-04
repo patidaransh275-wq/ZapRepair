@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../../lib/supabase/admin';
-import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCode';
+import { getAdminClient } from '../../../../../lib/supabase/admin.js';
+import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCode.js';
+import { isValidUUID } from '../../../../../lib/security.js';
 
 /**
  * GET /api/invoices/[bookingId]/pdf
@@ -8,7 +9,10 @@ import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../../../lib/qrCo
  */
 export async function GET(request, { params }) {
   try {
-    const { bookingId } = params;
+    const { bookingId } = params || {};
+    if (!bookingId) {
+      return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
+    }
     const supabaseAdmin = getAdminClient();
 
     let inv = {
@@ -51,11 +55,13 @@ export async function GET(request, { params }) {
 
       if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
         bQuery = bQuery.eq('booking_number', bookingId);
-      } else {
+      } else if (isValidUUID(bookingId)) {
         bQuery = bQuery.eq('id', bookingId);
+      } else {
+        return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
       }
 
-      const { data: bData } = await bQuery.single();
+      const { data: bData } = await bQuery.maybeSingle();
       if (bData) {
         inv = {
           invoice_number: bData.invoices?.[0]?.invoice_number || `INV-2026-${bData.booking_number}`,

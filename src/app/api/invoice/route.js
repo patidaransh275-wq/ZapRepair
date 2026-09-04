@@ -1,9 +1,19 @@
 import { NextResponse } from 'next/server';
-import { sendNotificationEmail } from '../../../utils/resend';
-import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../lib/qrCode';
+import { sendEmail } from '../../../utils/resend.js';
+import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../lib/qrCode.js';
+import { getAdminClient } from '../../../lib/supabase/admin.js';
+import { checkRateLimit, getClientIp } from '../../../lib/security.js';
 
 export async function POST(request) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(`invoice_post_${ip}`, 15, 60000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: 'Too many invoice requests. Please wait a minute.' },
+        { status: 429 }
+      );
+    }
     const body = await request.json();
     const {
       invoiceNumber,
@@ -153,7 +163,6 @@ export async function POST(request) {
 
     // 1. Persist in Supabase PostgreSQL
     try {
-      const { getAdminClient } = await import('../../../lib/supabase/admin');
       const supabaseAdmin = getAdminClient();
       if (supabaseAdmin) {
         // Find booking if exists

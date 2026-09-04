@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '../../../../lib/supabase/admin';
-import { SERVICES_DATA } from '../../../../data/servicesData';
+import { getAdminClient } from '../../../../lib/supabase/admin.js';
+import { SERVICES_DATA } from '../../../../data/servicesData.js';
 
 /**
  * GET /api/services/[slug]

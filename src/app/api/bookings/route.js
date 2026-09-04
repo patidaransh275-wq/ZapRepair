@@ -80,7 +80,7 @@ export async function GET(request) {
  * Creates a new doorstep booking record in Supabase.
  * Strictly calculates and validates prices server-side.
  */
-import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, validatePincode, getClientIp } from '../../../lib/security';
+import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, validatePincode, getClientIp } from '../../../lib/security.js';
 
 export async function POST(request) {
   try {
