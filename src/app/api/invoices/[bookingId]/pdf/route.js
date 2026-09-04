@@ -14,72 +14,59 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, error: 'Booking ID is required.' }, { status: 400 });
     }
     const supabaseAdmin = getAdminClient();
-
-    let inv = {
-      invoice_number: `INV-2026-${bookingId}`,
-      booking_number: bookingId,
-      customer_name: 'Customer',
-      customer_phone: '+91 91749 34135',
-      billing_address: 'Indore, Madhya Pradesh',
-      service_name: 'Home Repair Service',
-      package_title: 'Standard Diagnostics',
-      labor_cost: 199,
-      parts_cost: 0,
-      total_paid: 199,
-      payment_method: 'Cash / UPI Verified',
-      payment_ref: 'VERIFIED',
-      issued_at: new Date().toLocaleDateString('en-IN')
-    };
-
-    if (supabaseAdmin) {
-      let bQuery = supabaseAdmin
-        .from('bookings')
-        .select(`
-          booking_number,
-          customer_name,
-          customer_phone,
-          service_address,
-          service_name,
-          package_title,
-          total_amount,
-          subtotal,
-          parts_cost,
-          payment_method,
-          payment_ref,
-          invoices (
-            invoice_number,
-            issued_at,
-            total_paid
-          )
-        `);
-
-      if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
-        bQuery = bQuery.eq('booking_number', bookingId);
-      } else if (isValidUUID(bookingId)) {
-        bQuery = bQuery.eq('id', bookingId);
-      } else {
-        return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
-      }
-
-      const { data: bData } = await bQuery.maybeSingle();
-      if (bData) {
-        inv = {
-          invoice_number: bData.invoices?.[0]?.invoice_number || `INV-2026-${bData.booking_number}`,
-          booking_number: bData.booking_number,
-          customer_name: bData.customer_name,
-          customer_phone: bData.customer_phone,
-          billing_address: bData.service_address,
-          service_name: bData.service_name,
-          package_title: bData.package_title,
-          labor_cost: Number(bData.subtotal || bData.total_amount),
-          parts_cost: Number(bData.parts_cost || 0),
-          total_paid: Number(bData.total_amount),
-          payment_method: bData.payment_method,
-          payment_ref: bData.payment_ref,
-          issued_at: bData.invoices?.[0]?.issued_at ? new Date(bData.invoices[0].issued_at).toLocaleDateString('en-IN') : new Date().toLocaleDateString('en-IN')
-        };
-      }
+    if (!supabaseAdmin) {
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
+
+    let bQuery = supabaseAdmin
+      .from('bookings')
+      .select(`
+        booking_number,
+        customer_name,
+        customer_phone,
+        service_address,
+        service_name,
+        package_title,
+        total_amount,
+        subtotal,
+        parts_cost,
+        payment_method,
+        payment_ref,
+        invoices (
+          invoice_number,
+          issued_at,
+          total_paid
+        )
+      `);
+
+    if (bookingId.startsWith('IND-') || bookingId.startsWith('PI-')) {
+      bQuery = bQuery.eq('booking_number', bookingId);
+    } else if (isValidUUID(bookingId)) {
+      bQuery = bQuery.eq('id', bookingId);
+    } else {
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
+    }
+
+    const { data: bData } = await bQuery.maybeSingle();
+    if (!bData) {
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
+    }
+
+    const inv = {
+      invoice_number: bData.invoices?.[0]?.invoice_number || `INV-2026-${bData.booking_number}`,
+      booking_number: bData.booking_number,
+      customer_name: bData.customer_name,
+      customer_phone: bData.customer_phone,
+      billing_address: bData.service_address,
+      service_name: bData.service_name,
+      package_title: bData.package_title,
+      labor_cost: Number(bData.subtotal || bData.total_amount),
+      parts_cost: Number(bData.parts_cost || 0),
+      total_paid: Number(bData.total_amount),
+      payment_method: bData.payment_method,
+      payment_ref: bData.payment_ref,
+      issued_at: bData.invoices?.[0]?.issued_at ? new Date(bData.invoices[0].issued_at).toLocaleDateString('en-IN') : new Date().toLocaleDateString('en-IN')
+    };
 
     const html = `
       <!DOCTYPE html>

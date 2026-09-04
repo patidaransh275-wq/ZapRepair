@@ -21,17 +21,7 @@ export async function GET(request) {
       return NextResponse.json({
         success: true,
         source: 'local_fallback',
-        payments: [
-          {
-            id: 'pay_1',
-            bookingNumber: 'IND-84920',
-            amount: 399,
-            method: 'UPI',
-            ref: 'UPI-9174934135-TXN882',
-            status: 'verified',
-            verifiedAt: '2026-09-01T14:30:00Z'
-          }
-        ]
+        payments: []
       });
     }
 

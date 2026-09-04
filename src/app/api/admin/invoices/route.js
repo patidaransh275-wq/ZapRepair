@@ -21,18 +21,7 @@ export async function GET(request) {
       return NextResponse.json({
         success: true,
         source: 'local_fallback',
-        invoices: [
-          {
-            id: 'inv_1',
-            invoiceNumber: 'INV-2026-IND-84920',
-            bookingNumber: 'IND-84920',
-            customerName: 'Rahul Sharma',
-            customerPhone: '9826011223',
-            totalPaid: 399,
-            issuedAt: '2026-09-01T14:30:00Z',
-            sentAt: '2026-09-01T14:31:00Z'
-          }
-        ]
+        invoices: []
       });
     }
 

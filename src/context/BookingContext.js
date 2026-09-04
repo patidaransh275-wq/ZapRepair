@@ -67,39 +67,55 @@ export function BookingProvider({ children }) {
     checkSession();
   }, []);
 
+  // Clear cached bookings helper
+  const clearBookingCache = () => {
+    setUserBookings([]);
+    try {
+      localStorage.removeItem('plumberindore_bookings');
+    } catch (e) {}
+  };
+
   // Fetch bookings from Supabase API on load
   const fetchBookings = async () => {
     try {
       const res = await fetch('/api/bookings');
       if (res.ok) {
         const data = await res.json();
-        if (data.bookings && data.bookings.length > 0) {
-          const normalized = data.bookings.map(b => ({
-            id: b.booking_number || b.id,
-            serviceId: b.service_name?.toLowerCase().includes('plumb') ? 'plumber' : 'ac-repair',
-            serviceName: b.service_name,
-            packageTitle: b.package_title || 'Standard Package',
-            price: Number(b.total_amount || b.price),
-            pincode: b.pincode,
-            address: b.service_address || b.address,
-            date: b.scheduled_date || b.date,
-            timeSlot: b.time_slot || b.timeSlot,
-            customerName: b.customer_name || b.customerName,
-            customerPhone: b.customer_phone || b.customerPhone,
-            customerEmail: b.customer_email || b.customerEmail,
-            description: b.notes || b.description,
-            paymentStatus: b.payment_status || b.paymentStatus,
-            paymentMethod: b.payment_method || b.paymentMethod,
-            paymentRef: b.payment_ref || b.paymentRef,
-            invoiceNumber: b.invoices?.[0]?.invoice_number || b.invoiceNumber || null,
-            invoiceSentAt: b.invoices?.[0]?.sent_at || b.invoiceSentAt || null,
-            status: b.status,
-            createdAt: b.created_at || b.createdAt
-          }));
-          setUserBookings(normalized);
-          try {
-            localStorage.setItem('plumberindore_bookings', JSON.stringify(normalized));
-          } catch (e) {}
+        if (Array.isArray(data.bookings)) {
+          if (data.bookings.length > 0) {
+            const normalized = data.bookings.map(b => ({
+              id: b.booking_number || b.id,
+              serviceId: b.service_name?.toLowerCase().includes('plumb') ? 'plumber' : 'ac-repair',
+              serviceName: b.service_name,
+              packageTitle: b.package_title || 'Standard Package',
+              price: Number(b.total_amount || b.price),
+              pincode: b.pincode,
+              address: b.service_address || b.address,
+              date: b.scheduled_date || b.date,
+              timeSlot: b.time_slot || b.timeSlot,
+              customerName: b.customer_name || b.customerName,
+              customerPhone: b.customer_phone || b.customerPhone,
+              customerEmail: b.customer_email || b.customerEmail,
+              description: b.notes || b.description,
+              paymentStatus: b.payment_status || b.paymentStatus,
+              paymentMethod: b.payment_method || b.paymentMethod,
+              paymentRef: b.payment_ref || b.paymentRef,
+              invoiceNumber: b.invoices?.[0]?.invoice_number || b.invoiceNumber || null,
+              invoiceSentAt: b.invoices?.[0]?.sent_at || b.invoiceSentAt || null,
+              status: b.status,
+              createdAt: b.created_at || b.createdAt
+            }));
+            setUserBookings(normalized);
+            try {
+              localStorage.setItem('plumberindore_bookings', JSON.stringify(normalized));
+            } catch (e) {}
+          } else {
+            // DB is empty: reset in-memory state and purge stale localStorage cache
+            setUserBookings([]);
+            try {
+              localStorage.removeItem('plumberindore_bookings');
+            } catch (e) {}
+          }
           return;
         }
       }
@@ -107,14 +123,18 @@ export function BookingProvider({ children }) {
       console.warn('API bookings fetch notice (using cache):', err.message);
     }
 
-    // Fallback to local cache if offline
+    // Fallback to local cache only if network fetch completely failed
     try {
       const savedBookings = localStorage.getItem('plumberindore_bookings');
       if (savedBookings) {
         const parsed = JSON.parse(savedBookings);
         setUserBookings(Array.isArray(parsed) ? parsed : []);
+      } else {
+        setUserBookings([]);
       }
-    } catch (e) {}
+    } catch (e) {
+      setUserBookings([]);
+    }
   };
 
   useEffect(() => {
@@ -496,6 +516,8 @@ export function BookingProvider({ children }) {
         userPincode,
         setUserPincode,
         userBookings,
+        clearBookingCache,
+        fetchBookings,
         addBooking,
         updateBookingPayment,
         updateBookingStatus,

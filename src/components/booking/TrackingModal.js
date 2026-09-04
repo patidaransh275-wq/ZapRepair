@@ -37,7 +37,7 @@ export default function TrackingModal() {
           <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400">Live GPS & Status Tracker</span>
-              <h3 className="font-bold text-lg font-heading">Order #{currentBooking?.id || 'IND-84920'}</h3>
+              <h3 className="font-bold text-lg font-heading">Order #{currentBooking?.id || '—'}</h3>
             </div>
             <button
               type="button"

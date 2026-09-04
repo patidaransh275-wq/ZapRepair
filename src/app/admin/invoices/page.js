@@ -13,100 +13,61 @@ import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../lib/qrCode';
 export default function AdminInvoicesDashboard() {
   const { userBookings } = useBooking();
 
-  const [invoices, setInvoices] = useState([
-    {
-      id: 'IND-84920',
-      invoiceNumber: 'INV-2026-IND-84920',
-      customerName: 'Ansh Patidar',
-      customerPhone: '+91 91749 34135',
-      customerEmail: 'plumberindore@gmail.com',
-      address: 'Flat 402, Royal Residency, Vijay Nagar, Indore, MP',
-      pincode: '452010',
-      serviceName: 'AC Power Foam Service',
-      packageTitle: 'Power Foam Jet Service',
-      date: '2026-08-30',
-      timeSlot: '2:00 PM - 4:00 PM',
-      technicianName: 'Ramesh Verma',
-      paymentStatus: 'PAID', // 'PAID' | 'UNPAID'
-      paymentMethod: 'UPI (GPay / PhonePe)',
-      paymentRef: 'UPI/628492019482',
-      paymentDate: '2026-08-30 14:30',
-      laborCost: 420,
-      partsCost: 0,
-      taxCost: 79,
-      discountCost: 0,
-      totalPaid: 499
-    },
-    {
-      id: 'IND-72109',
-      invoiceNumber: 'INV-2026-IND-72109',
-      customerName: 'Pooja Agrawal',
-      customerPhone: '+91 98260 11223',
-      customerEmail: 'pooja.indore@gmail.com',
-      address: 'Flat 201, Industry House, AB Road, Palasia, Indore, MP',
-      pincode: '452001',
-      serviceName: 'Washing Machine Repair',
-      packageTitle: 'Deep Descaling & Drum Service',
-      date: '2026-08-28',
-      timeSlot: '10:00 AM - 12:00 PM',
-      technicianName: 'Suresh Sharma',
-      paymentStatus: 'PAID',
-      paymentMethod: 'Doorstep Cash Verified',
-      paymentRef: 'CASH/IND-72109',
-      paymentDate: '2026-08-28 11:45',
-      laborCost: 350,
-      partsCost: 100,
-      taxCost: 49,
-      discountCost: 0,
-      totalPaid: 499
-    },
-    {
-      id: 'IND-93821',
-      invoiceNumber: null, // Generated only after payment
-      customerName: 'Vikas Jain',
-      customerPhone: '+91 94250 88991',
-      customerEmail: 'vikas.jain@indore.in',
-      address: 'Bungalow 14, Saket Nagar, Indore, MP',
-      pincode: '452018',
-      serviceName: 'Master Plumber Sanitary Fix',
-      packageTitle: 'Wall Mixer & Concealed Pipe Repair',
-      date: '2026-08-30',
-      timeSlot: '4:00 PM - 6:00 PM',
-      technicianName: 'Suresh Sharma',
-      paymentStatus: 'UNPAID',
-      paymentMethod: null,
-      paymentRef: null,
-      paymentDate: null,
-      laborCost: 650,
-      partsCost: 250,
-      taxCost: 99,
-      discountCost: 0,
-      totalPaid: 999
-    },
-    {
-      id: 'IND-55410',
-      invoiceNumber: null, // Generated only after payment
-      customerName: 'Sunita Chouhan',
-      customerPhone: '+91 98930 44556',
-      customerEmail: 'sunita.c@gmail.com',
-      address: 'Plot 88, BCM Heights, Nipania, Indore, MP',
-      pincode: '452016',
-      serviceName: 'Pest Control',
-      packageTitle: 'Cockroaches, Ants & General Pest Control',
-      date: '2026-08-30',
-      timeSlot: '11:00 AM - 1:00 PM',
-      technicianName: 'Rajesh Patel',
-      paymentStatus: 'UNPAID',
-      paymentMethod: null,
-      paymentRef: null,
-      paymentDate: null,
-      laborCost: 508,
-      partsCost: 0,
-      taxCost: 91,
-      discountCost: 0,
-      totalPaid: 599
-    }
-  ]);
+  const [invoices, setInvoices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch live invoices/bookings from API
+  const fetchInvoices = () => {
+    setIsLoading(true);
+    fetch('/api/bookings')
+      .then(r => r.json())
+      .then(data => {
+        if (data && Array.isArray(data.bookings) && data.bookings.length > 0) {
+          const mapped = data.bookings.map(b => {
+            const isPaid = b.payment_status === 'Paid';
+            const price = Number(b.total_amount || b.price || 0);
+            const laborCost = Math.round(price * 0.82);
+            const taxCost = price - laborCost;
+            return {
+              id: b.booking_number || b.id,
+              invoiceNumber: b.invoices?.[0]?.invoice_number || (isPaid ? `INV-2026-${b.booking_number || b.id}` : null),
+              customerName: b.customer_name || 'Customer',
+              customerPhone: b.customer_phone || '',
+              customerEmail: b.customer_email || '',
+              address: b.service_address || '',
+              pincode: b.pincode || '452010',
+              serviceName: b.service_name || 'Doorstep Service',
+              packageTitle: b.package_title || 'Standard Service',
+              date: b.scheduled_date || 'Today',
+              timeSlot: b.time_slot || '10:00 AM - 12:00 PM',
+              technicianName: 'Assigned Doorstep Pro',
+              paymentStatus: isPaid ? 'PAID' : 'UNPAID',
+              paymentMethod: b.payment_method || (isPaid ? 'UPI / Cash' : null),
+              paymentRef: b.payment_ref || null,
+              paymentDate: b.invoices?.[0]?.issued_at || (isPaid ? b.created_at : null),
+              laborCost,
+              partsCost: Number(b.parts_cost || 0),
+              taxCost,
+              discountCost: 0,
+              totalPaid: price
+            };
+          });
+          setInvoices(mapped);
+        } else {
+          setInvoices([]);
+        }
+      })
+      .catch(() => {
+        setInvoices([]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchInvoices();
+  }, []);
 
   const [activeTab, setActiveTab] = useState('ALL'); // 'ALL' | 'PAID' | 'UNPAID'
   const [searchQuery, setSearchQuery] = useState('');
@@ -274,6 +235,14 @@ export default function AdminInvoicesDashboard() {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={fetchInvoices}
+              className="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all border border-slate-700 flex items-center gap-1.5 cursor-pointer"
+              title="Refresh live invoices from database"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Refresh</span>
+            </button>
             <Link
               href="/bookings"
               className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all border border-slate-700 flex items-center gap-1.5"
@@ -530,13 +499,21 @@ export default function AdminInvoicesDashboard() {
             );
           })}
 
-          {filteredInvoices.length === 0 && (
+          {invoices.length === 0 ? (
+            <div className="bg-white p-16 rounded-3xl border border-dashed border-slate-200 text-center space-y-3">
+              <FileText className="w-12 h-12 text-slate-400 mx-auto" />
+              <h3 className="text-base font-bold text-slate-800 font-heading">No Invoices Found</h3>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                No invoices have been generated yet. When customer bookings are placed and completed, official tax invoices will be listed here automatically.
+              </p>
+            </div>
+          ) : filteredInvoices.length === 0 ? (
             <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3">
               <FileText className="w-10 h-10 text-slate-300 mx-auto" />
-              <h3 className="text-base font-bold text-slate-700">No orders found</h3>
+              <h3 className="text-base font-bold text-slate-700">No matching orders found</h3>
               <p className="text-xs text-slate-400">Try changing your search query or filter selection.</p>
             </div>
-          )}
+          ) : null}
         </div>
 
       </div>

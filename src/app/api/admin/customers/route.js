@@ -21,26 +21,7 @@ export async function GET(request) {
       return NextResponse.json({
         success: true,
         source: 'local_fallback',
-        customers: [
-          {
-            id: 'c1',
-            name: 'Rahul Sharma',
-            phone: '9826011223',
-            email: 'rahul.sharma.indore@gmail.com',
-            totalBookings: 2,
-            totalSpend: 798,
-            createdAt: '2026-08-15'
-          },
-          {
-            id: 'c2',
-            name: 'Priya Agrawal',
-            phone: '9893044556',
-            email: 'priya.agrawal@gmail.com',
-            totalBookings: 1,
-            totalSpend: 348,
-            createdAt: '2026-08-20'
-          }
-        ]
+        customers: []
       });
     }
 

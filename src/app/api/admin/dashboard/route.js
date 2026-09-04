@@ -23,18 +23,18 @@ export async function GET(request) {
         success: true,
         source: 'local_fallback',
         stats: {
-          totalBookings: 3,
-          todayBookings: 2,
-          pendingBookings: 2,
-          activeJobs: 2,
-          completedJobs: 1,
+          totalBookings: 0,
+          todayBookings: 0,
+          pendingBookings: 0,
+          activeJobs: 0,
+          completedJobs: 0,
           cancelledBookings: 0,
-          totalRevenue: 1146,
-          paidRevenue: 399,
-          pendingRevenue: 747,
-          averageRating: 4.95,
-          totalReviews: 48,
-          activeTechnicians: 3
+          totalRevenue: 0,
+          paidRevenue: 0,
+          pendingRevenue: 0,
+          averageRating: 5.0,
+          totalReviews: 0,
+          activeTechnicians: 0
         }
       });
     }
@@ -67,7 +67,7 @@ export async function GET(request) {
     const totalReviews = reviews.length;
     const avgRating = totalReviews > 0
       ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(2)
-      : '4.95';
+      : '5.00';
 
     // Fetch technicians count
     const { count: activeTechs } = await supabaseAdmin
@@ -90,7 +90,7 @@ export async function GET(request) {
         pendingRevenue,
         averageRating: Number(avgRating),
         totalReviews,
-        activeTechnicians: activeTechs || 3
+        activeTechnicians: activeTechs || 0
       }
     });
   } catch (error) {

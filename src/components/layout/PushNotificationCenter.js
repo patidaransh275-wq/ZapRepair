@@ -5,12 +5,9 @@ import { Bell, X, ShieldCheck, CheckCircle2, Truck, Wrench } from 'lucide-react'
 
 export default function PushNotificationCenter() {
   const [isOpen, setIsOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(2);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const notifications = [
-    { id: 1, title: 'Technician Assigned', message: 'Verified technician assigned for your AC Power Foam Service (#IND-84920).', time: '10 mins ago' },
-    { id: 2, title: 'En Route to Vijay Nagar', message: 'Technician is en route with ETA 18 mins.', time: '2 mins ago' }
-  ];
+  const notifications = [];
 
   return (
     <div className="relative">
@@ -39,18 +36,26 @@ export default function PushNotificationCenter() {
           </div>
 
           <div className="space-y-2 max-h-60 overflow-y-auto">
-            {notifications.map((n) => (
-              <div key={n.id} className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 space-y-1">
-                <div className="flex items-center justify-between font-bold text-amber-400">
-                  <span className="flex items-center gap-1">
-                    <Truck className="w-3.5 h-3.5" />
-                    {n.title}
-                  </span>
-                  <span className="text-[9px] text-slate-400">{n.time}</span>
-                </div>
-                <p className="text-slate-300 text-[11px] leading-relaxed">{n.message}</p>
+            {notifications.length === 0 ? (
+              <div className="py-6 text-center text-slate-400 space-y-1">
+                <ShieldCheck className="w-6 h-6 mx-auto text-slate-500 mb-1" />
+                <p className="font-semibold text-slate-300 text-[11px]">No new notifications</p>
+                <p className="text-[10px] text-slate-500">Live booking alerts will appear here</p>
               </div>
-            ))}
+            ) : (
+              notifications.map((n) => (
+                <div key={n.id} className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 space-y-1">
+                  <div className="flex items-center justify-between font-bold text-amber-400">
+                    <span className="flex items-center gap-1">
+                      <Truck className="w-3.5 h-3.5" />
+                      {n.title}
+                    </span>
+                    <span className="text-[9px] text-slate-400">{n.time}</span>
+                  </div>
+                  <p className="text-slate-300 text-[11px] leading-relaxed">{n.message}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}

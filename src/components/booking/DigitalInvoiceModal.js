@@ -21,7 +21,7 @@ export default function DigitalInvoiceModal({ isOpen, onClose, booking, onOpenPa
 
   const laborCost = booking.price ? Math.round(booking.price * 0.82) : 399;
   const taxCost = (booking.price || 499) - laborCost;
-  const invoiceNumber = `INV-2026-${booking.id || 'IND-84920'}`;
+  const invoiceNumber = booking.invoiceNumber || (booking.id ? `INV-2026-${booking.id}` : 'INV-OFFICIAL');
 
   // WhatsApp Share
   const handleShareWhatsApp = () => {

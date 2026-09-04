@@ -15,16 +15,7 @@ export async function GET(request, { params }) {
 
     const supabaseAdmin = getAdminClient();
     if (!supabaseAdmin) {
-      return NextResponse.json({
-        success: true,
-        source: 'local_fallback',
-        invoice: {
-          invoiceNumber: `INV-2026-${bookingId}`,
-          bookingNumber: bookingId,
-          totalPaid: 399,
-          paymentStatus: 'Paid'
-        }
-      });
+      return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
     }
 
     // Find invoice by booking_id or booking_number

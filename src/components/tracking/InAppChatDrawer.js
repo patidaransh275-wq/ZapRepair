@@ -35,7 +35,7 @@ export default function InAppChatDrawer({ isOpen, onClose, booking }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: messageText,
-          orderId: booking?.id || 'IND-84920',
+          orderId: booking?.id || 'Direct',
           customerName: booking?.customerName || 'Customer',
           customerPhone: booking?.customerPhone || '+91 91749 34135',
           chatHistory: [...messages, newMsg]
@@ -71,7 +71,7 @@ export default function InAppChatDrawer({ isOpen, onClose, booking }) {
             <div>
               <h4 className="font-bold text-sm font-heading">Doorstep Technician</h4>
               <p className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-                ● Online & En Route (Order #{booking?.id || 'IND-84920'})
+                ● Online & En Route {booking?.id ? `(Order #${booking.id})` : ''}
               </p>
             </div>
           </div>

@@ -12,9 +12,8 @@ import { useBooking } from '../../../context/BookingContext';
 import { UPI_ID, UPI_PAYEE_NAME, UPI_QR_DATA_URI } from '../../../lib/qrCode';
 
 export default function AdminBookingsDashboard() {
-  const { userBookings, updateBookingPayment, updateBookingStatus, sendInvoiceForBooking } = useBooking();
+  const { userBookings, updateBookingPayment, updateBookingStatus, sendInvoiceForBooking, clearBookingCache } = useBooking();
 
-  // Local fallback demo bookings if userBookings is empty initially
   const [bookingsList, setBookingsList] = useState([]);
   const [activeTab, setActiveTab] = useState('ALL'); // 'ALL' | 'PENDING' | 'PAID' | 'COMPLETED'
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,46 +30,65 @@ export default function AdminBookingsDashboard() {
   const [sendingInvoiceId, setSendingInvoiceId] = useState(null);
   const [invoiceNotification, setInvoiceNotification] = useState(null);
 
-  // Sync bookings from API and context
-  useEffect(() => {
+  // Fetch live bookings from Supabase API
+  const loadBookings = () => {
     fetch('/api/bookings')
       .then(r => r.json())
       .then(data => {
-        if (data.bookings && data.bookings.length > 0) {
-          const mapped = data.bookings.map(b => ({
-            id: b.booking_number || b.id,
-            customerName: b.customer_name,
-            customerPhone: b.customer_phone,
-            customerEmail: b.customer_email,
-            address: b.service_address,
-            pincode: b.pincode,
-            serviceName: b.service_name,
-            packageTitle: b.package_title,
-            price: Number(b.total_amount || b.price),
-            date: b.scheduled_date,
-            timeSlot: b.time_slot,
-            status: b.status,
-            paymentStatus: b.payment_status,
-            paymentMethod: b.payment_method,
-            paymentRef: b.payment_ref,
-            invoiceNumber: b.invoices?.[0]?.invoice_number || null,
-            invoiceSentAt: b.invoices?.[0]?.sent_at || null,
-            description: b.notes,
-            createdAt: b.created_at
-          }));
-          setBookingsList(mapped);
+        if (data && Array.isArray(data.bookings)) {
+          if (data.bookings.length > 0) {
+            const mapped = data.bookings.map(b => ({
+              id: b.booking_number || b.id,
+              customerName: b.customer_name,
+              customerPhone: b.customer_phone,
+              customerEmail: b.customer_email,
+              address: b.service_address,
+              pincode: b.pincode,
+              serviceName: b.service_name,
+              packageTitle: b.package_title,
+              price: Number(b.total_amount || b.price),
+              date: b.scheduled_date,
+              timeSlot: b.time_slot,
+              status: b.status,
+              paymentStatus: b.payment_status,
+              paymentMethod: b.payment_method,
+              paymentRef: b.payment_ref,
+              invoiceNumber: b.invoices?.[0]?.invoice_number || null,
+              invoiceSentAt: b.invoices?.[0]?.sent_at || null,
+              description: b.notes,
+              createdAt: b.created_at
+            }));
+            setBookingsList(mapped);
+          } else {
+            // Explicitly set empty bookings array when database has 0 rows
+            setBookingsList([]);
+          }
           return;
         }
         if (userBookings && userBookings.length > 0) {
           setBookingsList(userBookings);
+        } else {
+          setBookingsList([]);
         }
       })
       .catch(() => {
         if (userBookings && userBookings.length > 0) {
           setBookingsList(userBookings);
+        } else {
+          setBookingsList([]);
         }
       });
+  };
+
+  useEffect(() => {
+    loadBookings();
   }, [userBookings]);
+
+  const handleClearCacheAndRefresh = () => {
+    if (clearBookingCache) clearBookingCache();
+    setBookingsList([]);
+    loadBookings();
+  };
 
   // Search & Filter Logic
   const filteredBookings = bookingsList.filter((b) => {
@@ -265,11 +283,12 @@ export default function AdminBookingsDashboard() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => window.location.reload()}
+              onClick={handleClearCacheAndRefresh}
               className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+              title="Purge local browser cache and reload live data from Supabase"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Refresh</span>
+              <span>Refresh & Clear Cache</span>
             </button>
             <Link
               href="/"
@@ -383,7 +402,15 @@ export default function AdminBookingsDashboard() {
 
           {/* Bookings List Table / Cards */}
           <div className="space-y-3">
-            {filteredBookings.length === 0 ? (
+            {bookingsList.length === 0 ? (
+              <div className="text-center py-16 bg-slate-800/40 rounded-3xl border border-dashed border-slate-700/60 space-y-3">
+                <FileText className="w-12 h-12 text-slate-500 mx-auto" />
+                <h4 className="text-base font-bold text-slate-200 font-heading">No Booking Records Found</h4>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  The bookings database is completely fresh. Real customer orders placed via the website will appear here in real-time.
+                </p>
+              </div>
+            ) : filteredBookings.length === 0 ? (
               <div className="text-center py-12 bg-slate-800/40 rounded-2xl border border-dashed border-slate-800">
                 <FileText className="w-10 h-10 text-slate-600 mx-auto mb-2" />
                 <h4 className="text-sm font-bold text-slate-300">No bookings match your filter</h4>

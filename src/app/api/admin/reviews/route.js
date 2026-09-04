@@ -19,16 +19,7 @@ export async function GET(request) {
       return NextResponse.json({
         success: true,
         source: 'local_fallback',
-        reviews: [
-          {
-            id: 'rev_1',
-            customerName: 'Anand Verma',
-            rating: 5,
-            comment: 'Plumber arrived in 35 mins at Vijay Nagar and fixed mixer tap with 30 days warranty.',
-            isVerified: true,
-            createdAt: '2026-08-30'
-          }
-        ]
+        reviews: []
       });
     }
 
