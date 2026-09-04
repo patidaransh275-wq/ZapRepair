@@ -1,10 +1,13 @@
 import { Resend } from 'resend';
 
 export const ADMIN_NOTIFICATION_EMAIL = process.env.BUSINESS_NOTIFICATION_EMAIL || 'plumberindore@gmail.com';
+export const REGISTERED_ACCOUNT_EMAIL = process.env.RESEND_ACCOUNT_OWNER || 'patidaransh275@gmail.com';
+export const ADMIN_NOTIFICATION_RECIPIENTS = [ADMIN_NOTIFICATION_EMAIL, REGISTERED_ACCOUNT_EMAIL];
 
-// plumberindore.in is verified in Resend. Direct sending to all recipients enabled.
-const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'PlumberIndore <notifications@plumberindore.in>';
-const FALLBACK_SENDER_EMAIL = 'PlumberIndore <onboarding@resend.dev>';
+// Verified production sender domain on Resend (plumberindore.in).
+// Can be customized via RESEND_SENDER_EMAIL='Bookings <notifications@plumberindore.com>' if desired.
+const PRIMARY_SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'Bookings <notifications@plumberindore.in>';
+const FALLBACK_SENDER_EMAIL = 'Bookings <onboarding@resend.dev>';
 
 /**
  * Strict email format validator
@@ -147,7 +150,7 @@ export async function sendEmail({
     try {
       console.log(`[Resend Request] Sending email -> ${recipient}...`);
 
-      // Attempt 1: Send from configured sender (defaults to onboarding@resend.dev)
+      // Attempt 1: Send from configured sender (defaults to verified domain Bookings <notifications@plumberindore.in>)
       let { data, error } = await resend.emails.send({
         from: from || PRIMARY_SENDER_EMAIL,
         to: [recipient],
@@ -157,6 +160,10 @@ export async function sendEmail({
         ...(cc && { cc: Array.isArray(cc) ? cc : [cc] }),
         ...(bcc && { bcc: Array.isArray(bcc) ? bcc : [bcc] })
       });
+
+      if (error) {
+        console.error(`[Resend Dispatch Error for ${recipient}]:`, JSON.stringify(error, null, 2));
+      }
 
       // Attempt 2: Fallback to onboarding@resend.dev if custom sender domain was rejected
       const isSenderDomainError = error && (
@@ -178,6 +185,10 @@ export async function sendEmail({
 
         data = retryResult.data;
         error = retryResult.error;
+
+        if (error) {
+          console.error(`[Resend Fallback Error for ${recipient}]:`, JSON.stringify(error, null, 2));
+        }
       }
 
       // Attempt 3: Fallback if Resend trial sandbox restricts delivery to non-account addresses
@@ -189,7 +200,7 @@ export async function sendEmail({
 
       if (isSandboxError) {
         const match = error.message?.match(/own email address \(([^)]+)\)/);
-        const allowedSandboxRecipient = match ? match[1] : (process.env.RESEND_ACCOUNT_OWNER || 'plumberindore@gmail.com');
+        const allowedSandboxRecipient = match ? match[1] : REGISTERED_ACCOUNT_EMAIL;
 
         console.warn(`[Resend Sandbox Notice] Resend trial sandbox restricts direct delivery to ${recipient}. Forwarding alert to registered Resend account (${allowedSandboxRecipient})...`);
         
@@ -197,11 +208,7 @@ export async function sendEmail({
           <div style="background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 14px; margin-bottom: 16px; border-radius: 8px; font-family: sans-serif; font-size: 13px;">
             <strong>[PlumberIndore System Alert]</strong><br/>
             Intended Business Recipient: <strong>${recipient}</strong><br/>
-            <em>Notice: Delivered to registered Resend account owner (<strong>${allowedSandboxRecipient}</strong>). To deliver directly to <strong>plumberindore@gmail.com</strong> and customers, either:</em>
-            <ol style="margin: 6px 0 0 18px; padding: 0;">
-              <li>Add and verify your domain (<strong>plumberindore.in</strong>) at <a href="https://resend.com/domains" style="color: #b45309; font-weight: bold;">resend.com/domains</a> (Recommended for full production).</li>
-              <li>OR invite <strong>plumberindore@gmail.com</strong> to your Resend team / create an API key for it.</li>
-            </ol>
+            <em>Notice: Delivered to registered Resend account owner (<strong>${allowedSandboxRecipient}</strong>). To deliver directly to <strong>plumberindore@gmail.com</strong>, verify domain at resend.com/domains.</em>
           </div>
         `;
 
@@ -233,6 +240,8 @@ export async function sendEmail({
             forwarded: true
           });
           continue;
+        } else {
+          console.error(`[Resend Sandbox Forwarding Error]:`, JSON.stringify(sandboxResult.error, null, 2));
         }
 
         data = sandboxResult.data;
@@ -241,11 +250,7 @@ export async function sendEmail({
 
       // Log API Outcome
       if (error) {
-        console.error(`[Resend Response Error] Failed delivering to ${recipient}:`, {
-          message: error.message,
-          name: error.name,
-          statusCode: error.statusCode
-        });
+        console.error(`[Resend Response Error] Failed delivering to ${recipient}:`, JSON.stringify(error, null, 2));
       } else {
         console.log(`[Resend Response Success] Successfully delivered to ${recipient} | Message ID: ${data?.id}`);
       }
@@ -268,7 +273,7 @@ export async function sendEmail({
       });
 
     } catch (err) {
-      console.error(`[Resend Exception] Unexpected exception delivering email to ${recipient}:`, err.message);
+      console.error(`[Resend Exception] Unexpected exception delivering email to ${recipient}:`, err);
       
       await logEmailToSupabase({
         recipient,
@@ -298,11 +303,12 @@ export async function sendEmail({
 }
 
 /**
- * Convenience helper for single admin notifications directly to plumberindore@gmail.com
+ * Convenience helper for admin notifications.
+ * Sends to both plumberindore@gmail.com and patidaransh275@gmail.com by default.
  */
 export async function sendNotificationEmail({ subject, html, replyTo = ADMIN_NOTIFICATION_EMAIL, to }) {
   return sendEmail({
-    to: to || [ADMIN_NOTIFICATION_EMAIL],
+    to: to || ADMIN_NOTIFICATION_RECIPIENTS,
     subject,
     html,
     replyTo

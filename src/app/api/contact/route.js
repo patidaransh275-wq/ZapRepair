@@ -120,8 +120,14 @@ export async function POST(request) {
         html: htmlContent,
         replyTo: email || 'plumberindore@gmail.com'
       });
+
+      if (!emailResult?.success || emailResult?.error) {
+        console.error('[POST /api/contact ERROR] Resend dispatch error:', JSON.stringify(emailResult, null, 2));
+      } else {
+        console.log('[POST /api/contact SUCCESS] Contact alert delivered:', JSON.stringify(emailResult, null, 2));
+      }
     } catch (emailErr) {
-      console.warn('Resend contact dispatch notice:', emailErr.message);
+      console.error('[POST /api/contact EXCEPTION]:', emailErr);
       emailResult = { sent: false, error: emailErr.message };
     }
 

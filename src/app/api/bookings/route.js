@@ -359,18 +359,23 @@ export async function POST(request) {
     let customerEmailResult = null;
 
     try {
-      // 1. Send dedicated Admin Alert strictly to plumberindore@gmail.com
-      console.log(`[POST /api/bookings] Dispatching Admin Alert to plumberindore@gmail.com for #${bookingNo}...`);
+      // 1. Send dedicated Admin Alert to BOTH plumberindore@gmail.com and patidaransh275@gmail.com
+      console.log(`[POST /api/bookings] Dispatching Admin Alert for #${bookingNo}...`);
       adminEmailResult = await sendEmail({
-        to: ['plumberindore@gmail.com'],
+        to: ['plumberindore@gmail.com', 'patidaransh275@gmail.com'],
         subject: adminEmailSubject,
         html: adminEmailHtml,
         replyTo: recipientEmail || 'plumberindore@gmail.com'
       });
-      console.log(`[POST /api/bookings] Admin Alert Result for #${bookingNo}:`, adminEmailResult);
 
-      // 2. If customer provided email and it is not plumberindore@gmail.com, send Customer Confirmation
-      if (recipientEmail && recipientEmail.toLowerCase() !== 'plumberindore@gmail.com') {
+      if (!adminEmailResult?.success || adminEmailResult?.error) {
+        console.error(`[POST /api/bookings ERROR] Resend admin alert failed for #${bookingNo}:`, JSON.stringify(adminEmailResult, null, 2));
+      } else {
+        console.log(`[POST /api/bookings SUCCESS] Resend admin alert delivered for #${bookingNo}:`, JSON.stringify(adminEmailResult, null, 2));
+      }
+
+      // 2. If customer provided email and it is not one of the admin emails, send Customer Confirmation
+      if (recipientEmail && !['plumberindore@gmail.com', 'patidaransh275@gmail.com'].includes(recipientEmail.toLowerCase())) {
         console.log(`[POST /api/bookings] Dispatching Customer Confirmation to ${recipientEmail} for #${bookingNo}...`);
         customerEmailResult = await sendEmail({
           to: [recipientEmail],
@@ -378,10 +383,15 @@ export async function POST(request) {
           html: customerEmailHtml,
           replyTo: 'plumberindore@gmail.com'
         });
-        console.log(`[POST /api/bookings] Customer Confirmation Result for #${bookingNo}:`, customerEmailResult);
+
+        if (!customerEmailResult?.success || customerEmailResult?.error) {
+          console.error(`[POST /api/bookings ERROR] Resend customer confirmation failed for #${bookingNo}:`, JSON.stringify(customerEmailResult, null, 2));
+        } else {
+          console.log(`[POST /api/bookings SUCCESS] Resend customer confirmation delivered for #${bookingNo}:`, JSON.stringify(customerEmailResult, null, 2));
+        }
       }
     } catch (emailErr) {
-      console.error(`[POST /api/bookings] Email dispatch exception for #${bookingNo}:`, emailErr);
+      console.error(`[POST /api/bookings EXCEPTION] Email dispatch exception for #${bookingNo}:`, emailErr);
     }
 
     return NextResponse.json({

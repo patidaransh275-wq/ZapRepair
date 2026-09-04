@@ -133,8 +133,14 @@ export async function POST(request) {
         html: htmlContent,
         replyTo: 'plumberindore@gmail.com'
       });
+
+      if (!emailResult?.success || emailResult?.error) {
+        console.error('[POST /api/quote ERROR] Resend dispatch error:', JSON.stringify(emailResult, null, 2));
+      } else {
+        console.log('[POST /api/quote SUCCESS] Quote request alert delivered:', JSON.stringify(emailResult, null, 2));
+      }
     } catch (emailErr) {
-      console.warn('Resend quote dispatch notice:', emailErr.message);
+      console.error('[POST /api/quote EXCEPTION]:', emailErr);
       emailResult = { sent: false, error: emailErr.message };
     }
 
