@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, MapPin, Search, Clock, Award, PhoneCall } from 'lucide-react';
+import { ShieldCheck, MapPin, Search, Clock, Award, PhoneCall, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { checkPincodeServiceability } from '../../data/pincodesData';
 import { useLanguage } from '../../context/LanguageContext';
+import { IS_BOOKING_ENABLED } from '../../config/serviceArea.js';
 
 export default function Hero() {
   const { openBookingModal, setUserPincode } = useBooking();
@@ -18,7 +19,7 @@ export default function Hero() {
     e.preventDefault();
     const result = checkPincodeServiceability(pincodeInput);
     setPincodeResult(result);
-    if (result.valid) {
+    if (result.valid && result.serviceable && IS_BOOKING_ENABLED) {
       setUserPincode(pincodeInput);
     }
   };
@@ -86,12 +87,17 @@ export default function Hero() {
 
               {/* Pincode Validation Feedback */}
               {pincodeResult && (
-                <div className={`mt-2 text-xs font-semibold p-2.5 rounded-xl border ${
-                  pincodeResult.valid
+                <div className={`mt-2 text-xs font-semibold p-3 rounded-xl border flex items-start gap-2.5 text-left ${
+                  pincodeResult.valid && pincodeResult.serviceable && IS_BOOKING_ENABLED
                     ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
-                    : 'bg-red-500/10 text-red-300 border-red-500/30'
+                    : 'bg-amber-500/15 text-amber-300 border-amber-500/40'
                 }`}>
-                  {pincodeResult.message}
+                  {pincodeResult.valid && pincodeResult.serviceable && IS_BOOKING_ENABLED ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  )}
+                  <span className="leading-relaxed">{pincodeResult.message}</span>
                 </div>
               )}
             </div>

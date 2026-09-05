@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   ShieldCheck, MapPin, Clock, ArrowRight, CheckCircle2, ChevronDown, ChevronUp, 
-  Wrench, HelpCircle, PhoneCall, Sparkles, Tag, Star
+  Wrench, HelpCircle, PhoneCall, Sparkles, Tag, Star, AlertTriangle
 } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
 import { checkPincodeServiceability } from '../../data/pincodesData';
+import { IS_BOOKING_ENABLED } from '../../config/serviceArea.js';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import PlumbingServicesGrid from '../services/PlumbingServicesGrid';
 
@@ -27,7 +28,7 @@ export default function CategoryHubClient({ category, baseService }) {
     e.preventDefault();
     const res = checkPincodeServiceability(pinInput);
     setPinResult(res);
-    if (res.valid) {
+    if (res.valid && res.serviceable && IS_BOOKING_ENABLED) {
       setUserPincode(pinInput);
     }
   };
@@ -134,10 +135,17 @@ export default function CategoryHubClient({ category, baseService }) {
               </button>
             </div>
             {pinResult && (
-              <div className={`text-xs font-semibold px-3 py-2 rounded-xl w-full sm:w-auto ${
-                pinResult.valid ? 'bg-emerald-50 text-emerald-800' : 'bg-red-50 text-red-800'
+              <div className={`text-xs font-semibold px-4 py-2.5 rounded-2xl w-full sm:w-auto flex items-start gap-2.5 border ${
+                pinResult.valid && pinResult.serviceable && IS_BOOKING_ENABLED
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+                  : 'bg-amber-50 text-amber-900 border-amber-300'
               }`}>
-                {pinResult.message}
+                {pinResult.valid && pinResult.serviceable && IS_BOOKING_ENABLED ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                )}
+                <span className="leading-relaxed">{pinResult.message}</span>
               </div>
             )}
           </form>

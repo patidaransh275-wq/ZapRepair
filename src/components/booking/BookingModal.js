@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { 
   X, Wrench, Calendar, MapPin, Phone, User, CheckCircle2, ArrowRight, 
   ShieldCheck, Upload, Plus, Trash2, Tag, QrCode, Copy, Check, Lock, 
-  CreditCard, Mail, FileText, ExternalLink, Printer 
+  CreditCard, Mail, FileText, ExternalLink, Printer, AlertTriangle
 } from 'lucide-react';
 import { SERVICES_DATA } from '../../data/servicesData';
 import { useBooking } from '../../context/BookingContext';
 import { checkPincodeServiceability } from '../../data/pincodesData';
+import { IS_BOOKING_ENABLED, SERVICE_UNAVAILABLE_MESSAGE } from '../../config/serviceArea.js';
 
 export default function BookingModal() {
   const { isBookingModalOpen, closeBookingModal, preselectedAppliance, preselectedPackage, userPincode, addBooking } = useBooking();
@@ -110,7 +111,7 @@ export default function BookingModal() {
     e.preventDefault();
     const res = checkPincodeServiceability(pincode);
     setPincodeStatus(res);
-    if (res.valid) {
+    if (res.valid && res.serviceable && IS_BOOKING_ENABLED) {
       setStep(2);
     }
   };
@@ -172,6 +173,10 @@ export default function BookingModal() {
 
   // Finalize Booking (Standard Doorstep Flow)
   const handleFinalizeBooking = () => {
+    if (!IS_BOOKING_ENABLED) {
+      alert(SERVICE_UNAVAILABLE_MESSAGE);
+      return;
+    }
     setIsProcessing(true);
 
     const primaryService = selectedServices[0] || {
@@ -235,6 +240,19 @@ export default function BookingModal() {
           </button>
         </div>
 
+        {/* Service Suspension Notice Banner */}
+        {!IS_BOOKING_ENABLED && (
+          <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 flex items-start gap-3 text-amber-900 text-xs shrink-0">
+            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-extrabold text-amber-950 block">Services Temporarily Unavailable</span>
+              <p className="text-amber-800 text-[11px] leading-relaxed mt-0.5">
+                {SERVICE_UNAVAILABLE_MESSAGE}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Step Progress Bar */}
         {step < 5 && (
           <div className="bg-slate-100 px-6 py-2 border-b border-slate-200 flex items-center justify-between text-[11px] font-bold text-slate-500 shrink-0">
@@ -277,18 +295,34 @@ export default function BookingModal() {
                 </div>
 
                 {pincodeStatus && (
-                  <div className={`p-3 rounded-xl text-xs font-semibold border ${
-                    pincodeStatus.valid ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-red-50 text-red-800 border-red-200'
+                  <div className={`p-4 rounded-xl text-xs font-semibold border flex items-start gap-2.5 ${
+                    pincodeStatus.valid && pincodeStatus.serviceable && IS_BOOKING_ENABLED
+                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                      : 'bg-amber-50 text-amber-900 border-amber-300'
                   }`}>
-                    {pincodeStatus.message}
+                    {pincodeStatus.valid && pincodeStatus.serviceable && IS_BOOKING_ENABLED ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    )}
+                    <span className="leading-relaxed">{pincodeStatus.message}</span>
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  disabled={!IS_BOOKING_ENABLED && pincodeStatus?.suspended}
+                  className={`w-full font-extrabold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1.5 ${
+                    !IS_BOOKING_ENABLED && pincodeStatus?.suspended
+                      ? 'bg-slate-200 text-slate-500 cursor-not-allowed border border-slate-300'
+                      : 'bg-slate-900 hover:bg-slate-800 text-white cursor-pointer'
+                  }`}
                 >
-                  <span>Verify Pincode & Continue</span>
+                  <span>
+                    {!IS_BOOKING_ENABLED && pincodeStatus?.suspended
+                      ? 'Bookings Paused in this Area'
+                      : 'Verify Pincode & Continue'}
+                  </span>
                   <ArrowRight className="w-4 h-4 text-amber-400" />
                 </button>
               </form>
@@ -641,12 +675,18 @@ export default function BookingModal() {
                 </button>
                 <button
                   type="button"
-                  disabled={isProcessing}
+                  disabled={!IS_BOOKING_ENABLED || isProcessing}
                   onClick={handleFinalizeBooking}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <CheckCircle2 className="w-4 h-4 stroke-[3]" />
-                  <span>{isProcessing ? 'Confirming Appointment...' : `Confirm & Book Appointment (₹${totalPrice}) →`}</span>
+                  <span>
+                    {!IS_BOOKING_ENABLED 
+                      ? 'Bookings Temporarily Paused' 
+                      : isProcessing 
+                        ? 'Confirming Appointment...' 
+                        : `Confirm & Book Appointment (₹${totalPrice}) →`}
+                  </span>
                 </button>
               </div>
             </div>

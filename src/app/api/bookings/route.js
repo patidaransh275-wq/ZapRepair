@@ -81,9 +81,22 @@ export async function GET(request) {
  * Strictly calculates and validates prices server-side.
  */
 import { checkRateLimit, sanitizeString, validateIndianPhone, validateEmail, validatePincode, getClientIp } from '../../../lib/security.js';
+import { IS_BOOKING_ENABLED, SERVICE_UNAVAILABLE_MESSAGE } from '../../../config/serviceArea.js';
 
 export async function POST(request) {
   try {
+    // 0. Global Emergency Suspension / Availability Check
+    if (!IS_BOOKING_ENABLED) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: SERVICE_UNAVAILABLE_MESSAGE,
+          suspended: true 
+        }, 
+        { status: 503 }
+      );
+    }
+
     // 1. Rate Limiting (Max 10 bookings per minute per IP)
     const ip = getClientIp(request);
     const rateLimit = checkRateLimit(`booking_${ip}`, 10, 60000);

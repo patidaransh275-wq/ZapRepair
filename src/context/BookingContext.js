@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { SERVICES_DATA } from '../data/servicesData';
+import { IS_BOOKING_ENABLED, SERVICE_UNAVAILABLE_MESSAGE } from '../config/serviceArea.js';
 
 const BookingContext = createContext();
 
@@ -270,6 +271,11 @@ export function BookingProvider({ children }) {
   };
 
   const addBooking = (bookingData) => {
+    if (!IS_BOOKING_ENABLED) {
+      console.warn('Booking attempted while services are suspended:', SERVICE_UNAVAILABLE_MESSAGE);
+      throw new Error(SERVICE_UNAVAILABLE_MESSAGE);
+    }
+
     const randomId = `IND-${Math.floor(10000 + Math.random() * 90000)}`;
     const newBooking = {
       id: randomId,
@@ -516,6 +522,8 @@ export function BookingProvider({ children }) {
         userPincode,
         setUserPincode,
         userBookings,
+        isBookingEnabled: IS_BOOKING_ENABLED,
+        serviceUnavailableMessage: SERVICE_UNAVAILABLE_MESSAGE,
         clearBookingCache,
         fetchBookings,
         addBooking,

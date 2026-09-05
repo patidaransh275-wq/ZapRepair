@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapPin, Search, CheckCircle2 } from 'lucide-react';
+import { MapPin, Search, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { checkPincodeServiceability, INDORE_SERVICE_AREAS } from '../../data/pincodesData';
+import { IS_BOOKING_ENABLED } from '../../config/serviceArea.js';
 
 export default function PincodeCheckerSection() {
   const [pincode, setPincode] = useState('');
@@ -54,15 +55,17 @@ export default function PincodeCheckerSection() {
           </form>
 
           {result && (
-            <div className={`max-w-md mx-auto p-4 rounded-xl text-xs font-bold text-left border ${
-              result.valid
+            <div className={`max-w-md mx-auto p-4 rounded-2xl text-xs font-semibold text-left border flex items-start gap-3 ${
+              result.valid && result.serviceable && IS_BOOKING_ENABLED
                 ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-300'
-                : 'bg-red-950/80 border-red-500/50 text-red-300'
+                : 'bg-amber-950/80 border-amber-500/50 text-amber-300'
             }`}>
-              <div className="flex items-center gap-2">
-                {result.valid ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <MapPin className="w-4 h-4 text-red-400 shrink-0" />}
-                <span>{result.message}</span>
-              </div>
+              {result.valid && result.serviceable && IS_BOOKING_ENABLED ? (
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+              ) : (
+                <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              )}
+              <span className="leading-relaxed">{result.message}</span>
             </div>
           )}
 
